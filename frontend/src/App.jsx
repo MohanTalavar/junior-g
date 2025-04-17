@@ -8,12 +8,13 @@ import Logout from "./pages/Logout";
 const App = () => {
   return (
     <Router>
-      <Navbar/>
+      <Navbar />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/teacher" element={<TeacherPage/>}></Route>
-        <Route path= "/logout" element={<Logout />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/teacher" element={<TeacherPage />}></Route>
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>
   );

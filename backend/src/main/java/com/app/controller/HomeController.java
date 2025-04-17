@@ -11,24 +11,6 @@ import java.security.Principal;
 @RequestMapping("/public") // adding this for the public so that no authentication is needed.
 						   // refer MySpringSecurityConfig.java
 public class HomeController {
-	
-	@GetMapping("/home")
-	public ResponseEntity<String> home(){
-		String response = "Welcome to Junior G Pre School";
-		return ResponseEntity.ok(response);
-	}
-	
-	@GetMapping("/login")
-	public ResponseEntity<String> login(){
-		String response = "Login to Junior G Pre School";
-		return ResponseEntity.ok(response);
-	}
-	
-	@GetMapping("/register")
-	public ResponseEntity<String> register(){
-		String response = "Register to Junior G Pre School";
-		return ResponseEntity.ok(response);
-	}
 
 	@GetMapping("/current-user")
 	public String getCurrentUser(Principal principal){
