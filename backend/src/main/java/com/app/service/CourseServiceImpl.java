@@ -8,6 +8,9 @@ import com.app.custom_exception.ResourceNotFoundException;
 import com.app.pojos.Course;
 import com.app.repo.CourseRepo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Transactional
 public class CourseServiceImpl implements ICourseService {
@@ -22,6 +25,12 @@ public class CourseServiceImpl implements ICourseService {
 		Course persistentCourse = courseRepo.save(transientCourse);		
 		if(persistentCourse == null) throw new ResourceNotFoundException("Course not added");		
 		return "Course: " + persistentCourse.getTitle()+" Added.";
+	}
+
+	@Override
+	public List<Course> fetchCourses() {
+		System.out.println("In Course Service Layer: fetchCourses");
+		return courseRepo.findAll();
 	}
 
 	@Override

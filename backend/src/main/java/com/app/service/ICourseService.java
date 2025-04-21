@@ -1,10 +1,17 @@
 package com.app.service;
 
+import com.app.dto.CourseRequestResponseDto;
 import com.app.pojos.Course;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public interface ICourseService {
 	// add new method to insert new course details
 	String launchNewCourse(Course transienCourse);
+
+	// add a method to get the course list
+	List<Course> fetchCourses();
 	
 	// add new method to delete existing course details
 	String removeCourse(String transienCourse);
