@@ -20,12 +20,21 @@ import com.app.dto.CourseWithStudentsResponseDto;
 import com.app.pojos.Course;
 import com.app.service.ICourseService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/courses")
 public class CourseController {
 
 	@Autowired
 	private ICourseService courseService;
+
+	@GetMapping("/get-courses")
+	public ResponseEntity<List<CourseRequestResponseDto>> getCourses(){
+		 List<CourseRequestResponseDto> courses = courseService.fetchCourses().stream().map(CourseRequestResponseDto::new).toList();
+		 return ResponseEntity.ok(courses);
+	}
 
 	@PostMapping("/add-new-course")
 	public ResponseEntity<String> addNewCourse(@Valid @RequestBody CourseRequestResponseDto transientCourse) {
