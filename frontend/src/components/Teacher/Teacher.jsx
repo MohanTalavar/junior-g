@@ -1,9 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
-import "./GetTeacher.css";
 import { getTeacherById } from "../../api/TeacherApis";
 
-const GetTeacher = () => {
+const Teacher = () => {
   const [teacherId, setTeacherId] = useState("");
   const [teacher, setTeacher] = useState(null);
   const [error, setError] = useState("");
@@ -45,4 +44,4 @@ const GetTeacher = () => {
   );
 };
 
-export default GetTeacher;
+export default Teacher;
