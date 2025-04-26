@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# In your frontend/.gitignore
+.vite/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
