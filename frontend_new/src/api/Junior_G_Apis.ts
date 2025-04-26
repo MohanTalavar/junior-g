@@ -1,17 +1,18 @@
-import axios from "axios";
+import axios, { AxiosError,  InternalAxiosRequestConfig } from "axios";
 
 const api = axios.create({
-  baseURL: "http://35.154.146.36:8080", // Your backend base URL
+  // baseURL: "http://35.154.146.36:8080", // Your backend base URL
+  baseURL: "http://localhost:8080",
 });
 
 // Automatically attach token to every request, except for the login endpoint
-api.interceptors.request.use((config) => {
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   // Skip adding token for login request
   if (config.url !== "/users/login" && config.url !== "/login") {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
-    }
+    } 
   }
   return config;
 });
@@ -19,7 +20,7 @@ api.interceptors.request.use((config) => {
 // Global error handler for expired or invalid token
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error : AxiosError) => {
     // If the status is 401 (Unauthorized), the token might be expired or invalid
     if (error.response && error.response.status === 401) {
       console.warn("Unauthorized! Possibly due to expired token.");
