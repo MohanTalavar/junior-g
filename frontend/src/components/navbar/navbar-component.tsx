@@ -10,22 +10,28 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <nav className="bg-orange-300 p-4">
+    <nav className="bg-[#FFA500] p-4 shadow-md">
       <div className="flex justify-between items-center">
         {/* Left Logo */}
         <Link
           to="/home"
-          className="text-white text-2xl font-bold hover:underline"
+          className="text-white text-2xl font-bold hover:underline hover:underline-offset-4"
         >
           Junior G
         </Link>
 
         {/* Desktop Nav Links */}
         <div className="hidden md:flex gap-6">
-          <Link to="/home" className="text-white text-lg hover:underline">
+          <Link
+            to="/home"
+            className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+          >
             Home
           </Link>
-          <Link to="/course" className="text-white text-lg hover:underline">
+          <Link
+            to="/course"
+            className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+          >
             Courses
           </Link>
 
@@ -33,29 +39,38 @@ const Navbar: React.FC = () => {
             <>
               <Link
                 to="/teacher"
-                className="text-white text-lg hover:underline"
+                className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
               >
                 Teachers
               </Link>
               <Link
                 to="/student"
-                className="text-white text-lg hover:underline"
+                className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
               >
                 Students
               </Link>
             </>
           )}
 
-          <Link to="/profile" className="text-white text-lg hover:underline">
+          <Link
+            to="/profile"
+            className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+          >
             Profile
           </Link>
 
           {isAuthenticated ? (
-            <Link to="/logout" className="text-white text-lg hover:underline">
+            <Link
+              to="/logout"
+              className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+            >
               Logout
             </Link>
           ) : (
-            <Link to="/login" className="text-white text-lg hover:underline">
+            <Link
+              to="/login"
+              className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+            >
               Login
             </Link>
           )}
@@ -72,13 +87,13 @@ const Navbar: React.FC = () => {
               <div className="flex flex-col gap-6 mt-12 text-lg">
                 <Link
                   to="/home"
-                  className="text-gray-800 hover:text-orange-500 transition-opacity duration-300 ease-in-out hover:scale-105"
+                  className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105"
                 >
                   Home
                 </Link>
                 <Link
                   to="/course"
-                  className="text-gray-800 hover:text-orange-500 transition-opacity duration-300 ease-in-out hover:scale-105 delay-100"
+                  className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-100"
                 >
                   Courses
                 </Link>
@@ -87,13 +102,13 @@ const Navbar: React.FC = () => {
                   <>
                     <Link
                       to="/teacher"
-                      className="text-gray-800 hover:text-orange-500 transition-opacity duration-300 ease-in-out hover:scale-105 delay-200"
+                      className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-200"
                     >
                       Teachers
                     </Link>
                     <Link
                       to="/student"
-                      className="text-gray-800 hover:text-orange-500 transition-opacity duration-300 ease-in-out hover:scale-105 delay-300"
+                      className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-300"
                     >
                       Students
                     </Link>
@@ -102,7 +117,7 @@ const Navbar: React.FC = () => {
 
                 <Link
                   to="/profile"
-                  className="text-gray-800 hover:text-orange-500 transition-opacity duration-300 ease-in-out hover:scale-105 delay-400"
+                  className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-400"
                 >
                   Profile
                 </Link>
@@ -110,14 +125,14 @@ const Navbar: React.FC = () => {
                 {isAuthenticated ? (
                   <Link
                     to="/logout"
-                    className="text-gray-800 hover:text-orange-500 transition-opacity duration-300 ease-in-out hover:scale-105 delay-500"
+                    className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-500"
                   >
                     Logout
                   </Link>
                 ) : (
                   <Link
                     to="/login"
-                    className="text-gray-800 hover:text-orange-500 transition-opacity duration-300 ease-in-out hover:scale-105 delay-500"
+                    className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-500"
                   >
                     Login
                   </Link>

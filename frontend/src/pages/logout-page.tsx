@@ -18,7 +18,7 @@ const Logout: React.FC = () => {
 
     // Redirect after a brief delay
     const timer = setTimeout(() => {
-      navigate("/login", { replace: true });
+      navigate("/home", { replace: true });
     }, 2000); // shorter delay for better UX
 
     // Cleanup
@@ -28,7 +28,7 @@ const Logout: React.FC = () => {
   return (
     <div style={{ textAlign: "center", marginTop: "60px" }}>
       <h2>You’ve been logged out.</h2>
-      <p>Redirecting to the login page...</p>
+      <p>Redirecting to the home page...</p>
     </div>
   );
 };
