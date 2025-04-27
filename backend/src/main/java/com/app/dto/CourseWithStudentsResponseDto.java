@@ -27,4 +27,19 @@ public class CourseWithStudentsResponseDto {
 		}
 	}
 
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public List<StudentRequestResponseDto> getStudents() {
+		return students;
+	}
+
+	public void setStudents(List<StudentRequestResponseDto> students) {
+		this.students = students;
+	}
 }
