@@ -7,9 +7,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class LoginResponseDto {
     private String userName;
     private String token;
+
+    public LoginResponseDto(String userName, String token) {
+        this.userName = userName;
+        this.token = token;
+    }
+
+
 }
