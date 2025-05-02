@@ -1,8 +1,9 @@
 import axios, { AxiosError,  InternalAxiosRequestConfig } from "axios";
 
 const api = axios.create({
-  // baseURL: "http://35.154.146.36:8080", // Your backend base URL
-  baseURL: "http://localhost:8080",
+  // baseURL: "http://localhost:8080",
+  //baseURL: "https://3.109.195.222:8080",  
+  baseURL : "https://api.juniorg.site"
 });
 
 // Automatically attach token to every request, except for the login endpoint

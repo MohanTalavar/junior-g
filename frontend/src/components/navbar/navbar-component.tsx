@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Nav Links */}
         <div className="hidden md:flex gap-6">
-          <Link
+          {/* <Link
             to="/home"
             className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
           >
@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
             className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
           >
             Courses
-          </Link>
+          </Link> */}
 
           {isAuthenticated && (
             <>
@@ -52,12 +52,12 @@ const Navbar: React.FC = () => {
             </>
           )}
 
-          <Link
+          {/* <Link
             to="/profile"
             className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
           >
             Profile
-          </Link>
+          </Link> */}
 
           {isAuthenticated ? (
             <Link
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
 
             <SheetContent side="right" className="bg-white w-[250px] p-6">
               <div className="flex flex-col gap-6 mt-12 text-lg">
-                <Link
+                {/* <Link
                   to="/home"
                   className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105"
                 >
@@ -96,7 +96,7 @@ const Navbar: React.FC = () => {
                   className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-100"
                 >
                   Courses
-                </Link>
+                </Link> */}
 
                 {isAuthenticated && (
                   <>
@@ -115,12 +115,12 @@ const Navbar: React.FC = () => {
                   </>
                 )}
 
-                <Link
+                {/* <Link
                   to="/profile"
                   className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-400"
                 >
                   Profile
-                </Link>
+                </Link> */}
 
                 {isAuthenticated ? (
                   <Link
