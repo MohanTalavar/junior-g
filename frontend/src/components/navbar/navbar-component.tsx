@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"; // Shadcn Sheet
-import { Menu } from "lucide-react"; // hamburger icon
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import crestImg from "../../assets/images/JuniorG_Crest.png";
 
 const Navbar: React.FC = () => {
   const isAuthenticated = useSelector(
@@ -10,129 +11,96 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <nav className="bg-[#FFA500] p-4 shadow-md">
+    <nav className="bg-white p-2 md:p-6 py-4 shadow-md">
       <div className="flex justify-between items-center">
-        {/* Left Logo */}
+        {/* Logo */}
         <Link
           to="/home"
-          className="text-white text-2xl font-bold hover:underline hover:underline-offset-4"
+          className="flex items-center text-[#002F6C] text-2xl font-serif font-bold tracking-wide hover:text-[#004D99] transition duration-300"
         >
-          Junior G
+          {/* Crest */}
+          <img
+            src={crestImg}
+            alt="Junior G Crest"
+            className="h-20 pl-1 md:pl-8 " // Increased image size and left padding
+          />
+          {/* Brand Name */}
+          <span className="uppercase text-3xl ">
+            <div>JUNIOR G</div>
+            <div className="text-sm mt-1">International Preschool</div>
+          </span>
         </Link>
 
-        {/* Desktop Nav Links */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex gap-6">
-          {/* <Link
-            to="/home"
-            className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
-          >
-            Home
-          </Link>
-          <Link
-            to="/course"
-            className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
-          >
-            Courses
-          </Link> */}
-
           {isAuthenticated && (
             <>
               <Link
                 to="/teacher"
-                className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+                className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
               >
                 Teachers
               </Link>
               <Link
                 to="/student"
-                className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+                className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
               >
                 Students
               </Link>
             </>
           )}
-
-          {/* <Link
-            to="/profile"
-            className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
-          >
-            Profile
-          </Link> */}
-
           {isAuthenticated ? (
             <Link
               to="/logout"
-              className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+              className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
             >
               Logout
             </Link>
           ) : (
             <Link
               to="/login"
-              className="text-white text-lg font-semibold hover:underline hover:underline-offset-4"
+              className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
             >
               Login
             </Link>
           )}
         </div>
 
-        {/* Mobile Hamburger Menu */}
+        {/* Mobile Nav (Sheet) */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger>
-              <Menu className="text-white" size={32} />
+              <Menu className="text-[#1C2C5B]" size={32} />
             </SheetTrigger>
-
             <SheetContent side="right" className="bg-white w-[250px] p-6">
-              <div className="flex flex-col gap-6 mt-12 text-lg">
-                {/* <Link
-                  to="/home"
-                  className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105"
-                >
-                  Home
-                </Link>
-                <Link
-                  to="/course"
-                  className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-100"
-                >
-                  Courses
-                </Link> */}
-
+              <div className="flex flex-col gap-6 mt-12 text-lg font-serif text-[#1C2C5B]">
                 {isAuthenticated && (
                   <>
                     <Link
                       to="/teacher"
-                      className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-200"
+                      className="hover:text-[#004D99] transition duration-300"
                     >
                       Teachers
                     </Link>
                     <Link
                       to="/student"
-                      className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-300"
+                      className="hover:text-[#004D99] transition duration-300"
                     >
                       Students
                     </Link>
                   </>
                 )}
-
-                {/* <Link
-                  to="/profile"
-                  className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-400"
-                >
-                  Profile
-                </Link> */}
-
                 {isAuthenticated ? (
                   <Link
                     to="/logout"
-                    className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-500"
+                    className="hover:text-[#004D99] transition duration-300"
                   >
                     Logout
                   </Link>
                 ) : (
                   <Link
                     to="/login"
-                    className="text-[#333333] hover:text-[#FF7B00] hover:underline hover:underline-offset-4 transition-all duration-300 ease-in-out hover:scale-105 delay-500"
+                    className="hover:text-[#004D99] transition duration-300"
                   >
                     Login
                   </Link>

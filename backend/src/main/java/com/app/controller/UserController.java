@@ -46,9 +46,9 @@ public class UserController {
 		logger.info("User log in requested: {}", user.getUserName());
 		try {
 			LoginResponseDto response = userService.verifyUser(new User(user));
-//			emailService.sendEmail("tawareshubham89@gmail.com",
-//					"Test Subject",
-//					"This is the email body...");
+			emailService.sendEmail("mohan.talawar.20@gmail.com",
+					"Test Subject",
+					"This is the email body...");
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			logger.error("Error occurred during login for user {}: {}", user.getUserName(), e.getMessage(), e);

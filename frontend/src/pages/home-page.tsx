@@ -6,11 +6,11 @@ import AboutUsComponent from "@/components/home/about-us-component";
 const Home: React.FC = () => {
   return (
     <div className="flex flex-col">
-      {/* Junior G Info Section */}
-      <InfoComponent />
-
       {/* Hero Section */}
       <HeroComponent />
+
+      {/* Junior G Info Section */}
+      <InfoComponent />
 
       {/* Courses Section */}
       <CourseComponent />

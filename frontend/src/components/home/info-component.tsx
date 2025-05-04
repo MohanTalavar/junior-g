@@ -1,13 +1,16 @@
+import React from "react";
+import crestImg from "../../assets/images/JuniorG_Crest.png";
+
 const InfoComponent: React.FC = () => {
   return (
-    <div>
-      {/* Junior G Info Section */}
-      <section className="py-4 bg-gradient-to-r from-[#FFD8A9] to-[#F9F4FF]">
-        <div className="max-w-6xl mx-auto text-center px-4">
-          <h2 className="text-5xl font-bold text-[#FF7B00] mb-4">
-            Welcome to Junior G International Pre-School
+    <section className="w-full bg-[#002F6C] text-white">
+      <div className="flex flex-col md:flex-row w-full min-h-[450px]">
+        {/* Left Column */}
+        <div className="w-full md:w-[60%] px-8 py-12 flex flex-col justify-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-8 text-center md:text-left">
+            About Junior G
           </h2>
-          <p className="text-base text-orange-700 font-medium leading-relaxed">
+          <p className="text-lg font-medium leading-relaxed md:text-left">
             <span className="font-semibold">
               Junior G International Pre-School
             </span>{" "}
@@ -22,8 +25,13 @@ const InfoComponent: React.FC = () => {
             <span className="italic">confidence</span> in every child.
           </p>
         </div>
-      </section>
-    </div>
+
+        {/* Right Column */}
+        <div className="hidden md:flex bg-[#f1f1f1] w-full md:w-[40%] items-center justify-center p-8">
+          <img src={crestImg} alt="Junior G Crest" className="w-[70%] h-auto" />
+        </div>
+      </div>
+    </section>
   );
 };
 
