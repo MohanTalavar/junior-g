@@ -20,16 +20,18 @@ const Navbar: React.FC = () => {
             className="flex items-center text-[#002F6C] text-2xl font-serif font-bold tracking-wide hover:text-[#004D99] transition duration-300"
           >
             <img src={crestImg} alt="Junior G Crest" className="h-20 mr-2" />
-            <span className="uppercase text-xl md:text-3xl leading-tight">
+            <span className="uppercase text-sm md:text-3xl leading-tight">
               <div>JUNIOR G</div>
-              <div className="text-sm mt-1">International Preschool</div>
+              <div className="text-xs md:text-sm mt-1">
+                International Preschool
+              </div>
             </span>
           </Link>
 
           {/* Summer Camp link */}
           <Link
             to="/summercamp"
-            className="text-[#F18701] mt-4 md:mt-9 font-bold  text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
+            className="text-[#F18701] mt-4 md:mt-9 font-bold  text-xs mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
           >
             Summer Camp!
           </Link>
