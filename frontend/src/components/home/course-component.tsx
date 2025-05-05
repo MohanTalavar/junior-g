@@ -3,7 +3,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 const programs = [
   {
     title: "Daycare",
-    age: "1 – 2 years",
+    age: "2 – 10 years",
     description:
       "Safe, flexible care for working parents. Engaging environment with meals, naps, and play.",
   },

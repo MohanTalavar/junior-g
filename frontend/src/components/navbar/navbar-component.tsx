@@ -13,23 +13,27 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-white p-2 md:p-6 py-4 shadow-md">
       <div className="flex justify-between items-center">
-        {/* Logo */}
-        <Link
-          to="/home"
-          className="flex items-center text-[#002F6C] text-2xl font-serif font-bold tracking-wide hover:text-[#004D99] transition duration-300"
-        >
-          {/* Crest */}
-          <img
-            src={crestImg}
-            alt="Junior G Crest"
-            className="h-20 pl-1 md:pl-8 " // Increased image size and left padding
-          />
-          {/* Brand Name */}
-          <span className="uppercase text-3xl ">
-            <div>JUNIOR G</div>
-            <div className="text-sm mt-1">International Preschool</div>
-          </span>
-        </Link>
+        {/* Logo + Brand Block */}
+        <div className="flex items-center gap-6 md:pl-8 pl-2">
+          <Link
+            to="/home"
+            className="flex items-center text-[#002F6C] text-2xl font-serif font-bold tracking-wide hover:text-[#004D99] transition duration-300"
+          >
+            <img src={crestImg} alt="Junior G Crest" className="h-20 mr-2" />
+            <span className="uppercase text-xl md:text-3xl leading-tight">
+              <div>JUNIOR G</div>
+              <div className="text-sm mt-1">International Preschool</div>
+            </span>
+          </Link>
+
+          {/* Summer Camp link */}
+          <Link
+            to="/summercamp"
+            className="text-[#F18701] mt-4 md:mt-9 font-bold  text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
+          >
+            Summer Camp!
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex gap-6">
@@ -59,7 +63,7 @@ const Navbar: React.FC = () => {
           ) : (
             <Link
               to="/login"
-              className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
+              className="text-[#1C2C5B] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
             >
               Login
             </Link>
@@ -74,6 +78,14 @@ const Navbar: React.FC = () => {
             </SheetTrigger>
             <SheetContent side="right" className="bg-white w-[250px] p-6">
               <div className="flex flex-col gap-6 mt-12 text-lg font-serif text-[#1C2C5B]">
+                {/* Summer Camp for mobile */}
+                {/* <Link
+                  to="/summercamp"
+                  className="text-[#F18701]  font-semibold hover:text-[#f35b04] transition duration-300"
+                >
+                  Summer Camp 2025
+                </Link> */}
+
                 {isAuthenticated && (
                   <>
                     <Link
