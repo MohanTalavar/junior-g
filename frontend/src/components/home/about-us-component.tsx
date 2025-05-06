@@ -27,7 +27,7 @@ const AboutUsComponent: React.FC = () => {
         <div>
           <h3 className="text-3xl font-bold mb-6 pb-2">Contact Us</h3>
           <ul className="space-y-4 text-white/90">
-            {["901125084", "7719005081", "7350629758"].map((phone) => (
+            {["9011251084", "7719005081", "7350629758"].map((phone) => (
               <li key={phone} className="flex items-center gap-3">
                 <Phone className="w-5 h-5" />
                 <span>{phone}</span>
