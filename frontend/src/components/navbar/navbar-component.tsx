@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
         {/* Logo + Brand Block */}
         <div className="flex items-center gap-6 md:pl-8 pl-2">
           <Link
-            to="/home"
+            to="/"
             className="flex items-center text-[#002F6C] text-2xl font-serif font-bold tracking-wide hover:text-[#004D99] transition duration-300"
           >
             <img src={crestImg} alt="Junior G Crest" className="h-20 mr-2" />
