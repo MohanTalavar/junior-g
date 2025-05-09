@@ -3,6 +3,8 @@ package com.app.service;
 
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,26 +19,31 @@ import com.app.utils.UpdateUtils;
 @Transactional
 public class StudentServiceImpl implements IStudentService {
 
+	private static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
 	@Autowired
 	private StudentRepo studRepo;
 
 	@Autowired
 	private CourseRepo courseRepo;
-	
+
 	@Override
-	public Student getStudentDetails(Long StudId) {
-		
-		System.out.println("In Student service layer getStudentDetails");
-		Student persistentStud = studRepo.findById(StudId)
-				.orElseThrow(()-> new ResourceNotFoundException("Student not found "+ StudId));
-		
+	public Student getStudentDetails(Long studentId) {
+		log.info("Fetching details for studentId: {}", studentId);
+
+		Student persistentStud = studRepo.findById(studentId)
+				.orElseThrow(() -> {
+					log.warn("Student not found with id: {}", studentId);
+					return new ResourceNotFoundException("Student not found " + studentId);
+				});
+
+		log.debug("Student details fetched successfully: {}", persistentStud.getId()); // optional
 		return persistentStud;
 	}
 
 	@Override
 	public Student admitNewStudent(String courseName, Student stud) {
-		
-		System.out.println("In Student service layer admitNewStudent");
+
+		log.info("Admitting new student: name={}, course={}", stud.getFirstName(), courseName);
 		Course persistentCourse = courseRepo.findByTitle(courseName);
 		if (persistentCourse == null) {
 			throw new ResourceNotFoundException("Course not found: " + courseName);
@@ -73,7 +80,7 @@ public class StudentServiceImpl implements IStudentService {
 	@Override
 	public String cancelStudentAdmission(String courseName, Long studId) {
 
-		System.out.println("In Student service layer cancelStudentAdmission");
+		log.info("Cancelling admission for studentId={} from course={}", studId, courseName);
 		Student persistentStud = studRepo.findById(studId)
 				.orElseThrow(() -> new ResourceNotFoundException("Student not found: " + studId));
 
@@ -89,8 +96,8 @@ public class StudentServiceImpl implements IStudentService {
 
 	@Override
 	public Student updateStudentRecord(Long studId, Student updatedStudent) {
-		
-		System.out.println("In Student service layer udpateStudentRecord");
+
+		log.info("Updating student record for student Id: {}", studId);
 		
 		Student persistentStud = studRepo.findById(studId)
 				.orElseThrow(() -> new ResourceNotFoundException("Student not found: " + studId));
@@ -108,6 +115,7 @@ public class StudentServiceImpl implements IStudentService {
 	    UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getEmergencyContact(), persistentStud::getEmergencyContact, persistentStud::setEmergencyContact);
 	    UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getAdmissionDate(), persistentStud::getAdmissionDate, persistentStud::setAdmissionDate);
 	    UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getBloodGroup(), persistentStud::getBloodGroup, persistentStud::setBloodGroup);
+		log.info("Successfully updated student record for studentId: {}", studId);
 		return persistentStud;
 	}
 

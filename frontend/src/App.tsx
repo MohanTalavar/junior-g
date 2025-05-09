@@ -5,6 +5,7 @@ import Login from "./pages/login-page";
 import TeacherPage from "./pages/teacher-page";
 import Logout from "./pages/logout-page";
 import CoursePage from "./pages/CoursePage";
+import SummerCampPage from "./pages/summer-camp-page";
 
 function App() {
   return (
@@ -13,11 +14,11 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/teacher" element={<TeacherPage />}></Route>
           <Route path="/logout" element={<Logout />} />
           <Route path="/course" element={<CoursePage />} />
+          <Route path="summercamp" element={<SummerCampPage />} />
         </Routes>
       </Router>
     </>

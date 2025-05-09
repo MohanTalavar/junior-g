@@ -8,12 +8,16 @@ import com.app.repo.AddressRepo;
 import com.app.repo.StudentRepo;
 import com.app.repo.TeacherRepo;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Transactional
 @Service
 public class AddressServiceImpl implements IAddressService {
+
+	private static final Logger log = LoggerFactory.getLogger(AddressServiceImpl.class);
 
 	@Autowired
 	private AddressRepo addressRepo;
@@ -27,7 +31,7 @@ public class AddressServiceImpl implements IAddressService {
 	@Override
 	public String addOrUpdateStudentAddress(Long studentId, Address newAddress) {
 
-		System.out.println("in address service layer addOrUpdateStudentAddress");
+		log.info("Processing address for studentId: {}. New address: {}", studentId, newAddress);
 		String msg = "";
 
 		Student persistenStudent = studentRepo.findById((long) studentId)
@@ -49,10 +53,9 @@ public class AddressServiceImpl implements IAddressService {
 	}
 
 	@Override
-	public String adddOrUpdateTeacherAddress(Long teacherId, Address newAddress) {
+	public String addOrUpdateTeacherAddress(Long teacherId, Address newAddress) {
 
-		System.out.println("In address service layer adddOrUpdateTeacherAddress");
-
+		log.info("Processing address for teacherId: {}. New address: {}", teacherId, newAddress);
 		String msg = "";
 
 		Teacher persistentTeacher = teacherRepo.findById(teacherId)

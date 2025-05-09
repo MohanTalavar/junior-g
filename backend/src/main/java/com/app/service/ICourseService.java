@@ -14,7 +14,7 @@ public interface ICourseService {
 	List<Course> fetchCourses();
 	
 	// add new method to delete existing course details
-	String removeCourse(String transienCourse);
+	String removeCourse(String transientCourse);
 	
 	// add a method to get the course details
 	Course getCourseDetails(String title);

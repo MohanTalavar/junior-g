@@ -36,7 +36,7 @@ public class SecurityConfig  {
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Make /users/login available to everyone
-                        .requestMatchers("/users/login","/users/add-new-user").permitAll()
+                        .requestMatchers("/health","/users/login","/enquiry").permitAll()
                         // For GET requests, allow users with either role NORMAL or ADMIN
                         .requestMatchers(HttpMethod.GET, "/**").hasAnyRole("NORMAL", "ADMIN")
                         // All other requests require the ADMIN role

@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import com.app.repo.TeacherRepo;
 @Service
 public class TeacherServiceImpl implements ITeacherService {
 
+	private static Logger log = LoggerFactory.getLogger(TeacherServiceImpl.class);
+
 	@Autowired
 	private TeacherRepo teacherRepo;
 
@@ -27,7 +31,7 @@ public class TeacherServiceImpl implements ITeacherService {
 	@Override
 	public String addNewTeacher(String courseName, Teacher newTeacher) {
 
-		System.out.println("In teacher service layer addNewTeacher");
+		log.info("Adding new teacher :{} to course = {}", newTeacher.getFirstName(), courseName);
 		
 		if( newTeacher == null ) throw new IllegalArgumentException("Teacher details cannot be null!");
 
@@ -48,19 +52,17 @@ public class TeacherServiceImpl implements ITeacherService {
 
 	@Override
 	public Teacher retrieveTeacherDetails(Long teacherId) {
-		
-		System.out.println("In teacher service layer getTeacherDetails");
-		
-		Teacher teacher = teacherRepo.findById(teacherId)
+
+		log.info("Retrieving details for teacherId: {}", teacherId);
+
+        return teacherRepo.findById(teacherId)
 				.orElseThrow(()-> new ResourceNotFoundException("Teacher not found "+ teacherId));
-		
-		return teacher;
 	}
 
 	@Override
 	public String deleteTeacherRecord(Long teacherId) {
-		System.out.println("In teacher service layer getTeacherDetails");
-		
+
+		log.info("Attempting to delete teacher record with teacherId: {}", teacherId);
 						
 		Teacher persistentTeacher = teacherRepo.findById(teacherId)
 				.orElseThrow(()-> new ResourceNotFoundException("Teacher not found "+ teacherId));
@@ -78,7 +80,8 @@ public class TeacherServiceImpl implements ITeacherService {
 
 	@Override
 	public Teacher updateTeacherRecord(Long teacherId, Teacher updatedTeacher) {
-		
+
+		log.info("Updating teacher record for teacher Id: {}", teacherId);
 		Teacher persistentTeacher = teacherRepo.findById(teacherId)
 				.orElseThrow(()-> new ResourceNotFoundException("Teacher not found." + teacherId));
 		
