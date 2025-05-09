@@ -1,4 +1,4 @@
-# Junior G
+# Junior G 👉 [https://juniorg.site](https://juniorg.site)
 
 A full-stack preschool management web application designed to streamline daily operations for **administrators, teachers, and parents**.
 
@@ -17,10 +17,6 @@ A full-stack preschool management web application designed to streamline daily o
 * 🧑‍🏫 Teacher dashboard for managing courses, students, and communication
 * 📊 Admin panel with student/teacher management and course assignment
 * 📁 File and image support for various assets (hero banners, etc.)
-
-## 🌐 Live Demo
-
-👉 [https://juniorg.site](https://juniorg.site)
 
 ## 📦 Folder Structure
 
