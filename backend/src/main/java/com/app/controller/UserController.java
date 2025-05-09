@@ -1,21 +1,19 @@
 package com.app.controller;
 
 import com.app.dto.LoginResponseDto;
+import com.app.dto.UserRequestResponseDto;
+import com.app.pojos.User;
 import com.app.service.EmailService;
+import com.app.service.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
-
-import com.app.dto.UserRequestResponseDto;
-import com.app.pojos.User;
-import com.app.service.IUserService;
 
 @RestController
 @RequestMapping("/users")
@@ -39,16 +37,8 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDto> login(@RequestBody UserRequestResponseDto user){
 		log.info("User log in requested: {}", user.getUserName());
-		try {
-			LoginResponseDto response = userService.verifyUser(new User(user));
-			emailService.sendEmail("mohan.talawar.20@gmail.com",
-					"Test Subject",
-					"This is the email body...");
-			return ResponseEntity.ok(response);
-		} catch (Exception e) {
-			log.error("Error occurred during login for user {}: {}", user.getUserName(), e.getMessage(), e);
-			return ResponseEntity.status(500).body(null);
-		}
+		LoginResponseDto response = userService.verifyUser(new User(user));
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/get-csrf-token")
