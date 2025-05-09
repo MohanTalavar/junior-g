@@ -1,10 +1,10 @@
-# Junior G 🌱
+# Junior G
 
 A full-stack preschool management web application designed to streamline daily operations for **administrators, teachers, and parents**.
 
 ## 🛠️ Tech Stack
 
-* **Frontend**: React (Vite), TypeScript, Tailwind CSS, Redux Toolkit
+* **Frontend**: React (Vite), TypeScript, Tailwind CSS, Redux Toolkit, Schadcn
 * **Backend**: Java 17, Spring Boot, Spring Security (JWT), JPA/Hibernate
 * **Database**: MySQL (AWS RDS)
 * **Authentication**: JWT-based role-specific login (Admin, Teacher, Parent)
@@ -39,7 +39,6 @@ junior-g/
 
 * **Frontend** hosted on AWS S3 + CloudFront with a custom domain via Route 53
 * **Backend** hosted on AWS EC2 (Ubuntu) with MySQL via AWS RDS
-* Environment configurations managed via AWS Parameter Store
 
 ## 🧠 Skills Demonstrated
 
