@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.4</version>  <!-- Upgraded to Spring Boot 3.x -->
+		<version>3.4.5</version>  <!-- Upgraded to Spring Boot 3.x -->
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.juniorg</groupId>
@@ -117,8 +117,15 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-	</dependencies>
+		<!-- ONLY Enable for local env, make sure you have .env in backend folder
+		 This is added so that idea automatically picks credentials from .env fil local env e&ndash;&gt;-->
+		<dependency>
+			<groupId>me.paulschwarz</groupId>
+			<artifactId>spring-dotenv</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>

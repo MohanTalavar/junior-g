@@ -8,7 +8,7 @@ public interface IAddressService {
 	String addOrUpdateStudentAddress(Long studentId, Address address);
 	
 	// add a method to set and update the address details of teacher
-	String adddOrUpdateTeacherAddress(Long teacherId, Address address);
+	String addOrUpdateTeacherAddress(Long teacherId, Address address);
 	
 
 }

@@ -9,4 +9,5 @@ public interface IUserService {
 	String addNewUserRecord(User newUser);
 
 	LoginResponseDto verifyUser(User user);
+
 }

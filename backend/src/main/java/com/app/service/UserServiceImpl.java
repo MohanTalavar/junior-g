@@ -29,14 +29,14 @@ public class UserServiceImpl implements IUserService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Override
-    public String addNewUserRecord(User newUser) {
+        public String addNewUserRecord(User newUser) {
 
-        StringBuilder addRole = new StringBuilder("ROLE_");
-        newUser.setRole(addRole.append(newUser.getRole()).toString());
-        newUser.setPassword(encoder.encode(newUser.getPassword()));
-        userRepo.save(newUser);
-        return "New user " + newUser.getUserName() + " added.";
-    }
+            StringBuilder addRole = new StringBuilder("ROLE_");
+            newUser.setRole(addRole.append(newUser.getRole()).toString());
+            newUser.setPassword(encoder.encode(newUser.getPassword()));
+            userRepo.save(newUser);
+            return "New user " + newUser.getUserName()  + " with role " + newUser.getRole() +" added!";
+        }
 
     @Override
     public LoginResponseDto verifyUser(User user) {

@@ -4,6 +4,8 @@ import com.app.models.MyUserPrincipal;
 import com.app.pojos.User;
 import com.app.repo.UserRepo;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class MyUserDetailsService implements UserDetailsService {
 
+    private static final Logger log = LoggerFactory.getLogger(MyUserDetailsService.class);
+
     @Autowired
     private UserRepo userRepo;
 
@@ -23,11 +27,11 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = userRepo.findByUserName(username);
 
         if(user == null){
-            System.out.println("User "+ username+" not found");
+            log.warn("User {} not found", username);
             throw new UsernameNotFoundException("User "+ username+" not found");
         }
 
-        System.out.println(user);
+        log.info("User loaded: {}", user);
         return new MyUserPrincipal(user);
     }
 }

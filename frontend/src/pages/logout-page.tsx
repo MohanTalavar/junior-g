@@ -18,7 +18,7 @@ const Logout: React.FC = () => {
 
     // Redirect after a brief delay
     const timer = setTimeout(() => {
-      navigate("/home", { replace: true });
+      navigate("/", { replace: true });
     }, 2000); // shorter delay for better UX
 
     // Cleanup

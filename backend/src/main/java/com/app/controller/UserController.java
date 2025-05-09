@@ -21,7 +21,7 @@ import com.app.service.IUserService;
 @RequestMapping("/users")
 public class UserController {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
 	private IUserService userService;
@@ -31,19 +31,14 @@ public class UserController {
 	
 	@PostMapping("/add-new-user")
 	public ResponseEntity<String> addNewUser(@Valid @RequestBody UserRequestResponseDto user){
-		logger.info("New User creating: {}", user.getUserName());
-		try{
-			String response = userService.addNewUserRecord(new User(user));
-			return ResponseEntity.status(HttpStatus.CREATED).body(response);
-		} catch (Exception e) {
-			logger.error("Error in creating new user: {}", user.getUserName() , e);
-			return ResponseEntity.status(500).body("Error in creating user");
-		}
+
+		String response = userService.addNewUserRecord(new User(user));
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDto> login(@RequestBody UserRequestResponseDto user){
-		logger.info("User log in requested: {}", user.getUserName());
+		log.info("User log in requested: {}", user.getUserName());
 		try {
 			LoginResponseDto response = userService.verifyUser(new User(user));
 			emailService.sendEmail("mohan.talawar.20@gmail.com",
@@ -51,7 +46,7 @@ public class UserController {
 					"This is the email body...");
 			return ResponseEntity.ok(response);
 		} catch (Exception e) {
-			logger.error("Error occurred during login for user {}: {}", user.getUserName(), e.getMessage(), e);
+			log.error("Error occurred during login for user {}: {}", user.getUserName(), e.getMessage(), e);
 			return ResponseEntity.status(500).body(null);
 		}
 	}

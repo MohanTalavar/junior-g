@@ -1,8 +1,8 @@
 package com.app.service;
 
-import com.app.dto.EnquiryDto;
+import com.app.pojos.Enquiry;
 
-public class IHomeService {
+public interface IEnquiryService {
 
-    public void saveEnquiryDetails(EnquiryDto enquiryDto){}
+     void saveEnquiryDetails(Enquiry enquiry);
 }
