@@ -57,4 +57,11 @@ public class GlobalExceptionHandler {
 				.body("Token expired: " + ex.getMessage());
 	}
 
+	@ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+	public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(org.springframework.dao.DataIntegrityViolationException ex) {
+		Map<String, String> error = new HashMap<>();
+		error.put("error", "Invalid data: " + ex.getRootCause().getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	}
+
 }
