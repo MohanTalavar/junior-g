@@ -27,5 +27,6 @@ public class EnquiryDto {
     @Pattern(regexp = "\\d{10}", message = "Phone number must be a valid 10-digit number")
     private String contactNo;
 
+    @Size(max=20, message = "Course name must not exceed 20 characters")
     private String courseName;
 }

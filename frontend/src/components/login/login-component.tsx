@@ -28,7 +28,7 @@ export function LoginForm() {
       localStorage.setItem("token", data.token);
       dispatch(setUser({ user: data.userName, token: data.token }));
       setError("");
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       setError("Invalid credentials. Please try again.");
     }

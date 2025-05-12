@@ -1,8 +1,7 @@
 import axios, { AxiosError,  InternalAxiosRequestConfig } from "axios";
 
 const api = axios.create({
-  // baseURL: "http://localhost:8080",
-  //baseURL: "https://3.109.195.222:8080",  
+   //baseURL: "http://localhost:8080",
   baseURL : "https://api.juniorg.site"
 });
 

@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import crestImg from "../../assets/images/JuniorG_Crest.png";
 
@@ -11,7 +17,7 @@ const Navbar: React.FC = () => {
   );
 
   return (
-    <nav className="bg-white p-2 md:p-6 py-4 shadow-md">
+    <nav className="bg-white p-2 md:p-4 py-2 shadow-md ">
       <div className="flex justify-between items-center">
         {/* Logo + Brand Block */}
         <div className="flex items-center gap-6 md:pl-8 pl-2">
@@ -31,10 +37,20 @@ const Navbar: React.FC = () => {
           {/* Summer Camp link */}
           <Link
             to="/summercamp"
-            className="text-[#F18701] mt-4 md:mt-9 font-bold  text-xs mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
+            className="text-[#F18701] mt-4 md:mt-9 font-bold text-xs mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
           >
             Summer Camp!
           </Link>
+
+          {/* Admission Enquiry link */}
+          <div className="hidden md:block md:mt-9">
+            <Link
+              to="/admission-enquiry"
+              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#004D99] transition duration-300"
+            >
+              Admission Enquiry
+            </Link>
+          </div>
         </div>
 
         {/* Desktop Navigation */}
@@ -43,13 +59,13 @@ const Navbar: React.FC = () => {
             <>
               <Link
                 to="/teacher"
-                className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
+                className="text-[#002F6C]  md:mt-9 font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
               >
                 Teachers
               </Link>
               <Link
                 to="/student"
-                className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
+                className="text-[#002F6C] md:mt-9 font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
               >
                 Students
               </Link>
@@ -58,14 +74,14 @@ const Navbar: React.FC = () => {
           {isAuthenticated ? (
             <Link
               to="/logout"
-              className="text-[#1C2C5B] font-medium font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
+              className="text-[#002F6C] md:mt-9 font-medium font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
             >
               Logout
             </Link>
           ) : (
             <Link
               to="/login"
-              className="text-[#1C2C5B] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
+              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 mt-9"
             >
               Login
             </Link>
@@ -78,27 +94,46 @@ const Navbar: React.FC = () => {
             <SheetTrigger>
               <Menu className="text-[#1C2C5B]" size={32} />
             </SheetTrigger>
-            <SheetContent side="right" className="bg-white w-[250px] p-6">
-              <div className="flex flex-col gap-6 mt-12 text-lg font-serif text-[#1C2C5B]">
-                {/* Summer Camp for mobile */}
-                {/* <Link
+            <SheetContent
+              side="right"
+              className="bg-gray-50 w-[250px] p-6"
+              aria-labelledby="mobile-nav-title"
+              aria-describedby="mobile-nav-description"
+            >
+              <SheetTitle
+                id="mobile-nav-title"
+                className="text-[#002F6C] font-bold text-xl font-serif mb-2 mt-6"
+              >
+                Menu
+              </SheetTitle>
+              <SheetDescription id="mobile-nav-description"></SheetDescription>
+
+              <div className="flex flex-col gap-4 text-base font-serif">
+                <Link
                   to="/summercamp"
-                  className="text-[#F18701]  font-semibold hover:text-[#f35b04] transition duration-300"
+                  className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
                 >
                   Summer Camp 2025
-                </Link> */}
+                </Link>
+
+                <Link
+                  to="/admission-enquiry"
+                  className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
+                >
+                  Admission Enquiry
+                </Link>
 
                 {isAuthenticated && (
                   <>
                     <Link
                       to="/teacher"
-                      className="hover:text-[#004D99] transition duration-300"
+                      className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
                     >
                       Teachers
                     </Link>
                     <Link
                       to="/student"
-                      className="hover:text-[#004D99] transition duration-300"
+                      className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
                     >
                       Students
                     </Link>
@@ -107,14 +142,14 @@ const Navbar: React.FC = () => {
                 {isAuthenticated ? (
                   <Link
                     to="/logout"
-                    className="hover:text-[#004D99] transition duration-300"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
                   >
                     Logout
                   </Link>
                 ) : (
                   <Link
                     to="/login"
-                    className="hover:text-[#004D99] transition duration-300"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
                   >
                     Login
                   </Link>

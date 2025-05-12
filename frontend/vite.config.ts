@@ -12,7 +12,8 @@ export default defineConfig({
       hostname: "https://juniorg.site", // Your base URL for the sitemap
       dynamicRoutes: [
         "/",          // homepage
-        "/summercamp" // specific page
+        "/summercamp", // specific page
+        "/admission-enquiry"
       ],
       exclude: [], // Make sure no routes are excluded incorrectly
     }),

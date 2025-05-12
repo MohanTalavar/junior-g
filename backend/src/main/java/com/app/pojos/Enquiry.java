@@ -29,7 +29,7 @@ public class Enquiry extends BaseEntity{
     @Column(length = 10)
     private String contactNo;
 
-    @Column(length = 10)
+    @Column(length = 20)
     private String courseName;
 
     public Enquiry(EnquiryDto enquiryDto){
