@@ -118,3 +118,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* in your index.css @layer utilities block */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  will-change: transform;
+}
+
+/* Tablet (≥768px): slower */
+@media (min-width: 768px) {
+  .animate-marquee {
+    animation-duration: 30s;
+  }
+}
+
+/* Desktop (≥1280px): even slower */
+@media (min-width: 1280px) {
+  .animate-marquee {
+    animation-duration: 30s;
+  }
+}

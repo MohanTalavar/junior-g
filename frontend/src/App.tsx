@@ -5,7 +5,7 @@ import Login from "./pages/login-page";
 import TeacherPage from "./pages/teacher-page";
 import Logout from "./pages/logout-page";
 import CoursePage from "./pages/CoursePage";
-import SummerCampPage from "./pages/summer-camp-page";
+// import SummerCampPage from "./pages/summer-camp-page";
 import AdmissionEnquiryPage from "./pages/AdmissionEnquiryPage";
 import { Toaster } from "./components/ui/sonner";
 import { useMediaQuery } from "react-responsive";
@@ -24,7 +24,7 @@ function App() {
           <Route path="/teacher" element={<TeacherPage />}></Route>
           <Route path="/logout" element={<Logout />} />
           <Route path="/course" element={<CoursePage />} />
-          <Route path="/summercamp" element={<SummerCampPage />} />
+          {/* <Route path="/summercamp" element={<SummerCampPage />} /> */}
           <Route path="/admission-enquiry" element={<AdmissionEnquiryPage />} />
         </Routes>
       </Router>

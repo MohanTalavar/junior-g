@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import heroImg1 from "../../assets/images/HeroImg1.png";
 import heroImg2 from "../../assets/images/HeroImg2.png";
-import heroImg3 from "../../assets/images/HeroImg3.png";
 import heroImg4 from "../../assets/images/HeroImg4.png";
+import heroImg6 from "../../assets/images/HeroImg6.png";
 
 const images = [
   {
@@ -14,7 +14,7 @@ const images = [
     alt: "Children Engaged in Creative Activities",
   },
   {
-    src: heroImg3,
+    src: heroImg6,
     alt: "Exploring the World",
   },
   {
@@ -37,7 +37,7 @@ const HeroComponent: React.FC = () => {
     resetTimeout();
     timeoutRef.current = setTimeout(() => {
       setIndex((prevIndex) => (prevIndex + 1) % (totalSlides + 1));
-    }, 3500);
+    }, 4500);
     return () => resetTimeout();
   }, [index]);
 
@@ -58,11 +58,11 @@ const HeroComponent: React.FC = () => {
   }, [isTransitioning]);
 
   return (
-    <section className="w-full h-[600px] overflow-hidden relative">
+    <section className="w-full h-[530px] overflow-hidden relative">
       <div
         className={`flex ${
           isTransitioning
-            ? "transition-transform duration-1000 ease-in-out"
+            ? "transition-transform duration-2000 ease-in-out"
             : ""
         }`}
         style={{ transform: `translateX(-${index * 100}%)` }}
@@ -73,7 +73,7 @@ const HeroComponent: React.FC = () => {
             key={i}
             src={img.src}
             alt={img.alt}
-            className="w-full h-[600px] object-cover flex-shrink-0"
+            className="w-full h-[530px] object-cover flex-shrink-0"
           />
         ))}
       </div>

@@ -35,20 +35,21 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Summer Camp link */}
-          <Link
+          {/* <Link
             to="/summercamp"
             className="text-[#F18701] mt-4 md:mt-9 font-bold text-xs mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
           >
             Summer Camp!
-          </Link>
+          </Link> */}
 
           {/* Admission Enquiry link */}
           <div className="hidden md:block md:mt-9">
             <Link
               to="/admission-enquiry"
-              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#004D99] transition duration-300"
+              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider
+               hover:text-[#004D99] hover:underline hover:underline-offset-6 transition duration-300"
             >
-              Admission Enquiry
+              Admission Enquiry!
             </Link>
           </div>
         </div>
@@ -59,13 +60,13 @@ const Navbar: React.FC = () => {
             <>
               <Link
                 to="/teacher"
-                className="text-[#002F6C]  md:mt-9 font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
+                className="text-[#002F6C]  md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
               >
                 Teachers
               </Link>
               <Link
                 to="/student"
-                className="text-[#002F6C] md:mt-9 font-medium font-serif text-xl hover:text-[#004D99] transition duration-300"
+                className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
               >
                 Students
               </Link>
@@ -74,14 +75,14 @@ const Navbar: React.FC = () => {
           {isAuthenticated ? (
             <Link
               to="/logout"
-              className="text-[#002F6C] md:mt-9 font-medium font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 hover:underline hover:underline-offset-6"
             >
               Logout
             </Link>
           ) : (
             <Link
               to="/login"
-              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 mt-9"
+              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 mt-9 hover:underline hover:underline-offset-6"
             >
               Login
             </Link>
@@ -109,12 +110,12 @@ const Navbar: React.FC = () => {
               <SheetDescription id="mobile-nav-description"></SheetDescription>
 
               <div className="flex flex-col gap-4 text-base font-serif">
-                <Link
+                {/* <Link
                   to="/summercamp"
                   className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
                 >
                   Summer Camp 2025
-                </Link>
+                </Link> */}
 
                 <Link
                   to="/admission-enquiry"
