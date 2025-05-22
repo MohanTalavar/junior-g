@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { store } from "./app/store.ts";
 import { Provider } from "react-redux";
+import "./index.css";
 
 const rootElement = document.getElementById("root");
 
