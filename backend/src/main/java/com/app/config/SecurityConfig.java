@@ -35,6 +35,12 @@ public class SecurityConfig  {
                 .cors(Customizer.withDefaults())
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(auth -> auth
+                        //Allow swagger and open ai
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        ).permitAll()
                         // Make /users/login available to everyone
                         .requestMatchers("/health","/users/login","/enquiry").permitAll()
                         // For GET requests, allow users with either role NORMAL or ADMIN

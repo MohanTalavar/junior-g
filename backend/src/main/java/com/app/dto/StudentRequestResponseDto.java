@@ -95,6 +95,7 @@ public class StudentRequestResponseDto {
 		this.surname = surname;
 	}
 
+
 	public String getFirstName() {
 		return firstName;
 	}

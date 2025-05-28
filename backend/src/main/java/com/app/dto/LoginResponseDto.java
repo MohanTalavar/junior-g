@@ -10,12 +10,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginResponseDto {
     private String userName;
+    private String role;
     private String token;
 
-    public LoginResponseDto(String userName, String token) {
-        this.userName = userName;
-        this.token = token;
-    }
 
+    public LoginResponseDto(String userName, String role, String token) {
+        this.userName = userName;
+        this.role = role;
+        this.token = token;
+
+    }
 
 }

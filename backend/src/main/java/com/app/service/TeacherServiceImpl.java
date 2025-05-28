@@ -1,20 +1,20 @@
 package com.app.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.app.custom_exception.ResourceNotFoundException;
+import com.app.dto.TeacherWithCourseResponseDto;
+import com.app.pojos.Course;
+import com.app.pojos.Teacher;
+import com.app.repo.CourseRepo;
+import com.app.repo.TeacherRepo;
 import jakarta.transaction.Transactional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.custom_exception.ResourceNotFoundException;
-import com.app.pojos.Course;
-import com.app.pojos.Teacher;
-import com.app.repo.CourseRepo;
-import com.app.repo.TeacherRepo;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Transactional
 @Service
@@ -27,6 +27,16 @@ public class TeacherServiceImpl implements ITeacherService {
 
 	@Autowired
 	private CourseRepo courseRepo;
+
+
+	@Override
+	public List<TeacherWithCourseResponseDto> retriveTeacherList() {
+		List<Teacher> teacherList =  teacherRepo.findAll();
+		return teacherList.stream()
+				.sorted(Comparator.comparing(t->t.getFirstName().toLowerCase()))
+				.map(TeacherWithCourseResponseDto::new)
+				.toList();
+	}
 
 	@Override
 	public String addNewTeacher(String courseName, Teacher newTeacher) {

@@ -48,10 +48,16 @@ public class UserServiceImpl implements IUserService {
             throw new BadCredentialsException("Invalid username or password");
         }
         if (authentication.isAuthenticated()) {
-            return new LoginResponseDto(user.getUserName(), jwtService.generateToken(user.getUserName()));
+            User authenticatedUser = retrieveUserDetails(user.getUserName());
+            return new LoginResponseDto(user.getUserName(), authenticatedUser.getRole(), jwtService.generateToken(user.getUserName()));
         }
 
         throw new BadCredentialsException("Login failed!!!");
+    }
+
+    @Override
+    public User retrieveUserDetails(String userName) {
+        return userRepo.findByUserName(userName);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import com.app.dto.TeacherWithCourseResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dto.TeacherRequestResponseDto;
 import com.app.pojos.Teacher;
 import com.app.service.ITeacherService;
+
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/teachers")
@@ -23,6 +27,13 @@ public class TeacherController {
 
 	@Autowired
 	private ITeacherService teacherService;
+
+	@GetMapping("/teacher-list")
+	public ResponseEntity<List<TeacherWithCourseResponseDto>> getTeacherList(){
+
+		List<TeacherWithCourseResponseDto> listOfTeachers = teacherService.retriveTeacherList();
+		return ResponseEntity.ok(listOfTeachers);
+	}
 
 	@PostMapping("/assign-new-teacher-to-course/{courseName}")
 	public ResponseEntity<String> assignNewTeacherToCourse(@PathVariable String courseName,
@@ -50,7 +61,7 @@ public class TeacherController {
 
 	}
 
-	@PutMapping("/udpate-teacher-details/{teacherId}")
+	@PutMapping("/update-teacher-details/{teacherId}")
 	public ResponseEntity<TeacherRequestResponseDto> updateTeacherDetails(@PathVariable Long teacherId,
 			@RequestBody TeacherRequestResponseDto updatedTeacher){
 		

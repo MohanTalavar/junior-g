@@ -10,4 +10,7 @@ public interface IUserService {
 
 	LoginResponseDto verifyUser(User user);
 
+	// add a method to get the user details
+	User retrieveUserDetails(String userName);
+
 }

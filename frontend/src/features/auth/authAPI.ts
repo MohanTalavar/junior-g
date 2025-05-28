@@ -7,6 +7,7 @@ type LoginCredentials = {
 
 type LoginResponse = {
     userName:string;
+    role : string;
     token: string;
 }
 

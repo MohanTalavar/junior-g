@@ -26,7 +26,10 @@ export function LoginForm() {
     try {
       const data = await loginUser(formData);
       localStorage.setItem("token", data.token);
-      dispatch(setUser({ user: data.userName, token: data.token }));
+      localStorage.setItem("role", data.role); // optional too, handled in reducer
+      dispatch(
+        setUser({ user: data.userName, role: data.role, token: data.token })
+      );
       setError("");
       navigate("/");
     } catch (err) {

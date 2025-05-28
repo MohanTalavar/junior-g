@@ -22,24 +22,7 @@ public class CourseWithStudentsResponseDto {
 	
 	public CourseWithStudentsResponseDto(Course course) {
 		this.courseName = course.getTitle();
-		for(Student stud : course.getStudents()) {
-			students.add(new StudentRequestResponseDto(stud.getRollNumber(),stud.getFirstName(),stud.getSurname()));
-		}
+		this.students = course.getStudents().stream().map(StudentRequestResponseDto::new).toList();
 	}
 
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
-	public List<StudentRequestResponseDto> getStudents() {
-		return students;
-	}
-
-	public void setStudents(List<StudentRequestResponseDto> students) {
-		this.students = students;
-	}
 }
