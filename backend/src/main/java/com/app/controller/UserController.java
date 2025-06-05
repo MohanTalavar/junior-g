@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping("/{userName}")
+    @GetMapping("/get-user-details/{userName}")
     public ResponseEntity<UserResponseDto> findUserByUserName(@PathVariable String userName){
 
         log.info("Fetching the user details for {}", userName);

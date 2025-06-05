@@ -1,4 +1,3 @@
-// src/components/admin/UserEditComponent.tsx
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -27,22 +26,18 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-// 1. Zod schema: email/role required; password optional but min 6 if provided
+// Zod schema: now includes editable username
 const userEditSchema = z.object({
+  userName: z.string().min(3, "Username must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
-  role: z.enum(["admin", "teacher"]), // no second argument here
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .optional()
-    .or(z.literal("")),
+  role: z.enum(["ADMIN", "TEACHER"]),
 });
 
 type FormData = z.infer<typeof userEditSchema>;
-const ROLES = ["admin", "teacher"] as const;
+const ROLES = ["ADMIN", "TEACHER"] as const;
 
 export function UserEditComponent() {
-  const { userName = "" } = useParams<{ userName: string }>();
+  const { userName: originalUserName = "" } = useParams<{ userName: string }>();
   const navigate = useNavigate();
   const { role: currentRole, isAuthenticated } = useAuth();
   const ALLOWED_ROLES = ["ROLE_ADMIN"];
@@ -58,46 +53,41 @@ export function UserEditComponent() {
   } = useForm<FormData>({
     resolver: zodResolver(userEditSchema),
     defaultValues: {
+      userName: "",
       email: "",
-      role: "admin",
-      password: "",
+      role: "ADMIN",
     },
   });
 
-  // 2. Fetch user on mount
   useEffect(() => {
-    if (!isAuthenticated || !ALLOWED_ROLES.includes(currentRole || "")) {
-      return;
-    }
+    if (!isAuthenticated || !ALLOWED_ROLES.includes(currentRole || "")) return;
+
     setLoading(true);
-    getUserByUserName(userName)
+    getUserByUserName(originalUserName)
       .then((u: User) => {
         reset({
+          userName: u.userName,
           email: u.email,
           role: u.role.replace("ROLE_", "").toLowerCase() as
-            | "admin"
-            | "teacher",
-          password: "",
+            | "ADMIN"
+            | "TEACHER",
         });
       })
       .catch(() => {
         toast.error("Failed to load user details.");
       })
       .finally(() => setLoading(false));
-  }, [userName, currentRole, isAuthenticated, reset]);
+  }, [originalUserName, currentRole, isAuthenticated, reset]);
 
-  // 3. Submit handler
   const onSubmit = async (data: FormData) => {
     try {
       const payload: UpdateUserType = {
+        userName: data.userName,
         email: data.email,
         role: data.role,
       };
-      if (data.password) {
-        payload.password = data.password;
-      }
 
-      await updateUserByUserName(userName, payload);
+      await updateUserByUserName(originalUserName, payload);
       toast.success("User updated successfully");
       navigate("/admin/users");
     } catch {
@@ -118,7 +108,7 @@ export function UserEditComponent() {
       <Card className="w-full max-w-lg shadow-lg border border-gray-200">
         <CardHeader>
           <CardTitle className="text-2xl text-center text-[#990000] font-semibold">
-            Edit User — {userName}
+            Edit User — {originalUserName}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -126,6 +116,16 @@ export function UserEditComponent() {
             <div className="text-center py-10">Loading user details...</div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <Label htmlFor="userName">Username</Label>
+                <Input id="userName" type="text" {...register("userName")} />
+                {errors.userName && (
+                  <p className="text-red-600 text-sm">
+                    {errors.userName.message}
+                  </p>
+                )}
+              </div>
+
               <div>
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" {...register("email")} />
@@ -144,7 +144,7 @@ export function UserEditComponent() {
                       <SelectTrigger id="role" className="w-full">
                         <SelectValue placeholder="Select role" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white">
                         <SelectGroup>
                           {ROLES.map((r) => (
                             <SelectItem key={r} value={r}>
@@ -161,29 +161,21 @@ export function UserEditComponent() {
                 )}
               </div>
 
-              <div>
-                <Label htmlFor="password">New Password (optional)</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  {...register("password")}
-                />
-                {errors.password && (
-                  <p className="text-red-600 text-sm">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-
               <div className="flex justify-end space-x-2 pt-4">
                 <Button
+                  type="button"
+                  className="bg-red-600 hover:bg-red-800 hover:cursor-pointer text-white"
                   variant="outline"
                   onClick={() => navigate("/admin/users")}
                   disabled={isSubmitting}
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={isSubmitting}>
+                <Button
+                  className="bg-blue-600 hover:bg-blue-800 hover:cursor-pointer text-white"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
                   Save
                 </Button>
               </div>

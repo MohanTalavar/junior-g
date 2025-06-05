@@ -13,11 +13,10 @@ export type NewUser = {
     role: string;
 }
 
-// For updates, we allow email, role, and optionally password
 export type UpdateUserType = {
+  userName: string;
   email: string;
   role: string;
-  password?: string;
 };
 
 export const getListOfusers = async () : Promise<User[]> => {
@@ -46,7 +45,8 @@ export const updateUserByUserName = async(
   return resp.data;
 };
 
+
 export const getUserByUserName = async (userName:string) : Promise<User> =>{
-    const resp = await api.get<User>(`/users/${userName}`);
+    const resp = await api.get<User>(`/users/get-user-details/${userName}`);
     return resp.data;
 };

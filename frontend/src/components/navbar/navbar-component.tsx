@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
           {isAuthenticated ? (
             // Wrap user+logout in a column
             <div className="flex flex-col items-center">
-              <span className="text-gray-700 font-medium mb-1">
+              <span className="text-[#8B0000] font-medium mb-1">
                 {user} ({role?.replace("ROLE_", "")})
               </span>
               <Link

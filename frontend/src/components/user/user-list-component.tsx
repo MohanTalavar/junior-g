@@ -115,9 +115,7 @@ export function UserList() {
                       size="sm"
                       variant="outline"
                       className="bg-blue-600 text-white hover:bg-blue-800 hover:cursor-pointer"
-                      onClick={() =>
-                        navigate(`/admin/users/${u.userName}/edit`)
-                      }
+                      onClick={() => navigate(`/admin/edit-user/${u.userName}`)}
                     >
                       Edit
                     </Button>

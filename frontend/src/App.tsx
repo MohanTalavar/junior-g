@@ -44,7 +44,7 @@ function App() {
           <Route path="/admin/users" element={<UserList />} />
           <Route path="/admin/add-user" element={<UserAddComponent />} />
           <Route
-            path="/admin/users/:username/edit"
+            path="/admin/edit-user/:userName"
             element={<UserEditComponent />}
           />
 
