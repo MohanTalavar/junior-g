@@ -23,45 +23,54 @@ import com.app.service.IStudentService;
 @RequestMapping("/students")
 public class StudentController {
 
-	@Autowired
-	private IStudentService studService;
+    @Autowired
+    private IStudentService studService;
 
-	@GetMapping("/get-student-details/{studentId}")
-	public ResponseEntity<StudentRequestResponseDto> getStudent(@PathVariable Long studentId) {
+    @GetMapping("/get-student-details/{studentRollNo}")
+    public ResponseEntity<StudentRequestResponseDto> getStudent(@PathVariable String studentRollNo) {
 
-		StudentRequestResponseDto student = new StudentRequestResponseDto(studService.getStudentDetails(studentId));
-		return ResponseEntity.ok(student);
-	}
+        StudentRequestResponseDto student = new StudentRequestResponseDto(studService.getStudentDetails(studentRollNo));
+        return ResponseEntity.ok(student);
+    }
 
-	@PostMapping("/admit-new-student-to-course/{courseName}")
-	public ResponseEntity<StudentRequestResponseDto> newStudentAdmission(@PathVariable String courseName,
-			@Valid @RequestBody StudentRequestResponseDto transientStudent) {
+    @PostMapping("/admit-new-student-to-course/{courseName}")
+    public ResponseEntity<StudentRequestResponseDto> newStudentAdmission(@PathVariable String courseName,
+                                                                         @Valid @RequestBody StudentRequestResponseDto transientStudent) {
 
-		Student savedStudent = studService.admitNewStudent(courseName, new Student(transientStudent));
-		StudentRequestResponseDto reponse = new StudentRequestResponseDto(savedStudent);
-		return ResponseEntity.status(HttpStatus.CREATED).body(reponse);
-	}
+        Student savedStudent = studService.admitNewStudent(courseName, new Student(transientStudent));
+        StudentRequestResponseDto reponse = new StudentRequestResponseDto(savedStudent);
+        return ResponseEntity.status(HttpStatus.CREATED).body(reponse);
+    }
 
-	@DeleteMapping("/student-admission-cancel/{courseName}/{studId}")
-	public ResponseEntity<String> cancelStudentAdmission(@PathVariable String courseName, @PathVariable Long studId) {
+    @DeleteMapping("/student-admission-cancel/{courseName}/{studRollNo}")
+    public ResponseEntity<String> cancelStudentAdmission(@PathVariable String courseName, @PathVariable String studRollNo) {
 
-		return ResponseEntity.ok(studService.cancelStudentAdmission(courseName, studId));
-		// If the student record is not deleted and you receive th error
-		// An unexpected error occured: could not execute statement; SQL [n/a];
-		// constraint [null]; nested exception is
-		// org.hibernate.exception.ConstraintViolationException: could not execute
-		// statement
-		// Reason because Student is acting as parent for the address tbl
-		// Sol first remove the address record and then cancel the admission
-	}
+        return ResponseEntity.ok(studService.cancelStudentAdmission(courseName, studRollNo));
+        // If the student record is not deleted and you receive th error
+        // An unexpected error occured: could not execute statement; SQL [n/a];
+        // constraint [null]; nested exception is
+        // org.hibernate.exception.ConstraintViolationException: could not execute
+        // statement
+        // Reason because Student is acting as parent for the address tbl
+        // Sol first remove the address record and then cancel the admission
+    }
 
-	@PutMapping("/update-student-details/{studId}")
-	public ResponseEntity<StudentRequestResponseDto> updateStudentDetails(@PathVariable Long studId,
-			@Valid @RequestBody StudentRequestResponseDto updatedStudent) {
+    @PutMapping("/update-student-details-by-id/{stud}")
+    public ResponseEntity<StudentRequestResponseDto> updateStudentDetails(@PathVariable Long studId,
+                                                                          @Valid @RequestBody StudentRequestResponseDto updatedStudent) {
 
-		Student student = studService.updateStudentRecord(studId, new Student(updatedStudent));
+        Student student = studService.updateStudentRecord(studId, new Student(updatedStudent));
 
-		return ResponseEntity.ok(new StudentRequestResponseDto(student));
-	}
+        return ResponseEntity.ok(new StudentRequestResponseDto(student));
+    }
+
+    @PutMapping("/update-student-details/{studentRollNo}")
+    public ResponseEntity<StudentRequestResponseDto> updateStudentDetailsByRollNo(@PathVariable String studentRollNo,
+                                                                                  @Valid @RequestBody StudentRequestResponseDto updatedStudent) {
+
+        Student student = studService.updateStudentRecordByRollNo(studentRollNo,new Student(updatedStudent));
+
+        return ResponseEntity.ok(new StudentRequestResponseDto(student));
+    }
 
 }

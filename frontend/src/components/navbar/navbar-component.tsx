@@ -1,3 +1,5 @@
+// src/components/navbar/navbar-component.tsx
+import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
@@ -12,14 +14,15 @@ import { Menu } from "lucide-react";
 import crestImg from "../../assets/images/JuniorG_Crest.png";
 
 const Navbar: React.FC = () => {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
+  // pull user and role out of Redux
+  const { isAuthenticated, user, role } = useSelector(
+    (state: RootState) => state.auth
   );
 
   return (
-    <nav className="bg-white p-2 md:p-4 py-2 shadow-md ">
+    <nav className="bg-white p-2 md:p-4 shadow-md">
       <div className="flex justify-between items-center">
-        {/* Logo + Brand Block */}
+        {/* Logo + Brand */}
         <div className="flex items-center gap-6 md:pl-8 pl-2">
           <Link
             to="/"
@@ -33,21 +36,10 @@ const Navbar: React.FC = () => {
               </div>
             </span>
           </Link>
-
-          {/* Summer Camp link */}
-          {/* <Link
-            to="/summercamp"
-            className="text-[#F18701] mt-4 md:mt-9 font-bold text-xs mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
-          >
-            Summer Camp!
-          </Link> */}
-
-          {/* Admission Enquiry link */}
           <div className="hidden md:block md:mt-9">
             <Link
               to="/admission-enquiry"
-              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider
-               hover:text-[#004D99] hover:underline hover:underline-offset-6 transition duration-300"
+              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#004D99] hover:underline hover:underline-offset-6 transition duration-300"
             >
               Admission Enquiry!
             </Link>
@@ -55,34 +47,50 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex gap-6">
+        <div className="hidden md:flex items-center gap-6">
+          {isAuthenticated && role === "ROLE_ADMIN" && (
+            <Link
+              to="/admin/users"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+            >
+              User Maintenance
+            </Link>
+          )}
+
+          {isAuthenticated && role === "ROLE_ADMIN" && (
+            <Link
+              to="/teacher"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+            >
+              Teachers
+            </Link>
+          )}
+
           {isAuthenticated && (
-            <>
-              <Link
-                to="/teacher"
-                className="text-[#002F6C]  md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-              >
-                Teachers
-              </Link>
-              <Link
-                to="/student"
-                className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-              >
-                Students
-              </Link>
-            </>
+            <Link
+              to="/student"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+            >
+              Students
+            </Link>
           )}
           {isAuthenticated ? (
-            <Link
-              to="/logout"
-              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 hover:underline hover:underline-offset-6"
-            >
-              Logout
-            </Link>
+            // Wrap user+logout in a column
+            <div className="flex flex-col items-center">
+              <span className="text-gray-700 font-medium mb-1">
+                {user} ({role?.replace("ROLE_", "")})
+              </span>
+              <Link
+                to="/logout"
+                className="text-[#002F6C] font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+              >
+                Logout
+              </Link>
+            </div>
           ) : (
             <Link
               to="/login"
-              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 mt-9 hover:underline hover:underline-offset-6"
+              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6 mt-9"
             >
               Login
             </Link>
@@ -107,16 +115,16 @@ const Navbar: React.FC = () => {
               >
                 Menu
               </SheetTitle>
-              <SheetDescription id="mobile-nav-description"></SheetDescription>
+              <SheetDescription id="mobile-nav-description" />
+
+              {/* display user + role */}
+              {isAuthenticated && (
+                <div className="mb-4 text-gray-700 font-medium">
+                  {user} ({role?.replace("ROLE_", "")})
+                </div>
+              )}
 
               <div className="flex flex-col gap-4 text-base font-serif">
-                {/* <Link
-                  to="/summercamp"
-                  className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
-                >
-                  Summer Camp 2025
-                </Link> */}
-
                 <Link
                   to="/admission-enquiry"
                   className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
@@ -124,22 +132,33 @@ const Navbar: React.FC = () => {
                   Admission Enquiry
                 </Link>
 
-                {isAuthenticated && (
-                  <>
-                    <Link
-                      to="/teacher"
-                      className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
-                    >
-                      Teachers
-                    </Link>
-                    <Link
-                      to="/student"
-                      className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
-                    >
-                      Students
-                    </Link>
-                  </>
+                {isAuthenticated && role === "ROLE_ADMIN" && (
+                  <Link
+                    to="/teacher"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                  >
+                    Teachers
+                  </Link>
                 )}
+
+                {isAuthenticated && (
+                  <Link
+                    to="/student"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                  >
+                    Students
+                  </Link>
+                )}
+
+                {isAuthenticated && role === "ROLE_ADMIN" && (
+                  <Link
+                    to="/admin/users"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                  >
+                    User Maintenance
+                  </Link>
+                )}
+
                 {isAuthenticated ? (
                   <Link
                     to="/logout"

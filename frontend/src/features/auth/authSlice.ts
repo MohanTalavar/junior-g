@@ -10,9 +10,10 @@ type AuthState = {
 
 const token = localStorage.getItem("token");
 const role = localStorage.getItem("role");
+const user  = localStorage.getItem("user");
 
 const initialState : AuthState = {
-  user: null,
+  user: user || null,
   role : role || null,
   token: token || null,
   isAuthenticated: !!token,
@@ -28,6 +29,7 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.role = action.payload.role;
       state.isAuthenticated = true;
+      localStorage.setItem("user",  action.payload.user);
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("role", action.payload.role);
     },
@@ -36,7 +38,7 @@ const authSlice = createSlice({
       state.token = null;
       state.role = null;
       state.isAuthenticated = false;
-      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       localStorage.removeItem("token");
       localStorage.removeItem("role");
     },

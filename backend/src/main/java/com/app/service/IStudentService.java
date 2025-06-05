@@ -8,11 +8,14 @@ public interface IStudentService {
 	Student admitNewStudent(String courseName, Student stud);
 	
 	// add method to cancel student admission
-	String cancelStudentAdmission(String courseName, Long studId);
+	String cancelStudentAdmission(String courseName, String studRollNo);
 	
 	// add method to fetch student details
-	Student getStudentDetails(Long StudId);
+	Student getStudentDetails(String studentRollNo);
 	
 	// add method to update student details
 	Student updateStudentRecord(Long studId, Student updatedStudent);
+
+	// add method to update student details by roll no
+	Student updateStudentRecordByRollNo(String rollNumber,Student updatedStudent);
 }

@@ -1,21 +1,15 @@
-// src/components/login/LoginForm.tsx
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "@/features/auth/authAPI";
-import { setUser } from "@/features/auth/authSlice";
-import { AppDispatch } from "@/app/store";
-
+import { useNavigate } from "react-router-dom";
+import { sendPasswordResetRequest } from "@/features/auth/authAPI"; // You'll define this API function
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
-export function LoginForm() {
-  const dispatch = useDispatch<AppDispatch>();
+export function ForgotPasswordForm() {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({ userName: "", password: "" });
+  const [formData, setFormData] = useState({ userName: "", email: "" });
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,19 +19,14 @@ export function LoginForm() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const data = await loginUser(formData);
-      // Dispatch to Redux; reducer will persist user, role, token to localStorage
-      dispatch(
-        setUser({
-          user: data.userName,
-          role: data.role,
-          token: data.token,
-        })
+      await sendPasswordResetRequest(formData);
+      setMessage(
+        "If the email matches our records, a reset link will be sent."
       );
       setError("");
-      navigate("/");
     } catch (err) {
-      setError("Invalid credentials. Please try again.");
+      setError("Something went wrong. Please try again.");
+      setMessage("");
     }
   };
 
@@ -45,7 +34,7 @@ export function LoginForm() {
     <Card className="w-full max-w-md shadow-xl border border-gray-200">
       <CardHeader>
         <CardTitle className="text-2xl text-[#990000] text-center font-semibold">
-          Login to Junior G
+          Forgot Password
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -61,36 +50,33 @@ export function LoginForm() {
               value={formData.userName}
               onChange={handleChange}
               required
-              className="w-full"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-base">
-              Password
+            <Label htmlFor="email" className="text-base">
+              Email
             </Label>
             <Input
-              id="password"
-              name="password"
-              type="password"
-              value={formData.password}
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
               onChange={handleChange}
               required
-              className="w-full"
             />
           </div>
 
           <Button
             type="submit"
-            className="w-full bg-[#990000] hover:bg-red-800 text-white cursor-pointer"
+            className="w-full bg-[#990000] hover:bg-red-800 text-white hover:cursor-pointer"
           >
-            Login
+            Send Reset Link
           </Button>
 
-          <Link to="/forgot-password" className="text-blue-800 hover:underline">
-            Forgot password?
-          </Link>
-
+          {message && (
+            <p className="text-sm text-green-700 text-center">{message}</p>
+          )}
           {error && <p className="text-sm text-red-600 text-center">{error}</p>}
         </form>
       </CardContent>

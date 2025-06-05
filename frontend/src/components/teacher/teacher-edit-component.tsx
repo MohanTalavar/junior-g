@@ -124,7 +124,7 @@ const TeacherEdit: React.FC = () => {
           </div>
           <div className="flex justify-end space-x-2">
             <Button
-              className="hover:cursor-pointer bg-red-600 text-white"
+              className="hover:cursor-pointer bg-red-600 hover:bg-red-800 text-white"
               type="button"
               variant="outline"
               onClick={() => navigate("/teacher")}
@@ -132,7 +132,7 @@ const TeacherEdit: React.FC = () => {
               Cancel
             </Button>
             <Button
-              className="hover:cursor-pointer bg-blue-600 text-white"
+              className="hover:cursor-pointer bg-blue-600 hover:bg-blue-800 text-white"
               variant={"outline"}
               type="submit"
               disabled={isSubmitting}
