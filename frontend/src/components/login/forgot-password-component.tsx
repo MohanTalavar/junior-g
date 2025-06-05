@@ -1,5 +1,4 @@
 import { useState, ChangeEvent, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
 import { sendPasswordResetRequest } from "@/features/auth/authAPI"; // You'll define this API function
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 export function ForgotPasswordForm() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({ userName: "", email: "" });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");

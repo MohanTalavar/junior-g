@@ -77,7 +77,7 @@ public class UserServiceImpl implements IUserService {
 
         String token = jwtService.generateToken(userName); // can use a shorter TTL if needed
 
-        String resetLink = "http://localhost:5173/reset-password?token=" + token;
+        String resetLink = "https://juniorg.site/reset-password?token=" + token;
         String body = "Hi " + userName + ",\n\nClick the link below to reset your password:\n" + resetLink;
 
         emailService.sendEmail(email, "Password Reset Request", body);

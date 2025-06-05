@@ -46,8 +46,8 @@ export function ResetPasswordForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md shadow-xl border border-gray-200">
+    <div className="min-h-screen bg-white flex items-start justify-center pt-24 px-4">
+      <Card className="w-full max-w-[400px] shadow-xl border border-gray-200">
         <CardHeader>
           <CardTitle className="text-2xl text-center text-[#990000] font-semibold">
             Reset Password
