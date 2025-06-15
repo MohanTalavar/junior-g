@@ -117,6 +117,22 @@ const Navbar: React.FC = () => {
                 Menu
               </SheetTitle>
               <SheetDescription id="mobile-nav-description" />
+              <NavLink
+                to="/"
+                className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                onClick={() => setOpen(false)}
+              >
+                {({ isActive }) => (
+                  <div className="flex">
+                    {isActive ? (
+                      <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                    ) : (
+                      <div className="pl-4"></div>
+                    )}
+                    Home
+                  </div>
+                )}
+              </NavLink>
 
               {/* display user + role */}
               {isAuthenticated && (
@@ -130,14 +146,16 @@ const Navbar: React.FC = () => {
                   className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
                   onClick={() => setOpen(false)}
                 >
-                   {({ isActive }) => (
-                      <div className="flex ">
-                        {isActive && (
-                          <div className="h-6 w-1.5 bg-[#F18701]  mr-2"></div>
-                        )}
-                        Admission Enquiry
-                      </div>
-                    )}
+                  {({ isActive }) => (
+                    <div className="flex">
+                      {isActive ? (
+                        <div className="h-6 w-1.5 bg-[#F18701] mr-2"></div>
+                      ) : (
+                        <div className="pl-4"></div>
+                      )}
+                      Admission Enquiry
+                    </div>
+                  )}
                 </NavLink>
 
                 {isAuthenticated && role === "ROLE_ADMIN" && (
@@ -146,15 +164,16 @@ const Navbar: React.FC = () => {
                     className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
                     onClick={() => setOpen(false)}
                   >
-                     {({ isActive }) => (
-                      <div className="flex ">
-                        {isActive && (
-                          <div className="h-6 w-1.5 bg-[#002F6C]  mr-2"></div>
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
                         )}
                         Teachers
                       </div>
                     )}
-                    
                   </NavLink>
                 )}
 
@@ -164,10 +183,12 @@ const Navbar: React.FC = () => {
                     className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
                     onClick={() => setOpen(false)}
                   >
-                     {({ isActive }) => (
-                      <div className="flex ">
-                        {isActive && (
-                          <div className="h-6 w-1.5 bg-[#002F6C]  mr-2"></div>
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
                         )}
                         Students
                       </div>
@@ -181,11 +202,12 @@ const Navbar: React.FC = () => {
                     className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
                     onClick={() => setOpen(false)}
                   >
-                    
-                     {({ isActive }) => (
-                      <div className="flex ">
-                        {isActive && (
-                          <div className="h-6 w-1.5 bg-[#002F6C]  mr-2"></div>
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
                         )}
                         User Management
                       </div>
@@ -200,9 +222,11 @@ const Navbar: React.FC = () => {
                     onClick={() => setOpen(false)}
                   >
                     {({ isActive }) => (
-                      <div className="flex ">
-                        {isActive && (
-                          <div className="h-6 w-1.5 bg-[#002F6C]  mr-2"></div>
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
                         )}
                         Logout
                       </div>
@@ -215,9 +239,11 @@ const Navbar: React.FC = () => {
                     onClick={() => setOpen(false)}
                   >
                     {({ isActive }) => (
-                      <div className="flex ">
-                        {isActive && (
-                          <div className="h-6 w-1.5 bg-[#002F6C]  mr-2"></div>
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
                         )}
                         Login
                       </div>
