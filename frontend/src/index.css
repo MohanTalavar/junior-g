@@ -2,9 +2,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* body, * {
+body, * {
   font-family: 'Lexend Deca', sans-serif;
-} */
+}
 
 @keyframes marquee {
   0% {
