@@ -129,9 +129,10 @@ public class UserServiceImpl implements IUserService {
 
         User persistentUser = userRepo.findByUserName(userName);
 
+        StringBuilder addRole = new StringBuilder("ROLE_");
         persistentUser.setUserName(updatedUser.getUserName());
         persistentUser.setEmail(updatedUser.getEmail());
-        persistentUser.setRole(updatedUser.getRole());
+        persistentUser.setRole(addRole.append(updatedUser.getRole()).toString());
 
         return new UserResponseDto(persistentUser);
     }
