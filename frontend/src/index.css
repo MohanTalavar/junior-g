@@ -1,5 +1,10 @@
+@import './assets/font/lexend-deca.css';
 @import "tailwindcss";
 @import "tw-animate-css";
+
+body, * {
+  font-family: 'Lexend Deca', sans-serif;
+}
 
 @keyframes marquee {
   0% {
