@@ -117,6 +117,14 @@ const Navbar: React.FC = () => {
                 Menu
               </SheetTitle>
               <SheetDescription id="mobile-nav-description" />
+
+              {/* display user + role */}
+              {isAuthenticated && (
+                <div className="mb-4 text-gray-700 font-medium">
+                  {user} ({role?.replace("ROLE_", "")})
+                </div>
+              )}
+
               <NavLink
                 to="/"
                 className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
@@ -134,12 +142,6 @@ const Navbar: React.FC = () => {
                 )}
               </NavLink>
 
-              {/* display user + role */}
-              {isAuthenticated && (
-                <div className="mb-4 text-gray-700 font-medium">
-                  {user} ({role?.replace("ROLE_", "")})
-                </div>
-              )}
               <div className="flex flex-col gap-4 text-base font-serif">
                 <NavLink
                   to="/admission-enquiry"
