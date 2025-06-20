@@ -24,6 +24,10 @@ const Home: React.FC = () => {
       {/* About Us + Contact Section */}
       <AboutUsComponent />
       <WhatsappFloat />
+      <footer className="w-full text-center py-0.5 text-white text-sm bg-[#002F6C]">
+        © {new Date().getFullYear()} Junior-G International. All rights
+        reserved.
+      </footer>
     </div>
   );
 };
