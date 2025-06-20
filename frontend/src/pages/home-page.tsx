@@ -3,6 +3,7 @@ import HeroComponent from "@/components/home/hero-component";
 import CourseComponent from "@/components/home/course-component";
 import AboutUsComponent from "@/components/home/about-us-component";
 import AnnouncementBar from "@/components/home/announcement-bar-component";
+import WhatsappFloat from "@/components/ui/whatsapp-float";
 
 const Home: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const Home: React.FC = () => {
 
       {/* About Us + Contact Section */}
       <AboutUsComponent />
+      <WhatsappFloat />
     </div>
   );
 };
