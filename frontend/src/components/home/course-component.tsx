@@ -1,17 +1,27 @@
+import React from "react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import DayCareSvg from "../../assets/images/DayCare.png";
-import PlayGroupSvg from "../../assets/images/PlayGroup.png";
-import NurserySvg from "../../assets/images/Nursery.png";
-import LKGSvg from "../../assets/images/LKG.png";
-import UKGSvg from "../../assets/images/UKG.png";
+import DayCare from "../../assets/images/DayCare.png";
+import PlayGroup from "../../assets/images/PlayGroup.png";
+import Nursery from "../../assets/images/Nursery.png";
+import LKG from "../../assets/images/LKG.png";
+import UKG from "../../assets/images/UKG.png";
 
-const programs = [
+type Program = {
+  title: string;
+  age: string;
+  description: string;
+  image: string;
+  clipPath: string | null;
+};
+
+const programs: Program[] = [
   {
     title: "Daycare",
     age: "2 – 10 years",
     description:
       "Safe, flexible care for working parents. Engaging environment with meals, naps, and play.",
-    image: DayCareSvg,
+    image: DayCare,
+    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
   },
   // {
   //   title: "PreSchool",
@@ -23,28 +33,32 @@ const programs = [
     age: "2 – 3 years",
     description:
       "Exploration-based activities for toddlers, focusing on motor skills and curiosity.",
-    image: PlayGroupSvg,
+    image: PlayGroup,
+    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
   },
   {
     title: "Nursery",
     age: "3 – 4 years",
     description:
       "Hands-on learning to develop pre-writing, pre-math, and problem-solving skills.",
-    image: NurserySvg,
+    image: Nursery,
+    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
   },
   {
     title: "LKG",
     age: "4 – 5 years",
     description:
       "Foundational education focusing on language, numbers, art, and social interaction.",
-    image: LKGSvg,
+    image: LKG,
+    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
   },
   {
     title: "UKG",
     age: "5 – 6 years",
     description:
       "Advanced prep for Grade 1 with reading, writing, math, and concept-based learning.",
-    image: UKGSvg,
+    image: UKG,
+    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
   },
 ];
 
@@ -60,16 +74,33 @@ const CourseComponent: React.FC = () => {
           {programs.map((program) => (
             <Card
               key={program.title}
-              className="shadow-xl transition-transform transform hover:scale-105 bg-white rounded-lg"
+              className="shadow-xl transition-transform transform hover:scale-105 bg-white rounded-lg overflow-hidden pt-0 px-2"
             >
-              <CardContent className="p-1.5 text-center space-y-3">
-                <div className="flex justify-center mb-4">
-                  <img 
-                    src={program.image} 
-                    alt={`${program.title} icon`}
-                    className="w-30 h-30 object-contain"
-                  />
-                </div>
+              <CardContent className="text-center space-b-3">
+                {program.clipPath! ? (
+                  <div className="flex justify-center">
+                    <div className="w-60 h-60 relative">
+                      <div
+                        className={`absolute flex justify-center mb-0 inset-0`}
+                        style={{ clipPath: program.clipPath! }}
+                      >
+                        <img
+                          src={program.image}
+                          alt={`${program.title} icon`}
+                          className=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full h-32 bg-gray-100 flex items-center justify-center">
+                    <img
+                      src={program.image}
+                      alt={`${program.title} icon`}
+                      className="w-24 h-24 object-contain"
+                    />
+                  </div>
+                )}
                 <CardTitle className="text-3xl text-center text-[#7B1E3A] font-semibold">
                   {program.title}
                 </CardTitle>
@@ -77,7 +108,9 @@ const CourseComponent: React.FC = () => {
                   <span className="font-semibold">Age Group:</span>{" "}
                   {program.age}
                 </p>
-                <p className="text-gray-600 text-center">{program.description}</p>
+                <p className="text-gray-600 text-center">
+                  {program.description}
+                </p>
               </CardContent>
             </Card>
           ))}
