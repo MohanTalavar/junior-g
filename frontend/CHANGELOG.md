@@ -2,7 +2,7 @@
 
 ## v1.3.2 — June 21, 2025
 
-- Added WhatsApp floating icon
+- Added Social Media floaters
 - Added vector images to course cards
 - Updated footer and keeping track of app version
 
