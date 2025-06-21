@@ -4,8 +4,8 @@ import FacebookIcon from "@/assets/images/facebook-icon.png";
 import InstagramIcon from "@/assets/images/instagram-icon.png";
 
 const WHATSAPP_NUMBER = "7719005081";
-const FACEBOOK_PROFILE = "your-profile";
-const INSTAGRAM_PROFILE = "your-profile";
+const FACEBOOK_PROFILE = "profile.php?id=61575842600420";
+const INSTAGRAM_PROFILE = "junior_g_preschool?igsh=bjk2Nm5pYzVmOXJz";
 
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 const FACEBOOK_LINK = `https://www.facebook.com/${FACEBOOK_PROFILE}`;
