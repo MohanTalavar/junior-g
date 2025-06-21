@@ -1,12 +1,20 @@
 # Changelog — Junior-G International Pre School Website
 
+## v1.3.2 — June 21, 2025
+
+- Added WhatsApp floating icon
+- Added vector images to course cards
+- Updated footer and keeping track of app version
+
+## v1.3.1 — June 16, 2025
+
+- Font style updates
+- Sidebar enhancement (Home tab added, active tab indiacator)
+
 ## v1.3.0 — June 2025
 
 - Focus on UI/UX enhancements
-- Sidebar enhancement
-- Added vector images to course cards
-- Added WhatsApp floating icon
-- Font style updates
+- Sidebar now closes automatically
 
 ## v1.2.0 — May 2025
 
