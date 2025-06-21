@@ -4,8 +4,8 @@ import FacebookIcon from "@/assets/images/facebook-icon.png";
 import InstagramIcon from "@/assets/images/instagram-icon.png";
 
 const WHATSAPP_NUMBER = "7719005081";
-const FACEBOOK_PROFILE = "your-profile";
-const INSTAGRAM_PROFILE = "your-profile";
+const FACEBOOK_PROFILE = "profile.php?id=61575842600420";
+const INSTAGRAM_PROFILE = "junior_g_preschool?igsh=bjk2Nm5pYzVmOXJz";
 
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}`;
 const FACEBOOK_LINK = `https://www.facebook.com/${FACEBOOK_PROFILE}`;
@@ -22,7 +22,8 @@ type SingleFloaterProps = {
   text: string;
   textColorClass: string;
   extraStyle?: React.CSSProperties;
-  padding?:string;
+  padding?: string;
+  extraContainerClasses?: string;
 };
 
 const SingleFloater: React.FC<SingleFloaterProps> = ({
@@ -36,7 +37,8 @@ const SingleFloater: React.FC<SingleFloaterProps> = ({
   text,
   textColorClass,
   extraStyle,
-  padding
+  padding,
+  extraContainerClasses = "",
 }) => (
   <a
     href={link}
@@ -46,7 +48,7 @@ const SingleFloater: React.FC<SingleFloaterProps> = ({
     className={`fixed z-50 ${positionClass} right-2 group`}
   >
     <div
-      className={`flex items-center ${bgColorClass} rounded-full shadow-lg p-3 cursor-pointer transition-all duration-300 ease-in-out w-12 ${hoverWidthClass} overflow-hidden`}
+      className={`flex items-center ${bgColorClass} rounded-full shadow-lg p-3 cursor-pointer transition-all duration-300 ease-in-out w-12 ${hoverWidthClass} overflow-hidden ${extraContainerClasses}`}
       style={extraStyle}
     >
       <img
@@ -67,8 +69,8 @@ const WhatsappFloat: React.FC = () => (
   <SingleFloater
     link={WHATSAPP_LINK}
     ariaLabel="Chat on WhatsApp"
-    positionClass="bottom-12"
-    bgColorClass="bg-green-500"
+    positionClass="bottom-20"
+    bgColorClass="bg-green-600"
     hoverWidthClass="group-hover:w-36"
     iconSrc={WhatsappIcon}
     altText="WhatsApp"
@@ -82,7 +84,7 @@ const FacebookFloat: React.FC = () => (
   <SingleFloater
     link={FACEBOOK_LINK}
     ariaLabel="Find us on Facebook"
-    positionClass="bottom-44"
+    positionClass="bottom-52"
     bgColorClass="bg-[#1c74f4]"
     hoverWidthClass="group-hover:w-36"
     iconSrc={FacebookIcon}
@@ -94,17 +96,33 @@ const FacebookFloat: React.FC = () => (
 );
 
 const InstagramFloat: React.FC = () => (
-  <SingleFloater
-    link={INSTAGRAM_LINK}
-    ariaLabel="Follow us on Instagram"
-    positionClass="bottom-28"
-    bgColorClass="bg-white"
-    hoverWidthClass="group-hover:w-36"
-    iconSrc={InstagramIcon}
-    altText="Instagram"
-    text="Instagram"
-    textColorClass="text-pink-600"
-  />
+  <a
+    href={INSTAGRAM_LINK}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Follow us on Instagram"
+    className="fixed z-50 bottom-36 right-2 group"
+  >
+    <div
+      // Outer container for the gradient ring
+      className="p-0.5 bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 rounded-full shadow-lg transition-all duration-300 ease-in-out w-12 group-hover:w-36"
+    >
+      <div
+        className="flex items-center bg-white rounded-full w-full h-full p-[10px] cursor-pointer overflow-hidden"
+      >
+        <img
+          src={InstagramIcon}
+          alt="Instagram"
+          className="w-6 h-6 object-contain flex-shrink-0"
+        />
+        <span
+          className="font-semibold text-base whitespace-nowrap opacity-0 group-hover:opacity-100 ml-3 transition-all duration-300 ease-in-out bg-gradient-to-r from-pink-600 to-purple-800 bg-clip-text text-transparent"
+        >
+          Instagram
+        </span>
+      </div>
+    </div>
+  </a>
 );
 
-export {WhatsappFloat, FacebookFloat, InstagramFloat}
+export { WhatsappFloat, InstagramFloat, FacebookFloat };
