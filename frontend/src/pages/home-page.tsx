@@ -4,6 +4,7 @@ import CourseComponent from "@/components/home/course-component";
 import AboutUsComponent from "@/components/home/about-us-component";
 import AnnouncementBar from "@/components/home/announcement-bar-component";
 import WhatsappFloat from "@/components/ui/whatsapp-float";
+import { APP_VERSION } from "@/version";
 
 const Home: React.FC = () => {
   return (
@@ -24,8 +25,8 @@ const Home: React.FC = () => {
       {/* About Us + Contact Section */}
       <AboutUsComponent />
       <WhatsappFloat />
-      <footer className="w-full text-center p-4  text-white text-sm bg-[#002F6C]">
-        © Copyright {new Date().getFullYear()} Junior-G International Pre School
+      <footer className="w-full text-center p-2  text-white text-sm bg-[#002F6C]">
+        © Copyright {new Date().getFullYear()} Junior-G International Pre School{" "}
         | Designed & Maintained by{" "}
         <a
           className="font-semibold  underline hover:text-gray-300 transition-colors"
@@ -33,23 +34,8 @@ const Home: React.FC = () => {
         >
           Mohan Talavar{" "}
         </a>
+        <div className="text-xs opacity-80 mt-1">{APP_VERSION}</div>
       </footer>
-      {/* <footer className="w-full text-center p-4 md:p-6 text-white text-sm bg-[#002F6C] border-t border-gray-200">
-        <div className="space-y-1">
-          <p>© {new Date().getFullYear()} Junior-G International Pre School</p>
-          <p>
-            Designed & Maintained by{" "}
-            <a
-              className="font-semibold underline hover:text-gray-300 transition-colors"
-              href="https://www.linkedin.com/in/mohan-talavar/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Mohan Talavar
-            </a>
-          </p>
-        </div>
-      </footer> */}
     </div>
   );
 };
