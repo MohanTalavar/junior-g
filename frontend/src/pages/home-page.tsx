@@ -3,7 +3,11 @@ import HeroComponent from "@/components/home/hero-component";
 import CourseComponent from "@/components/home/course-component";
 import AboutUsComponent from "@/components/home/about-us-component";
 import AnnouncementBar from "@/components/home/announcement-bar-component";
-import WhatsappFloat from "@/components/ui/whatsapp-float";
+import {
+  WhatsappFloat,
+  FacebookFloat,
+  InstagramFloat,
+} from "@/components/ui/social-floaters";
 
 const Home: React.FC = () => {
   return (
@@ -23,7 +27,10 @@ const Home: React.FC = () => {
 
       {/* About Us + Contact Section */}
       <AboutUsComponent />
+
       <WhatsappFloat />
+      <FacebookFloat />
+      <InstagramFloat />
       <footer className="w-full text-center p-4  text-white text-sm bg-[#002F6C]">
         © Copyright {new Date().getFullYear()} Junior-G International Pre School
         | Designed & Maintained by{" "}
