@@ -69,7 +69,7 @@ const WhatsappFloat: React.FC = () => (
   <SingleFloater
     link={WHATSAPP_LINK}
     ariaLabel="Chat on WhatsApp"
-    positionClass="bottom-12"
+    positionClass="bottom-20"
     bgColorClass="bg-green-600"
     hoverWidthClass="group-hover:w-36"
     iconSrc={WhatsappIcon}
@@ -84,7 +84,7 @@ const FacebookFloat: React.FC = () => (
   <SingleFloater
     link={FACEBOOK_LINK}
     ariaLabel="Find us on Facebook"
-    positionClass="bottom-44"
+    positionClass="bottom-52"
     bgColorClass="bg-[#1c74f4]"
     hoverWidthClass="group-hover:w-36"
     iconSrc={FacebookIcon}
@@ -101,7 +101,7 @@ const InstagramFloat: React.FC = () => (
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Follow us on Instagram"
-    className="fixed z-50 bottom-28 right-2 group"
+    className="fixed z-50 bottom-36 right-2 group"
   >
     <div
       // Outer container for the gradient ring
