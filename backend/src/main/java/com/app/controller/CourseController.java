@@ -5,20 +5,20 @@ import com.app.dto.CourseWithStudentsRequestDto;
 import com.app.dto.CourseWithStudentsResponseDto;
 import com.app.pojos.Course;
 import com.app.service.ICourseService;
+import com.app.utils.InputStringSanitizer;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/courses")
 public class CourseController {
-
-    @Autowired
-    private ICourseService courseService;
+    private final ICourseService courseService;
 
     @GetMapping("/get-courses")
     public ResponseEntity<List<CourseRequestResponseDto>> getCourses() {
@@ -43,15 +43,16 @@ public class CourseController {
          * new StudentRequestDto("abc2","abc1@gmail.com")); Student newStud3 = new
          * Student( new StudentRequestDto("abc3","abc1@gmail.com"));
          */
+        transientCourse.setTitle(InputStringSanitizer.sanitize(transientCourse.getTitle()));
         Course newCoursCourse = new Course(transientCourse);
         String response = courseService.launchNewCourse(newCoursCourse);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(htmlEscape(response));
     }
 
     @DeleteMapping("/remove-course/{courseTitleToBeRemoved}")
     public ResponseEntity<String> removeExistingCourse(@PathVariable String courseTitleToBeRemoved) {
 
-        String response = courseService.removeCourse(courseTitleToBeRemoved);
+        String response = courseService.removeCourse(InputStringSanitizer.sanitize(courseTitleToBeRemoved));
         return ResponseEntity.ok(response);
     }
 
