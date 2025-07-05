@@ -2,6 +2,7 @@ package com.app.controller;
 
 import jakarta.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,10 @@ import com.app.pojos.Student;
 import com.app.service.IStudentService;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/students")
 public class StudentController {
-
-    @Autowired
-    private IStudentService studService;
+    private final IStudentService studService;
 
     @GetMapping("/get-student-details/{studentRollNo}")
     public ResponseEntity<StudentRequestResponseDto> getStudent(@PathVariable String studentRollNo) {

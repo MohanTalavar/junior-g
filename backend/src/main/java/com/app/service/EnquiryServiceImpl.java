@@ -5,6 +5,7 @@ import com.app.pojos.User;
 import com.app.repo.EnquiryRepo;
 import com.app.repo.UserRepo;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +15,13 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class EnquiryServiceImpl implements IEnquiryService {
-
-    private static final Logger log = LoggerFactory.getLogger(EnquiryServiceImpl.class);
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
-
-    @Autowired
-    private EnquiryRepo enquiryRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private EmailService emailService;
+    private final EnquiryRepo enquiryRepo;
+    private final UserRepo userRepo;
+    private final EmailService emailService;
+    private static final Logger log = LoggerFactory.getLogger(EnquiryServiceImpl.class);
 
     @Override
     public void saveEnquiryDetails(Enquiry enquiry) {

@@ -3,17 +3,17 @@ package com.app.controller;
 import com.app.dto.AddressRequestResponseDto;
 import com.app.pojos.Address;
 import com.app.service.IAddressService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/address")
 public class AddressController {
-
-	@Autowired
-	private IAddressService addressService;
+	private final IAddressService addressService;
 
 	@PostMapping("/store-student-address/{studId}")
 	public ResponseEntity<String> storeStudentsAddress(@PathVariable Long studId,

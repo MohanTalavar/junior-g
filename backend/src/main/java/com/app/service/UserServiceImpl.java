@@ -6,6 +6,7 @@ import com.app.dto.UserResponseDto;
 import com.app.pojos.User;
 import com.app.repo.UserRepo;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,20 +22,13 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
-
-    @Autowired
-    AuthenticationManager authManager;
-
-    @Autowired
-    private JWTService jwtService;
-
-    @Autowired
-    private UserRepo userRepo;
+    private final AuthenticationManager authManager;
+    private final JWTService jwtService;
+    private final UserRepo userRepo;
+    private final EmailService emailService;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-
-    @Autowired
-    private EmailService emailService;
 
     @Override
     public String addNewUserRecord(User newUser) {

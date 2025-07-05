@@ -8,6 +8,7 @@ import com.app.repo.AddressRepo;
 import com.app.repo.StudentRepo;
 import com.app.repo.TeacherRepo;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +16,11 @@ import org.springframework.stereotype.Service;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class AddressServiceImpl implements IAddressService {
-
+	private final StudentRepo studentRepo;
+	private final TeacherRepo teacherRepo;
 	private static final Logger log = LoggerFactory.getLogger(AddressServiceImpl.class);
-
-	@Autowired
-	private AddressRepo addressRepo;
-
-	@Autowired
-	private StudentRepo studentRepo;
-
-	@Autowired
-	private TeacherRepo teacherRepo;
 
 	@Override
 	public String addOrUpdateStudentAddress(Long studentId, Address newAddress) {
