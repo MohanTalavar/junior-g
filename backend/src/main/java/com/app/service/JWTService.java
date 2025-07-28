@@ -19,11 +19,12 @@ import java.util.function.Function;
 @Service
 public class JWTService {
 
+    public static final String HMAC_SHA_256 = "HmacSHA256";
     private String secretKey = "";
 
     public JWTService() {
         try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+            KeyGenerator keyGen = KeyGenerator.getInstance(HMAC_SHA_256);
             SecretKey sk = keyGen.generateKey();
             secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
         } catch (NoSuchAlgorithmException e) {

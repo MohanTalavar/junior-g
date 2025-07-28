@@ -7,6 +7,7 @@ import com.app.repo.CourseRepo;
 import com.app.repo.StudentRepo;
 import com.app.utils.UpdateUtils;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class StudentServiceImpl implements IStudentService {
-
+    private final StudentRepo studRepo;
+    private final CourseRepo courseRepo;
     private static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
-    @Autowired
-    private StudentRepo studRepo;
-
-    @Autowired
-    private CourseRepo courseRepo;
 
     @Override
     public Student getStudentDetails(String studentRollNo) {

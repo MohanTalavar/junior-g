@@ -7,6 +7,7 @@ import com.app.pojos.Teacher;
 import com.app.repo.CourseRepo;
 import com.app.repo.TeacherRepo;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,11 @@ import java.util.List;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class TeacherServiceImpl implements ITeacherService {
-
+	private final TeacherRepo teacherRepo;
+	private final CourseRepo courseRepo;
 	private static Logger log = LoggerFactory.getLogger(TeacherServiceImpl.class);
-
-	@Autowired
-	private TeacherRepo teacherRepo;
-
-	@Autowired
-	private CourseRepo courseRepo;
 
 
 	@Override

@@ -1,6 +1,7 @@
 package com.app.service;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,10 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CourseServiceImpl implements ICourseService {
-
+	private final CourseRepo courseRepo;
 	private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
-
-	@Autowired
-	private CourseRepo courseRepo;
 
 	@Override
 	public String launchNewCourse(Course transientCourse) {

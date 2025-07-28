@@ -4,32 +4,28 @@ import com.app.dto.*;
 import com.app.pojos.User;
 import com.app.service.EmailService;
 import com.app.service.IUserService;
+import com.app.utils.InputStringSanitizer;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-
+    private final IUserService userService;
+    private final EmailService emailService;
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
-    private IUserService userService;
-
-    @Autowired
-    private EmailService emailService;
-
     @GetMapping("/get-user-details/{userName}")
-    public ResponseEntity<UserResponseDto> findUserByUserName(@PathVariable String userName){
+    public ResponseEntity<UserResponseDto> findUserByUserName(@PathVariable String userName) {
 
         log.info("Fetching the user details for {}", userName);
         UserResponseDto user = userService.fetchUserDetailsByUserName(userName);
@@ -52,7 +48,9 @@ public class UserController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequestDto req) {
-        String result = userService.initiatePasswordReset(req.getUserName(), req.getEmail());
+        String userName = InputStringSanitizer.sanitize(req.getUserName());
+        String email = InputStringSanitizer.sanitize(req.getEmail());
+        String result = userService.initiatePasswordReset(userName, email);
         return ResponseEntity.ok(result);
     }
 
@@ -71,16 +69,15 @@ public class UserController {
     @DeleteMapping("/delete/{userName}")
     public ResponseEntity<String> deleteUserByUserName(@PathVariable String userName) {
 
-        String resp = userService.deleteUser(userName);
+        String resp = userService.deleteUser(InputStringSanitizer.sanitize(userName));
         return ResponseEntity.ok(resp);
     }
 
     @PutMapping("/update/{userName}")
     public ResponseEntity<UserResponseDto> updateUser(@PathVariable String userName, @RequestBody UserResponseDto updatedUser) {
-        UserResponseDto user = userService.updateUserRecord(userName,updatedUser);
+        UserResponseDto user = userService.updateUserRecord(userName, updatedUser);
         return ResponseEntity.ok(user);
     }
-
 
 
     @GetMapping("/get-csrf-token")
