@@ -63,9 +63,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                //.csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // 1) Public endpoints
                         .requestMatchers(
@@ -74,8 +72,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/health",
                                 "/users/login",
-                                "users/forgot-password",
-                                "users/reset-password",
+                                "/users/forgot-password",
+                                "/users/reset-password",
                                 "/enquiry"
                         ).permitAll()
 
