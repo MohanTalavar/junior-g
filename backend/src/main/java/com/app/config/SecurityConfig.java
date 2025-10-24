@@ -65,6 +65,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                //.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // 1) Public endpoints
                         .requestMatchers(

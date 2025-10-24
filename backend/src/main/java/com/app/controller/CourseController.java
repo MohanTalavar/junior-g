@@ -18,6 +18,7 @@ import static org.springframework.web.util.HtmlUtils.htmlEscape;
 @RequiredArgsConstructor
 @RequestMapping("/courses")
 public class CourseController {
+
     private final ICourseService courseService;
 
     @GetMapping("/get-courses")
