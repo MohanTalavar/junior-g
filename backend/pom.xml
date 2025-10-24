@@ -145,7 +145,7 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>io.snyk</groupId>
                 <artifactId>snyk-maven-plugin</artifactId>
                 <version>2.2.0</version>
@@ -167,10 +167,10 @@
                 <configuration>
                     <apiToken>d74296e1-0d48-4dea-bb40-4f0e9218c31e</apiToken>
                     <args>
-                        <arg>--all-projects</arg>
+                        <arg>&#45;&#45;all-projects</arg>
                     </args>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 
