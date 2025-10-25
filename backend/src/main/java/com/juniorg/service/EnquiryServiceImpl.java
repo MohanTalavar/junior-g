@@ -50,8 +50,14 @@ public class EnquiryServiceImpl implements IEnquiryService {
         // Notify all admins
         log.info("Fetching admin details to notify about the admission enquiry");
         List<User> admins = userRepo.findByRole(ROLE_ADMIN);
-        log.info("Sending email to the admin");
-        admins.forEach(admin -> emailService.sendEmail(admin.getEmail(), adminSubject, adminBody));
+
+        // Check if we have admins
+        if(!admins.isEmpty()){
+            log.info("Sending email to {} admin(s)", admins.size());
+            admins.forEach(admin -> emailService.sendEmail(admin.getEmail(), adminSubject, adminBody));
+        }else{
+            log.warn("Skipping acknowledgment: Admins NOT found in system");
+        }
 
         // Prepare acknowledgment email for parent
         String parentSubject = "Thank you for your enquiry - Junior G International Preschool";
@@ -66,8 +72,19 @@ public class EnquiryServiceImpl implements IEnquiryService {
                 enquiry.getStudentName()
         );
 
-        log.info("Sending acknowledgment email to the parent.");
-        emailService.sendEmail(enquiry.getEmailId(), parentSubject, parentBody);
+        // Test case failed for the null email if of parent
+        // So adding the null check
+        // We do not rely on other layers, as the request dto already has validation
+        // But while unit testing its done in isolation
+        // So securing every layer is imp
+
+        if(enquiry.getEmailId() != null  && !enquiry.getEmailId().isBlank()){
+            log.info("Sending acknowledgment email to the parent.");
+            emailService.sendEmail(enquiry.getEmailId(), parentSubject, parentBody);
+        }else{
+            log.warn("Skipping acknowledgment: Parent email is null/blank");
+        }
+
     }
 
 }

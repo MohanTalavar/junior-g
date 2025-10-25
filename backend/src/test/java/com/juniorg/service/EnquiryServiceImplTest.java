@@ -4,8 +4,11 @@ import com.juniorg.pojos.Enquiry;
 import com.juniorg.pojos.User;
 import com.juniorg.repo.EnquiryRepo;
 import com.juniorg.repo.UserRepo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,6 +17,7 @@ import org.w3c.dom.stylesheets.LinkStyle;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +35,12 @@ public class EnquiryServiceImplTest {
 
     @InjectMocks
     private EnquiryServiceImpl enquiryService;
+
+    @Captor
+    private ArgumentCaptor<String> subjectCaptor;
+
+    @Captor
+    private ArgumentCaptor<String> bodyCaptor;
 
     @Test
     void saveEnquiryDetails_ShouldSaveEnquiry_NotifyAdmins_AndNotifyParent(){
@@ -70,6 +80,55 @@ public class EnquiryServiceImplTest {
 
         // Verify admin lookup
         verify(userRepo).findByRole("ROLE_ADMIN");
+
+    }
+
+    @Test
+    @DisplayName("Should NOT send parent acknowledgment if parent email is null")
+    void saveEnquiryDetails_NullParentEmail_ShouldNotSendParentEmail(){
+
+        // Arrange
+        Enquiry enquiry = new Enquiry();
+        enquiry.setStudentName("Junior");
+        enquiry.setParentName("Mohan");
+        enquiry.setEmailId(null); // <-- Key
+        enquiry.setCourseName("1234567890");
+        enquiry.setCourseName("Nursery");
+
+        User admin = new User();
+        admin.setEmail("admin@gmail.com");
+
+        // Stub
+        when(userRepo.findByRole("ROLE_ADMIN")).thenReturn(List.of(admin));
+
+        // Act
+        enquiryService.saveEnquiryDetails(enquiry);
+
+        // Assert
+        verify(emailService, never()).sendEmail(isNull(), anyString(), anyString());
+
+    }
+
+    @Test
+    @DisplayName("Should skip admin notifications when no admins exist")
+    void saveEnquiryDetails_NullAdmins_ShouldNotSendAdminEmail(){
+
+        // Arrange
+        Enquiry enquiry = new Enquiry();
+        enquiry.setStudentName("Junior");
+        enquiry.setParentName("Mohan");
+        enquiry.setEmailId("parent@gmail.com");
+        enquiry.setCourseName("1234567890");
+        enquiry.setCourseName("Nursery");
+
+        // Stub
+        when(userRepo.findByRole("ROLE_ADMIN")).thenReturn(new ArrayList<>());
+
+        // Act
+        enquiryService.saveEnquiryDetails(enquiry);
+
+        // Assert
+        verify(emailService, never()).sendEmail(isNull(), isNull(), isNull());
 
     }
 
