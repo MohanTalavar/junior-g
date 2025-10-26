@@ -35,6 +35,10 @@ public class User extends BaseEntity {
 		this.role = user.getRole();
 	}
 
+	public User(String userName) {
+		this.userName = userName;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +

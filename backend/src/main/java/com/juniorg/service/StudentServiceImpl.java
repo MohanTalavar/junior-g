@@ -22,6 +22,7 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public Student getStudentDetails(String studentRollNo) {
+
         log.info("Fetching details for studentId: {}", studentRollNo);
 
         Student persistentStud = studRepo.findByRollNumber(studentRollNo)

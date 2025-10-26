@@ -13,9 +13,6 @@ public interface IUserService {
 
 	LoginResponseDto verifyUser(User user);
 
-	// add a method to get the user details
-	User retrieveUserDetails(String userName);
-
 	// add a method to initiate password reset
 	String initiatePasswordReset(String userName, String email);
 
