@@ -22,7 +22,7 @@ import java.util.List;
 public class TeacherServiceImpl implements ITeacherService {
 	private final TeacherRepo teacherRepo;
 	private final CourseRepo courseRepo;
-	private static Logger log = LoggerFactory.getLogger(TeacherServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
 
 	@Override
@@ -41,11 +41,9 @@ public class TeacherServiceImpl implements ITeacherService {
 		
 		if( newTeacher == null ) throw new IllegalArgumentException("Teacher details cannot be null!");
 
-		Course persistentCourse = courseRepo.findByTitle(courseName);
+		Course persistentCourse = courseRepo.findByTitle(courseName)
+				.orElseThrow(()-> new ResourceNotFoundException(" Adding Teacher failed!! Course not found " + courseName));
 
-		if (persistentCourse == null)
-			throw new ResourceNotFoundException(" Adding Teacher failed!! Course not found " + courseName);
-		
 		if (teacherRepo.findByEmail(newTeacher.getEmail()).isPresent()) {
 		    throw new IllegalStateException("Teacher with email '" + newTeacher.getEmail() + "' already exists!");
 		}

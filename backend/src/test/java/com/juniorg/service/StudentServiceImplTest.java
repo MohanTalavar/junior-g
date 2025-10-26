@@ -75,7 +75,7 @@ public class StudentServiceImplTest {
     @Test
     @DisplayName("admitNewStudent: should admit student successfully")
     void testAdmitNewStudent() {
-        when(courseRepo.findByTitle("LKG")).thenReturn(course);
+        when(courseRepo.findByTitle("LKG")).thenReturn(Optional.ofNullable(course));
 
         Student result = studentService.admitNewStudent("LKG", student);
 
@@ -86,7 +86,7 @@ public class StudentServiceImplTest {
     @Test
     @DisplayName("admitNewStudent: should throw when course doesn't exist")
     void testAdmitNewStudentCourseNotFound() {
-        when(courseRepo.findByTitle("UKG")).thenReturn(null);
+        when(courseRepo.findByTitle("UKG")).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () ->
                 studentService.admitNewStudent("UKG", student)
@@ -97,7 +97,7 @@ public class StudentServiceImplTest {
     @DisplayName("admitNewStudent: should not allow duplicate enrollment")
     void testAdmitNewStudentAlreadyEnrolled() {
         course.getStudents().add(student);
-        when(courseRepo.findByTitle("LKG")).thenReturn(course);
+        when(courseRepo.findByTitle("LKG")).thenReturn(Optional.ofNullable(course));
 
         assertThrows(IllegalStateException.class, () ->
                 studentService.admitNewStudent("LKG", student)
@@ -111,7 +111,7 @@ public class StudentServiceImplTest {
         course.getStudents().add(student);
 
         when(studRepo.findByRollNumber("R001")).thenReturn(Optional.of(student));
-        when(courseRepo.findByTitle("LKG")).thenReturn(course);
+        when(courseRepo.findByTitle("LKG")).thenReturn(Optional.ofNullable(course));
 
         String result = studentService.cancelStudentAdmission("LKG", "R001");
 
@@ -135,7 +135,7 @@ public class StudentServiceImplTest {
     void testCancelStudentAdmissionCourseNotFound() {
 
         when(studRepo.findByRollNumber("R001")).thenReturn(Optional.of(student));
-        when(courseRepo.findByTitle("LKG")).thenReturn(null);
+        when(courseRepo.findByTitle("LKG")).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () ->
                 studentService.cancelStudentAdmission("LKG", "R001")

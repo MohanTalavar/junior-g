@@ -39,10 +39,9 @@ public class StudentServiceImpl implements IStudentService {
     public Student admitNewStudent(String courseName, Student stud) {
 
         log.info("Admitting new student: name={}, course={}", stud.getFirstName(), courseName);
-        Course persistentCourse = courseRepo.findByTitle(courseName);
-        if (persistentCourse == null) {
-            throw new ResourceNotFoundException("Course not found: " + courseName);
-        }
+        Course persistentCourse = courseRepo.findByTitle(courseName)
+                .orElseThrow(()-> new ResourceNotFoundException("Course NOT found: "+ courseName));
+
         // check if the student is already enrolled (Assuming student has unique email)
         boolean studentExists = persistentCourse.getStudents().stream()
                 .anyMatch(s -> s.getRollNumber().equals(stud.getRollNumber()));
@@ -79,11 +78,9 @@ public class StudentServiceImpl implements IStudentService {
         Student persistentStud = studRepo.findByRollNumber(studRollNo)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with roll no: " + studRollNo));
 
-        Course persistentCourse = courseRepo.findByTitle(courseName);
+        Course persistentCourse = courseRepo.findByTitle(courseName)
+                        .orElseThrow(()-> new ResourceNotFoundException("Course NOT found: "+ courseName));
 
-        if (persistentCourse == null) {
-            throw new ResourceNotFoundException("Course not found: " + courseName);
-        }
         persistentCourse.removeStudent(persistentStud);
         return "Student admission cancelled.";
 
