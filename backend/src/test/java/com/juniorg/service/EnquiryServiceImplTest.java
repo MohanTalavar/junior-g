@@ -105,7 +105,9 @@ public class EnquiryServiceImplTest {
         enquiryService.saveEnquiryDetails(enquiry);
 
         // Assert
-        verify(emailService, never()).sendEmail(isNull(), anyString(), anyString());
+        verify(emailService, times(0)).sendEmail(
+                eq(null), anyString(), anyString()
+        );
 
     }
 
@@ -128,7 +130,8 @@ public class EnquiryServiceImplTest {
         enquiryService.saveEnquiryDetails(enquiry);
 
         // Assert
-        verify(emailService, never()).sendEmail(isNull(), isNull(), isNull());
+        // cuz only 1 email should be sent i.e to parent
+        verify(emailService, times(1)).sendEmail(anyString(), anyString(), anyString());
 
     }
 
