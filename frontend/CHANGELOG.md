@@ -1,5 +1,14 @@
 # Changelog — Junior-G International Pre School Website
 
+## v1.3.3 — October 26, 2025
+
+- Added JUnit & Mockito-based unit tests for core backend services
+- Optimized service layer for improved performance and readability
+- Updated CORS policies with stricter domain access rules
+- Improved API error messages and logging consistency
+- Minor UI/UX alignment tweaks
+- Updated internal documentation and changelog references
+
 ## v1.3.2 — June 21, 2025
 
 - Added Social Media floaters
@@ -21,7 +30,7 @@
 - Added full CRUD operations for Junior-G staff (teachers, students, users)
 - Admin role management and access controls
 
-## v1.1.0 — Mayril 2025
+## v1.1.0 — May 2025
 
 - Finalized UI for parent view
 - Course listing, contact form, basic pages
