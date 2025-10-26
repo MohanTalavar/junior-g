@@ -22,7 +22,7 @@ public class TeacherController {
 	@GetMapping("/teacher-list")
 	public ResponseEntity<List<TeacherWithCourseResponseDto>> getTeacherList(){
 
-		List<TeacherWithCourseResponseDto> listOfTeachers = teacherService.retriveTeacherList();
+		List<TeacherWithCourseResponseDto> listOfTeachers = teacherService.retrieveTeacherList();
 		return ResponseEntity.ok(listOfTeachers);
 	}
 

@@ -20,13 +20,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TeacherServiceImpl implements ITeacherService {
+
 	private final TeacherRepo teacherRepo;
 	private final CourseRepo courseRepo;
 	private static final Logger log = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
 
 	@Override
-	public List<TeacherWithCourseResponseDto> retriveTeacherList() {
+	public List<TeacherWithCourseResponseDto> retrieveTeacherList() {
+
+		log.info("Fetching the list of teachers");
+
 		List<Teacher> teacherList =  teacherRepo.findAll();
 		return teacherList.stream()
 				.sorted(Comparator.comparing(t->t.getFirstName().toLowerCase()))
@@ -37,16 +41,16 @@ public class TeacherServiceImpl implements ITeacherService {
 	@Override
 	public String addNewTeacher(String courseName, Teacher newTeacher) {
 
-		log.info("Adding new teacher :{} to course = {}", newTeacher.getFirstName(), courseName);
+		log.info("Adding new teacher: {} to course: {}", newTeacher.getFirstName(), courseName);
 		
-		if( newTeacher == null ) throw new IllegalArgumentException("Teacher details cannot be null!");
+		if( newTeacher == null )
+			throw new IllegalArgumentException("Teacher details cannot be null!");
 
 		Course persistentCourse = courseRepo.findByTitle(courseName)
-				.orElseThrow(()-> new ResourceNotFoundException(" Adding Teacher failed!! Course not found " + courseName));
+				.orElseThrow(()-> new ResourceNotFoundException(" Adding Teacher failed! Course not found " + courseName));
 
-		if (teacherRepo.findByEmail(newTeacher.getEmail()).isPresent()) {
-		    throw new IllegalStateException("Teacher with email '" + newTeacher.getEmail() + "' already exists!");
-		}
+		teacherRepo.findByEmail(newTeacher.getEmail())
+				.ifPresent(t -> { throw new IllegalStateException("Teacher with email '" + t.getEmail() + "' already exists!"); });
 
 		newTeacher.addCourse(persistentCourse);
 		teacherRepo.save(newTeacher);	
@@ -60,7 +64,7 @@ public class TeacherServiceImpl implements ITeacherService {
 		log.info("Retrieving details for teacherId: {}", teacherId);
 
         return teacherRepo.findById(teacherId)
-				.orElseThrow(()-> new ResourceNotFoundException("Teacher not found "+ teacherId));
+				.orElseThrow(()-> new ResourceNotFoundException("Teacher not found: "+ teacherId));
 	}
 
 	@Override
@@ -86,15 +90,17 @@ public class TeacherServiceImpl implements ITeacherService {
 	public Teacher updateTeacherRecord(Long teacherId, Teacher updatedTeacher) {
 
 		log.info("Updating teacher record for teacher Id: {}", teacherId);
+
 		Teacher persistentTeacher = teacherRepo.findById(teacherId)
-				.orElseThrow(()-> new ResourceNotFoundException("Teacher not found." + teacherId));
-		
-		persistentTeacher.setFirstName(updatedTeacher.getFirstName());
-		persistentTeacher.setLastName(updatedTeacher.getLastName());
-		persistentTeacher.setEmail(updatedTeacher.getEmail());
-		persistentTeacher.setPhoneNumber(updatedTeacher.getPhoneNumber());
-		persistentTeacher.setQualification(updatedTeacher.getQualification());
-		persistentTeacher.setDateOfJoining(updatedTeacher.getDateOfJoining());
+				.orElseThrow(()-> new ResourceNotFoundException("Teacher not found:" + teacherId));
+
+		// Only update fields if non-null to avoid overwriting existing data
+		if (updatedTeacher.getFirstName() != null) persistentTeacher.setFirstName(updatedTeacher.getFirstName());
+		if (updatedTeacher.getLastName() != null) persistentTeacher.setLastName(updatedTeacher.getLastName());
+		if (updatedTeacher.getEmail() != null) persistentTeacher.setEmail(updatedTeacher.getEmail());
+		if (updatedTeacher.getPhoneNumber() != null) persistentTeacher.setPhoneNumber(updatedTeacher.getPhoneNumber());
+		if (updatedTeacher.getQualification() != null) persistentTeacher.setQualification(updatedTeacher.getQualification());
+		if (updatedTeacher.getDateOfJoining() != null) persistentTeacher.setDateOfJoining(updatedTeacher.getDateOfJoining());
 		
 		// This returns the updated object (changes will auto-flush on commit)
 		// L1 cache

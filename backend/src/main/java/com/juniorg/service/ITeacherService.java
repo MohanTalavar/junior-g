@@ -8,7 +8,7 @@ import java.util.List;
 public interface ITeacherService {
 
 	// add a method to get the list of teachers
-	List<TeacherWithCourseResponseDto> retriveTeacherList();
+	List<TeacherWithCourseResponseDto> retrieveTeacherList();
 	
 	// add a method to store new teacher details
 	String addNewTeacher(String courseName, Teacher newTeacher);
