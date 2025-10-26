@@ -31,7 +31,7 @@ public class StudentServiceImpl implements IStudentService {
                     return new ResourceNotFoundException("Student not found with roll no: " + studentRollNo);
                 });
 
-        log.debug("Student details fetched successfully: {}", persistentStud.getRollNumber()); // optional
+        log.info("Student details fetched successfully: {}", persistentStud.getRollNumber()); // optional
         return persistentStud;
     }
 
@@ -97,19 +97,8 @@ public class StudentServiceImpl implements IStudentService {
         Student persistentStud = studRepo.findById(studId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + studId));
 
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getFirstName(), persistentStud::getFirstName, persistentStud::setFirstName);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getMiddleName(), persistentStud::getMiddleName, persistentStud::setMiddleName);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getSurname(), persistentStud::getSurname, persistentStud::setSurname);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getEmail(), persistentStud::getEmail, persistentStud::setEmail);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getRollNumber(), persistentStud::getRollNumber, persistentStud::setRollNumber);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getPhoneNumber(), persistentStud::getPhoneNumber, persistentStud::setPhoneNumber);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getDateOfBirth(), persistentStud::getDateOfBirth, persistentStud::setDateOfBirth);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getGender(), persistentStud::getGender, persistentStud::setGender);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getFatherName(), persistentStud::getFatherName, persistentStud::setFatherName);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getMotherName(), persistentStud::getMotherName, persistentStud::setMotherName);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getEmergencyContact(), persistentStud::getEmergencyContact, persistentStud::setEmergencyContact);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getAdmissionDate(), persistentStud::getAdmissionDate, persistentStud::setAdmissionDate);
-        UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getBloodGroup(), persistentStud::getBloodGroup, persistentStud::setBloodGroup);
+        applyStudentUpdates(persistentStud, updatedStudent);
+
         log.info("Successfully updated student record for studentId: {}", studId);
         return persistentStud;
     }
@@ -123,6 +112,14 @@ public class StudentServiceImpl implements IStudentService {
         Student persistentStud = studRepo.findByRollNumber(rollNumber)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + rollNumber));
 
+        applyStudentUpdates(persistentStud, updatedStudent);
+
+        log.info("Successfully updated student record for student rollNo: {}", rollNumber);
+        return persistentStud;
+    }
+
+    private void applyStudentUpdates(Student persistentStud, Student updatedStudent) {
+
         UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getFirstName(), persistentStud::getFirstName, persistentStud::setFirstName);
         UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getMiddleName(), persistentStud::getMiddleName, persistentStud::setMiddleName);
         UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getSurname(), persistentStud::getSurname, persistentStud::setSurname);
@@ -136,8 +133,6 @@ public class StudentServiceImpl implements IStudentService {
         UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getEmergencyContact(), persistentStud::getEmergencyContact, persistentStud::setEmergencyContact);
         UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getAdmissionDate(), persistentStud::getAdmissionDate, persistentStud::setAdmissionDate);
         UpdateUtils.updateIfNonNullAndDifferent(updatedStudent.getBloodGroup(), persistentStud::getBloodGroup, persistentStud::setBloodGroup);
-        log.info("Successfully updated student record for student rollNo: {}", rollNumber);
-        return persistentStud;
     }
 
 }
