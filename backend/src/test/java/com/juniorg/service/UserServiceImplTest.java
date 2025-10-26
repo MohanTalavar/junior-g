@@ -16,6 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,7 +74,7 @@ public class UserServiceImplTest {
         when(mockAuth.isAuthenticated()).thenReturn(true);
 
         when(authenticationManager.authenticate(any())).thenReturn(mockAuth);
-        when(userRepo.findByUserName("mohan")).thenReturn(new User("mohan", "mohan@gmail.com", "pass", "ROLE_ADMIN"));
+        when(userRepo.findByUserName("mohan")).thenReturn(Optional.of(new User("mohan", "mohan@gmail.com", "pass", "ROLE_ADMIN")));
         when(jwtService.generateToken("mohan")).thenReturn("jwt-123");
 
         // Act
@@ -125,7 +126,7 @@ public class UserServiceImplTest {
         user.setUserName("mohan");
         user.setEmail("mohan@gmail.com");
 
-        when(userRepo.findByUserName("mohan")).thenReturn(user);
+        when(userRepo.findByUserName("mohan")).thenReturn(Optional.of(user));
         when(jwtService.generateToken("mohan")).thenReturn("reset-token");
 
         String result = userService.initiatePasswordReset("mohan", "mohan@gmail.com");
@@ -137,7 +138,7 @@ public class UserServiceImplTest {
     @Test
     @DisplayName("Should throw when username/email do not match")
     void initiatePasswordReset_InvalidEmail_ShouldThrow() {
-        when(userRepo.findByUserName("mohan")).thenReturn(null);
+        when(userRepo.findByUserName("mohan")).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () -> {
             userService.initiatePasswordReset("mohan", "wrong@gmail.com");
@@ -152,7 +153,7 @@ public class UserServiceImplTest {
         String newPassword = "newpass";
 
         when(jwtService.extractUserName(token)).thenReturn(username);
-        when(userRepo.findByUserName(username)).thenReturn(new User());
+        when(userRepo.findByUserName(username)).thenReturn(Optional.of(new User()));
 
         String result = userService.resetPassword(token, newPassword);
 
@@ -173,7 +174,7 @@ public class UserServiceImplTest {
     @DisplayName("Should return success even when user does not exist (idempotent)")
     void shouldReturnSuccessWhenUserNotFound() {
         when(jwtService.extractUserName("token")).thenReturn("ghost");
-        when(userRepo.findByUserName("ghost")).thenReturn(null);
+        when(userRepo.findByUserName("ghost")).thenReturn(Optional.empty());
 
         String result = userService.resetPassword("token", "pass");
         assertEquals("Password has been reset successfully!", result);
@@ -200,7 +201,7 @@ public class UserServiceImplTest {
         User user = new User();
         user.setId(1L);
 
-        when(userRepo.findByUserName("john")).thenReturn(user);
+        when(userRepo.findByUserName("john")).thenReturn(Optional.of(user));
 
         String result = userService.deleteUser("john");
 
@@ -211,7 +212,7 @@ public class UserServiceImplTest {
     @Test
     @DisplayName("Should throw exception when deleting non-existing user")
     void shouldThrowOnNonExistingDelete() {
-        when(userRepo.findByUserName("ghost")).thenReturn(null);
+        when(userRepo.findByUserName("ghost")).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,
                 () -> userService.deleteUser("ghost"));
@@ -221,7 +222,7 @@ public class UserServiceImplTest {
     @DisplayName("Should update user details successfully")
     void shouldUpdateUserDetails() {
         User existing = new User("john");
-        when(userRepo.findByUserName("john")).thenReturn(existing);
+        when(userRepo.findByUserName("john")).thenReturn(Optional.of(existing));
 
         UserResponseDto updated = new UserResponseDto("johnny", "mail@mail.com", "ADMIN");
 
@@ -234,7 +235,7 @@ public class UserServiceImplTest {
     @DisplayName("Should fetch user details successfully")
     void shouldFetchUserDetails() {
         User user = new User("john");
-        when(userRepo.findByUserName("john")).thenReturn(user);
+        when(userRepo.findByUserName("john")).thenReturn(Optional.of(user));
 
         UserResponseDto result = userService.fetchUserDetailsByUserName("john");
 

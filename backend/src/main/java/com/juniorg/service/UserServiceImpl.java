@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -78,7 +79,8 @@ public class UserServiceImpl implements IUserService {
     // Removing from the IUser Service
     // Making this method private
     private User retrieveUserDetails(String userName) {
-        return userRepo.findByUserName(userName);
+        return userRepo.findByUserName(userName)
+                .orElseThrow(()-> new ResourceNotFoundException("User not found: "+ userName));
     }
 
     @Override
@@ -86,12 +88,8 @@ public class UserServiceImpl implements IUserService {
 
         log.info("Password reset requested for user {} with email {}", userName, email);
 
-        User user = userRepo.findByUserName(userName);
-
-        if (user == null) {
-            log.warn("Password reset failed: user {} not found", userName);
-            throw new IllegalArgumentException("Invalid username or email");
-        }
+        User user = userRepo.findByUserName(userName)
+                .orElseThrow(()-> new IllegalArgumentException("Invalid username or email"));
 
         if (!user.getEmail().equalsIgnoreCase(email)) {
             log.warn("Password reset failed: email mismatch for user {}", userName);
@@ -129,18 +127,18 @@ public class UserServiceImpl implements IUserService {
             throw new IllegalArgumentException("Invalid token");
         }
 
-        User user = userRepo.findByUserName(username);
-        if (user == null) {
+        Optional<User> optionalUser = userRepo.findByUserName(username);
+        if (optionalUser.isEmpty()) {
             log.warn("Attempt to reset password for non-existing user {}", username);
             // do not reveal existence
             return "Password has been reset successfully!"; // idempotent
         }
 
+        User user = optionalUser.get();
         user.setPassword(encoder.encode(newPassword));
         userRepo.save(user);
 
         log.info("Password reset successful for {}", username);
-
         return "Password has been reset successfully!";
     }
 
@@ -161,12 +159,8 @@ public class UserServiceImpl implements IUserService {
 
         log.info("Delete user request {}", userName);
 
-        User persistentUser = userRepo.findByUserName(userName);
-
-        if (persistentUser == null) {
-            log.warn("User {} not found for deletion", userName);
-            throw new ResourceNotFoundException("User not found");
-        }
+        User persistentUser = userRepo.findByUserName(userName)
+                .orElseThrow(()->new ResourceNotFoundException("User not found: "+userName));
 
         userRepo.delete(persistentUser);
         log.info("User {} deleted successfully!", userName);
@@ -179,8 +173,8 @@ public class UserServiceImpl implements IUserService {
 
         log.info("Updating user {}", userName);
 
-        User persistentUser = userRepo.findByUserName(userName);
-        if (persistentUser == null) throw new ResourceNotFoundException("User not found");
+        User persistentUser = userRepo.findByUserName(userName)
+                .orElseThrow(()-> new ResourceNotFoundException("User not found: "+userName));
 
         // Dirty checking saves the persistent user
         persistentUser.setUserName(updatedUser.getUserName());
@@ -197,10 +191,8 @@ public class UserServiceImpl implements IUserService {
 
         log.info("Fetching details for {}", userName);
 
-        User persistentUser = userRepo.findByUserName(userName);
-
-        if (persistentUser == null)
-            throw new ResourceNotFoundException("User " + userName + " NOT found!!!");
+        User persistentUser = userRepo.findByUserName(userName)
+                .orElseThrow(()-> new ResourceNotFoundException("User not found: "+ userName));
 
         return new UserResponseDto(persistentUser);
     }
