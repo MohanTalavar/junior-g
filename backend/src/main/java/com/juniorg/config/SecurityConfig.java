@@ -76,11 +76,23 @@ public class SecurityConfig {
                                 "/enquiry"
                         ).permitAll()
 
-                        // 2) Allow GET everywhere to TEACHER or ADMIN
+                        // 2) Attendance endpoints
+                        // - Teachers and Admins can mark, update, and delete
+                        // - Everyone with a valid role can view (GET)
+                        .requestMatchers(HttpMethod.GET, "/attendances/**")
+                        .hasAnyRole("TEACHER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/attendances/**")
+                        .hasAnyRole("TEACHER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/attendances/**")
+                        .hasAnyRole("TEACHER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/attendances/**")
+                        .hasAnyRole("TEACHER", "ADMIN")
+
+                        // 3) Allow GET everywhere to TEACHER or ADMIN
                         .requestMatchers(HttpMethod.GET, "/**")
                         .hasAnyRole("TEACHER", "ADMIN")
 
-                        // 3) Grant student-specific operations to NORMAL or ADMIN
+                        // 4) Grant student-specific operations to NORMAL or ADMIN
                         //    (admit, update, delete under /students/**)
                         .requestMatchers(HttpMethod.POST, "/students/**")
                         .hasAnyRole("TEACHER", "ADMIN")
@@ -89,7 +101,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/students/**")
                         .hasAnyRole("TEACHER", "ADMIN")
 
-                        // 4) Everything else (non-GET, non-students) requires ADMIN
+                        // 5) Everything else (non-GET, non-students) requires ADMIN
                         .anyRequest()
                         .hasRole("ADMIN")
                 )
