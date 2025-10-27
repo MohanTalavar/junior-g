@@ -152,7 +152,7 @@ const AdmissionEnquiryPage: React.FC = () => {
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a course" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               <SelectItem value="Daycare">Daycare</SelectItem>
               <SelectItem value="Play Group">Play Group</SelectItem>
               <SelectItem value="Nursery">Nursery</SelectItem>

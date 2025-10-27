@@ -1,27 +1,31 @@
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+// src/components/navbar/navbar-component.tsx
 import {
   Sheet,
   SheetContent,
-  SheetTrigger,
-  SheetTitle,
   SheetDescription,
+  SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { RootState } from "../../app/store";
 import crestImg from "../../assets/images/JuniorG_Crest.png";
 
 const Navbar: React.FC = () => {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
+  // pull user and role out of Redux
+  const { isAuthenticated, user, role } = useSelector(
+    (state: RootState) => state.auth
   );
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-white p-2 md:p-4 py-2 shadow-md ">
+    <nav className="bg-white p-2 md:p-4 shadow-md">
       <div className="flex justify-between items-center">
-        {/* Logo + Brand Block */}
+        {/* Logo + Brand */}
         <div className="flex items-center gap-6 md:pl-8 pl-2">
-          <Link
+          <NavLink
             to="/"
             className="flex items-center text-[#002F6C] text-2xl font-serif font-bold tracking-wide hover:text-[#004D99] transition duration-300"
           >
@@ -32,66 +36,71 @@ const Navbar: React.FC = () => {
                 International Preschool
               </div>
             </span>
-          </Link>
-
-          {/* Summer Camp link */}
-          {/* <Link
-            to="/summercamp"
-            className="text-[#F18701] mt-4 md:mt-9 font-bold text-xs mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#f35b04] transition duration-300"
-          >
-            Summer Camp!
-          </Link> */}
-
-          {/* Admission Enquiry link */}
+          </NavLink>
           <div className="hidden md:block md:mt-9">
-            <Link
+            <NavLink
               to="/admission-enquiry"
-              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider
-               hover:text-[#004D99] hover:underline hover:underline-offset-6 transition duration-300"
+              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#004D99] hover:underline hover:underline-offset-6 transition duration-300"
             >
               Admission Enquiry!
-            </Link>
+            </NavLink>
           </div>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex gap-6">
+        <div className="hidden md:flex items-center gap-6">
+          {isAuthenticated && role === "ROLE_ADMIN" && (
+            <NavLink
+              to="/admin/users"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+            >
+              User Maintenance
+            </NavLink>
+          )}
+
+          {isAuthenticated && role === "ROLE_ADMIN" && (
+            <NavLink
+              to="/teacher"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+            >
+              Teachers
+            </NavLink>
+          )}
+
           {isAuthenticated && (
-            <>
-              <Link
-                to="/teacher"
-                className="text-[#002F6C]  md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-              >
-                Teachers
-              </Link>
-              <Link
-                to="/student"
-                className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-              >
-                Students
-              </Link>
-            </>
+            <NavLink
+              to="/student"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+            >
+              Students
+            </NavLink>
           )}
           {isAuthenticated ? (
-            <Link
-              to="/logout"
-              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 hover:underline hover:underline-offset-6"
-            >
-              Logout
-            </Link>
+            // Wrap user+logout in a column
+            <div className="flex flex-col items-center">
+              <span className="text-[#8B0000] font-medium mb-1">
+                {user} ({role?.replace("ROLE_", "")})
+              </span>
+              <NavLink
+                to="/logout"
+                className="text-[#002F6C] font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+              >
+                Logout
+              </NavLink>
+            </div>
           ) : (
-            <Link
+            <NavLink
               to="/login"
-              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 mr-4 mt-9 hover:underline hover:underline-offset-6"
+              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6 mt-9"
             >
               Login
-            </Link>
+            </NavLink>
           )}
         </div>
 
         {/* Mobile Nav (Sheet) */}
         <div className="md:hidden">
-          <Sheet>
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger>
               <Menu className="text-[#1C2C5B]" size={32} />
             </SheetTrigger>
@@ -107,53 +116,141 @@ const Navbar: React.FC = () => {
               >
                 Menu
               </SheetTitle>
-              <SheetDescription id="mobile-nav-description"></SheetDescription>
+              <SheetDescription id="mobile-nav-description" />
+
+              {/* display user + role */}
+              {isAuthenticated && (
+                <div className="mb-4 text-gray-700 font-medium">
+                  {user} ({role?.replace("ROLE_", "")})
+                </div>
+              )}
+
+              <NavLink
+                to="/"
+                className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                onClick={() => setOpen(false)}
+              >
+                {({ isActive }) => (
+                  <div className="flex">
+                    {isActive ? (
+                      <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                    ) : (
+                      <div className="pl-4"></div>
+                    )}
+                    Home
+                  </div>
+                )}
+              </NavLink>
 
               <div className="flex flex-col gap-4 text-base font-serif">
-                {/* <Link
-                  to="/summercamp"
-                  className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
-                >
-                  Summer Camp 2025
-                </Link> */}
-
-                <Link
+                <NavLink
                   to="/admission-enquiry"
                   className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
+                  onClick={() => setOpen(false)}
                 >
-                  Admission Enquiry
-                </Link>
+                  {({ isActive }) => (
+                    <div className="flex">
+                      {isActive ? (
+                        <div className="h-6 w-1.5 bg-[#F18701] mr-2"></div>
+                      ) : (
+                        <div className="pl-4"></div>
+                      )}
+                      Admission Enquiry
+                    </div>
+                  )}
+                </NavLink>
+
+                {isAuthenticated && role === "ROLE_ADMIN" && (
+                  <NavLink
+                    to="/teacher"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                    onClick={() => setOpen(false)}
+                  >
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
+                        )}
+                        Teachers
+                      </div>
+                    )}
+                  </NavLink>
+                )}
 
                 {isAuthenticated && (
-                  <>
-                    <Link
-                      to="/teacher"
-                      className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
-                    >
-                      Teachers
-                    </Link>
-                    <Link
-                      to="/student"
-                      className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
-                    >
-                      Students
-                    </Link>
-                  </>
+                  <NavLink
+                    to="/student"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                    onClick={() => setOpen(false)}
+                  >
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
+                        )}
+                        Students
+                      </div>
+                    )}
+                  </NavLink>
                 )}
+
+                {isAuthenticated && role === "ROLE_ADMIN" && (
+                  <NavLink
+                    to="/admin/users"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                    onClick={() => setOpen(false)}
+                  >
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
+                        )}
+                        User Management
+                      </div>
+                    )}
+                  </NavLink>
+                )}
+
                 {isAuthenticated ? (
-                  <Link
+                  <NavLink
                     to="/logout"
                     className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                    onClick={() => setOpen(false)}
                   >
-                    Logout
-                  </Link>
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
+                        )}
+                        Logout
+                      </div>
+                    )}
+                  </NavLink>
                 ) : (
-                  <Link
+                  <NavLink
                     to="/login"
                     className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                    onClick={() => setOpen(false)}
                   >
-                    Login
-                  </Link>
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
+                        )}
+                        Login
+                      </div>
+                    )}
+                  </NavLink>
                 )}
               </div>
             </SheetContent>

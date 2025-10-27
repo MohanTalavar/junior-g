@@ -1,6 +1,7 @@
+// src/components/login/LoginForm.tsx
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "@/features/auth/authAPI";
 import { setUser } from "@/features/auth/authSlice";
 import { AppDispatch } from "@/app/store";
@@ -25,8 +26,14 @@ export function LoginForm() {
     e.preventDefault();
     try {
       const data = await loginUser(formData);
-      localStorage.setItem("token", data.token);
-      dispatch(setUser({ user: data.userName, token: data.token }));
+      // Dispatch to Redux; reducer will persist user, role, token to localStorage
+      dispatch(
+        setUser({
+          user: data.userName,
+          role: data.role,
+          token: data.token,
+        })
+      );
       setError("");
       navigate("/");
     } catch (err) {
@@ -79,6 +86,10 @@ export function LoginForm() {
           >
             Login
           </Button>
+
+          <Link to="/forgot-password" className="text-blue-800 hover:underline">
+            Forgot password?
+          </Link>
 
           {error && <p className="text-sm text-red-600 text-center">{error}</p>}
         </form>

@@ -1,9 +1,11 @@
-import GetTeacher from "../components/teacher/teacher-component";
+import TeacherList from "@/components/teacher/teacher-list-component";
+
+// import GetTeacher from "../components/teacher/teacher-component";
 const TeacherPage: React.FC = () => {
   return (
     <div>
-      <h2>Teacher Details</h2>
-      <GetTeacher />
+      {/* <GetTeacher /> */}
+      <TeacherList />
     </div>
   );
 };
