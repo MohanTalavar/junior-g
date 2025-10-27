@@ -94,54 +94,65 @@ public class GlobalExceptionHandler {
 
 
 	@ExceptionHandler(BadCredentialsException.class)
-	public ResponseEntity<?> handleBadCredentials(BadCredentialsException ex) {
-		Map<String, String> error = new HashMap<>();
-		error.put("error", ex.getMessage());
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+	public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex, HttpServletRequest req) {
+		log.warn("Bad credentials: {}", ex.getMessage());
+		ErrorResponse err = buildError(req, HttpStatus.UNAUTHORIZED, "Invalid username or password", "Unauthorized");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
 	}
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex){
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+	public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest req) {
+		log.warn("Resource not found: {}", ex.getMessage());
+		ErrorResponse err = buildError(req, HttpStatus.NOT_FOUND, ex.getMessage(), "Not Found");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 	}
-	
+
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<String> handleGenericException(Exception ex){
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body("An unexpected error occured: "+ ex.getMessage());
+	public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest req) {
+		log.error("Unexpected error: {}", ex.getMessage(), ex);
+		ErrorResponse err = buildError(req, HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", "Server Error");
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
 	}
-	
+
 	@ExceptionHandler(IllegalStateException.class)
-	public ResponseEntity<String> handleDuplicate(IllegalStateException ex){
-		return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage()); // Error 409
+	public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex, HttpServletRequest req) {
+		log.warn("Illegal state: {}", ex.getMessage());
+		ErrorResponse err = buildError(req, HttpStatus.CONFLICT, ex.getMessage(), "Conflict");
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
 	}
-	
+
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage()); // Error 400
+	public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest req) {
+		log.warn("Invalid argument: {}", ex.getMessage());
+		ErrorResponse err = buildError(req, HttpStatus.BAD_REQUEST, ex.getMessage(), "Bad Request");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
-	
-	// Added to handle the exceptions raised when validating the dto
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), error.getDefaultMessage());
-        });
-        return ResponseEntity.badRequest().body(errors);
-	 }
+	public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex, HttpServletRequest req) {
+		StringBuilder sb = new StringBuilder();
+		ex.getBindingResult().getFieldErrors().forEach(error -> {
+			sb.append(error.getField()).append(": ").append(error.getDefaultMessage()).append("; ");
+		});
+		String msg = sb.toString().trim();
+		log.warn("Validation failed: {}", msg);
+		ErrorResponse err = buildError(req, HttpStatus.BAD_REQUEST, msg, "Validation Error");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
 
 	@ExceptionHandler(io.jsonwebtoken.ExpiredJwtException.class)
-	public ResponseEntity<String> handleExpiredJwtException(io.jsonwebtoken.ExpiredJwtException ex) {
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-				.body("Token expired: " + ex.getMessage());
+	public ResponseEntity<ErrorResponse> handleExpiredJwt(io.jsonwebtoken.ExpiredJwtException ex, HttpServletRequest req) {
+		log.warn("Expired JWT token: {}", ex.getMessage());
+		ErrorResponse err = buildError(req, HttpStatus.UNAUTHORIZED, "Token expired", "Unauthorized");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(err);
 	}
 
 	@ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
-	public ResponseEntity<Map<String, String>> handleDataIntegrityViolationException(org.springframework.dao.DataIntegrityViolationException ex) {
-		Map<String, String> error = new HashMap<>();
-		error.put("error", "Invalid data: " + ex.getRootCause().getMessage());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+	public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(org.springframework.dao.DataIntegrityViolationException ex, HttpServletRequest req) {
+		String rootMsg = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+		log.error("Data integrity violation: {}", rootMsg);
+		ErrorResponse err = buildError(req, HttpStatus.BAD_REQUEST, "Invalid data: " + rootMsg, "Bad Request");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 
 }
