@@ -84,7 +84,9 @@ const StudentList: React.FC = () => {
   return (
     <Card className="space-y-4">
       <CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0">
-        <CardTitle className="text-2xl font-bold">Student Management</CardTitle>
+        <CardTitle className="text-3xl font-bold text-[#3D348B]">
+          Student Management
+        </CardTitle>
         <div className="flex flex-wrap gap-2">
           {COURSES.map((course) => {
             const isActive = selectedCourse === course;
@@ -112,7 +114,7 @@ const StudentList: React.FC = () => {
 
         <Button
           onClick={() => navigate("/student/add")}
-          className="bg-green-600 text-white hover:bg-green-700"
+          className="bg-green-600 text-white hover:bg-green-700 hover:cursor-pointer"
         >
           Admit New Student
         </Button>

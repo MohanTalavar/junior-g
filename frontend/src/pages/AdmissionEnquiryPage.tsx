@@ -76,7 +76,7 @@ const AdmissionEnquiryPage: React.FC = () => {
 
   return (
     <div className="max-w-lg mx-auto p-4">
-      <h2 className="text-2xl font-semibold text-center mb-6">
+      <h2 className="text-3xl text-center font-bold text-[#3D348B] mb-6">
         Admission Enquiry FY 25-26
       </h2>
 
@@ -170,7 +170,7 @@ const AdmissionEnquiryPage: React.FC = () => {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-2 bg-blue-600 text-white rounded-md"
+            className="w-full py-2 bg-blue-600 text-white rounded-md hover:cursor-pointer hover:bg-blue-800"
           >
             {isSubmitting ? "Submitting..." : "Submit Enquiry"}
           </Button>

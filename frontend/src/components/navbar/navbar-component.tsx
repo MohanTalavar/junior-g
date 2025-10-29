@@ -75,6 +75,16 @@ const Navbar: React.FC = () => {
               Students
             </NavLink>
           )}
+
+          {isAuthenticated && (
+            <NavLink
+              to="/attendance"
+              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
+            >
+              Attendance
+            </NavLink>
+          )}
+
           {isAuthenticated ? (
             // Wrap user+logout in a column
             <div className="flex flex-col items-center">
@@ -193,6 +203,25 @@ const Navbar: React.FC = () => {
                           <div className="pl-4"></div>
                         )}
                         Students
+                      </div>
+                    )}
+                  </NavLink>
+                )}
+
+                {isAuthenticated && (
+                  <NavLink
+                    to="/admin/attendance"
+                    className="font-medium text-[#002F6C] hover:text-[#004D99] transition duration-300"
+                    onClick={() => setOpen(false)}
+                  >
+                    {({ isActive }) => (
+                      <div className="flex">
+                        {isActive ? (
+                          <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
+                        ) : (
+                          <div className="pl-4"></div>
+                        )}
+                        Attendance
                       </div>
                     )}
                   </NavLink>

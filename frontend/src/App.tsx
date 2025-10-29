@@ -19,6 +19,7 @@ import { ResetPasswordForm } from "./components/login/reset-password-component";
 import { UserList } from "./components/user/user-list-component";
 import { UserAddComponent } from "./components/user/user-add-component";
 import { UserEditComponent } from "./components/user/user-edit-component";
+import AttendancePage from "./pages/AttendancePage";
 
 function App() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -47,6 +48,7 @@ function App() {
             path="/admin/edit-user/:userName"
             element={<UserEditComponent />}
           />
+          <Route path="/attendance" element={<AttendancePage />} />
 
           {/* <Route path="/summercamp" element={<SummerCampPage />} /> */}
           <Route path="/admission-enquiry" element={<AdmissionEnquiryPage />} />

@@ -80,7 +80,9 @@ export function UserList() {
   return (
     <Card className="space-y-4">
       <CardHeader className="flex items-center justify-between">
-        <CardTitle className="text-2xl font-bold">User Management</CardTitle>
+        <CardTitle className="text-3xl font-bold text-[#3D348B]">
+          User Management
+        </CardTitle>
         <Button
           onClick={() => navigate("/admin/add-user")}
           className="bg-green-600 text-white hover:bg-green-700"
