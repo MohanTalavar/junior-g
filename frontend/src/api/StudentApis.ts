@@ -20,6 +20,23 @@ export type Student = {
   bloodGroup: string;      // e.g. "A+", "O-"
 };
 
+export type StudentWithId = {
+  id: number;
+  firstName: string;
+  middleName?: string;
+  surname: string;
+  email: string;
+  rollNumber: string;
+  phoneNumber: string;
+  dateOfBirth: string;
+  gender: string;
+  fatherName: string;
+  motherName: string;
+  emergencyContact: string;
+  admissionDate: string;
+  bloodGroup: string;
+};
+
 /** 
  * Matches your backend’s CourseWithStudentsResponseDto 
  */
@@ -28,15 +45,30 @@ export type CourseWithStudents = {
   students: Student[];
 };
 
+export type CourseWithStudentsWithId = {
+  courseName: string;
+  students: StudentWithId[];
+};
+
+
 /**
  * Fetch a course and its enrolled students by courseName
- * GET /teachers/get-course-and-student-details-join-fetch/{courseName}
+ * GET /get-course-and-student-details-join-fetch/{courseName}
  */
-export const getCourseWithStudents = async (
-  courseName: string
-): Promise<CourseWithStudents> => {
+export const getCourseWithStudents = async (courseName: string): Promise<CourseWithStudents> => {
+  
   const resp = await api.get<CourseWithStudents>(
     `/courses/get-course-and-student-details-join-fetch/${courseName}`
+  );
+  return resp.data;
+};
+
+// This one is added to get the course and students with student id in it
+// The above method contains students withoud ids
+//@GetMapping("/get-course-and-student-details-join-fetch-with-id/{courseName}")
+export const getCourseWithStudentsWithId = async (courseName: string): Promise<CourseWithStudentsWithId> => {
+  const resp = await api.get<CourseWithStudentsWithId>(
+    `/courses/get-course-and-student-details-join-fetch-with-id/${courseName}`
   );
   return resp.data;
 };

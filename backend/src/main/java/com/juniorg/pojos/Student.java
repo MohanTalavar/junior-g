@@ -2,6 +2,8 @@ package com.juniorg.pojos;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "choosenCourse"})
 @Entity
 @Table(name = "students_tbl")
 @Getter
@@ -68,6 +71,7 @@ public class Student extends BaseEntity {
 	// what should be the additional prop for mapping a bi -dir asso,
 	// so that one can find out chosen course's details from stud?
 	// Course 1<---*Student
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "course_id", nullable = false)
 	private Course choosenCourse;

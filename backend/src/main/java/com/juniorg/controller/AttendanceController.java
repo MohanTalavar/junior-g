@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +83,18 @@ public class AttendanceController {
         log.info("Fetching paginated attendance records from {} to {}, page: {}, size: {}", startDate, endDate, page, size);
         Pageable pageable = PageRequest.of(page, size);
         Page<AttendanceResponseDto> result = attendanceService.getAttendanceByDateRange(startDate, endDate, pageable);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/studentByRollNo/{rollNumber}")
+    public ResponseEntity<Page<AttendanceResponseDto>> getAttendanceByStudent(
+            @PathVariable String rollNumber,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        log.info("Fetching attendance for student rollNumber: {}, page: {}, size: {}", rollNumber, page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("attendanceDate").descending());
+        Page<AttendanceResponseDto> result = attendanceService.getAttendanceByStudentRollNumber(rollNumber, pageable);
         return ResponseEntity.ok(result);
     }
 

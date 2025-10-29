@@ -22,6 +22,8 @@ public class AttendanceDto {
      */
     private Long studentId;
 
+    private String rollNumber;
+
     /**
      * Date for which attendance is being recorded.
      */

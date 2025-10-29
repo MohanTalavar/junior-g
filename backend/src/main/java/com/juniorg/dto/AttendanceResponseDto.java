@@ -10,6 +10,7 @@ import lombok.Setter;
 public class AttendanceResponseDto {
     private Long id;
     private Long studentId;
+    private String rollNumber;
     private String studentName;
     private LocalDate attendanceDate;
     private AttendanceStatus status;

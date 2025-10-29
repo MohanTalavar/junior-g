@@ -9,6 +9,7 @@ import com.juniorg.pojos.Student;
 import com.juniorg.repo.AttendanceRepository;
 import com.juniorg.repo.StudentRepo;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,6 +30,7 @@ public class AttendanceServiceImpl implements IAttendanceService {
 
     private final AttendanceRepository attendanceRepo;
     private final StudentRepo studentRepo;
+    private final ModelMapper modelMapper;
     private static final Logger log = LoggerFactory.getLogger(AttendanceServiceImpl.class);
 
     /**
@@ -203,6 +205,7 @@ public class AttendanceServiceImpl implements IAttendanceService {
     private AttendanceResponseDto convertToDto(Attendance attendance) {
         AttendanceResponseDto dto = new AttendanceResponseDto();
         dto.setId(attendance.getId());
+        dto.setRollNumber(attendance.getStudent().getRollNumber());
         dto.setStudentId(attendance.getStudent().getId());
         dto.setStudentName(attendance.getStudent().getFirstName() + " " + attendance.getStudent().getSurname());
         dto.setAttendanceDate(attendance.getAttendanceDate());
@@ -210,6 +213,29 @@ public class AttendanceServiceImpl implements IAttendanceService {
         dto.setMarkedBy(attendance.getMarkedBy());
         dto.setRemarks(attendance.getRemarks());
         return dto;
+    }
+
+    public Page<AttendanceResponseDto> getAttendanceByStudentRollNumber(String rollNumber, Pageable pageable) {
+        // 1️⃣ Find the student by roll number
+        Student student = studentRepo.findByRollNumber(rollNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with roll number: " + rollNumber));
+
+        // 2️⃣ Fetch paginated attendance records for that student
+        Page<Attendance> attendancePage = attendanceRepo.findByStudent(student, pageable);
+
+        // 3️⃣ Map each Attendance -> AttendanceResponseDto manually
+        return attendancePage.map(att -> {
+            AttendanceResponseDto dto = new AttendanceResponseDto();
+            dto.setId(att.getId());
+            dto.setStudentId(student.getId());
+            dto.setRollNumber(student.getRollNumber());
+            dto.setStudentName(student.getFirstName() + " " + student.getSurname());
+            dto.setAttendanceDate(att.getAttendanceDate());
+            dto.setStatus(att.getStatus());
+            dto.setMarkedBy(att.getMarkedBy());
+            dto.setRemarks(att.getRemarks());
+            return dto;
+        });
     }
 
 }

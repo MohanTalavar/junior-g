@@ -1,6 +1,7 @@
 package com.juniorg.controller;
 
 import com.juniorg.dto.CourseRequestResponseDto;
+import com.juniorg.dto.CourseWithStudentsIdResponseDto;
 import com.juniorg.dto.CourseWithStudentsRequestDto;
 import com.juniorg.dto.CourseWithStudentsResponseDto;
 import com.juniorg.pojos.Course;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
 import static org.springframework.web.util.HtmlUtils.htmlEscape;
 
 @RestController
@@ -94,8 +97,19 @@ public class CourseController {
 
         // return new CourseWithStudentsResponseDto(courseService.getCourseAndStudentDetailsJoinFetch(courseName));
 
-        CourseWithStudentsResponseDto course = new CourseWithStudentsResponseDto(courseService.getCourseAndStudentDetailsJoinFetch(courseName));
+        CourseWithStudentsResponseDto course = new CourseWithStudentsResponseDto(
+                courseService.getCourseAndStudentDetailsJoinFetch(courseName));
         return ResponseEntity.ok(course);
     }
+
+    @GetMapping("/get-course-and-student-details-join-fetch-with-id/{courseName}")
+    public ResponseEntity<CourseWithStudentsIdResponseDto> getCourseAndStudentDetailsJoinFetchWithId(
+            @PathVariable String courseName) {
+
+        CourseWithStudentsIdResponseDto dto = new CourseWithStudentsIdResponseDto(
+                courseService.getCourseAndStudentDetailsJoinFetch(courseName));
+        return ResponseEntity.ok(dto);
+    }
+
 
 }

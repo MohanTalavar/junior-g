@@ -57,4 +57,6 @@ public interface IAttendanceService {
      * Generally used only by admin-level users.
      */
     void deleteAttendance(Long attendanceId);
+
+    public Page<AttendanceResponseDto> getAttendanceByStudentRollNumber(String rollNumber, Pageable pageable);
 }
