@@ -152,7 +152,18 @@ const AttendanceList: React.FC = () => {
       return;
     }
 
-    // Get user details from localStorage
+    // 🚫 Validation: ensure all students have a marked status
+    const unmarkedStudents = students.filter(
+      (s) => !attendanceData[s.id] || attendanceData[s.id].trim() === ""
+    );
+    if (unmarkedStudents.length > 0) {
+      toast.warning(
+        `Please mark attendance for all students before submitting (${unmarkedStudents.length} unmarked).`
+      );
+      return;
+    }
+
+    // ✅ Continue only if all statuses are marked
     const role = localStorage.getItem("role") || "ROLE_UNKNOWN";
     const user = localStorage.getItem("user") || "UnknownUser";
     const formattedRole =
@@ -163,14 +174,10 @@ const AttendanceList: React.FC = () => {
         : "User";
     const markedBy = `${formattedRole} ${user}`;
 
-    // Build attendance list to send to backend
     const attendanceList: Attendance[] = students.map((s) => ({
       studentId: s.id,
       attendanceDate: date,
-      status: (attendanceData[s.id] || "ABSENT") as
-        | "PRESENT"
-        | "ABSENT"
-        | "LEAVE",
+      status: attendanceData[s.id] as "PRESENT" | "ABSENT" | "LEAVE",
       markedBy,
       remarks: remarksData[s.id] || "",
     }));
@@ -179,7 +186,6 @@ const AttendanceList: React.FC = () => {
       console.log("📤 Submitting attendanceList:", attendanceList);
       const response = await markAttendanceBulk(attendanceList);
 
-      // ✅ If backend returns updated records, reflect them in UI
       if (Array.isArray(response) && response.length > 0) {
         const updatedStatus: Record<number, string> = {};
         const updatedRemarks: Record<number, string> = {};
@@ -193,13 +199,7 @@ const AttendanceList: React.FC = () => {
 
         setAttendanceData((prev) => ({ ...prev, ...updatedStatus }));
         setRemarksData((prev) => ({ ...prev, ...updatedRemarks }));
-
-        console.log("✅ Updated from backend:", {
-          updatedStatus,
-          updatedRemarks,
-        });
       } else {
-        // If no response returned → re-fetch students + attendance for this date
         await fetchStudents();
       }
 
