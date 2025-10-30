@@ -20,7 +20,8 @@ import {
 
 const AttendanceList: React.FC = () => {
   const [course, setCourse] = useState<string>("");
-  const [date, setDate] = useState<string>("");
+  const getToday = () => new Date().toISOString().split("T")[0];
+  const [date, setDate] = useState<string>(getToday);
   const [students, setStudents] = useState<any[]>([]);
   const [attendanceData, setAttendanceData] = useState<Record<number, string>>(
     {}
@@ -242,6 +243,7 @@ const AttendanceList: React.FC = () => {
             type="date"
             className="w-48"
             value={date}
+            max={new Date().toISOString().split("T")[0]} // ✅ disallow future dates
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
