@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar/navbar-component";
+// import Navbar from "./components/navbar/navbar-component";
 import Home from "./pages/home-page";
 import Login from "./pages/login-page";
 import TeacherPage from "./pages/teacher-page";
@@ -21,13 +21,15 @@ import { UserAddComponent } from "./components/user/user-add-component";
 import { UserEditComponent } from "./components/user/user-edit-component";
 import AttendancePage from "./pages/AttendancePage";
 
+import NavbarWithHambergur from "./components/navbar/navbar-component-with-hambergur";
+
 function App() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
   return (
     <>
       <Router>
-        <Navbar />
+        <NavbarWithHambergur />
         <Toaster position={isMobile ? "top-center" : "bottom-right"} />
         <Routes>
           <Route path="/" element={<Home />} />

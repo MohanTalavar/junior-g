@@ -1,4 +1,3 @@
-// src/components/attendance/attendance-list-component.tsx
 import React, { useState } from "react";
 import {
   Select,
@@ -10,6 +9,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { getCourseWithStudentsWithId } from "@/api/StudentApis";
 import {
@@ -18,18 +26,86 @@ import {
   type Attendance,
 } from "@/api/AttendanceApis";
 
+/* -------------------------------------------------------------------------- */
+/*                              Remark Dialog                                 */
+/* -------------------------------------------------------------------------- */
+interface RemarkDialogProps {
+  studentId: number;
+  studentName: string;
+  remark: string;
+  onRemarkChange: (id: number, value: string) => void;
+}
+
+const RemarkDialog: React.FC<RemarkDialogProps> = ({
+  studentId,
+  studentName,
+  remark,
+  onRemarkChange,
+}) => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-sm w-20 bg-white hover:bg-gray-100"
+        >
+          {remark ? "Edit" : "Add"}
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[425px] bg-white">
+        <DialogHeader>
+          <DialogTitle>Add / Edit Remark</DialogTitle>
+          <DialogDescription>
+            Enter a short remark for <b>{studentName}</b>.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="mt-4">
+          <Input
+            type="text"
+            value={remark}
+            placeholder="Type your remark here..."
+            onChange={(e) => onRemarkChange(studentId, e.target.value)}
+            autoFocus
+          />
+        </div>
+
+        <DialogFooter>
+          <Button
+            onClick={() => {
+              toast.success(`Remark updated for ${studentName}`);
+              setOpen(false); // ✅ Close dialog after saving
+            }}
+            className="bg-[#3D348B] text-white hover:bg-[#2E2874]"
+          >
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*                            Main AttendanceList                             */
+/* -------------------------------------------------------------------------- */
 const AttendanceList: React.FC = () => {
   const [course, setCourse] = useState<string>("");
   const getToday = () => new Date().toISOString().split("T")[0];
-  const [date, setDate] = useState<string>(getToday);
+  const [date, setDate] = useState<string>(getToday());
   const [students, setStudents] = useState<any[]>([]);
   const [attendanceData, setAttendanceData] = useState<Record<number, string>>(
     {}
   );
   const [remarksData, setRemarksData] = useState<Record<number, string>>({});
   const [markedByData, setMarkedByData] = useState<Record<number, string>>({});
+
   /* -------------------------------------------------------------------------- */
-  /*                           Fetch Students + Attendance                      */
+  /*                        Fetch Students + Attendance                         */
   /* -------------------------------------------------------------------------- */
   const fetchStudents = async () => {
     if (!course) {
@@ -49,29 +125,11 @@ const AttendanceList: React.FC = () => {
       // 1️⃣ Fetch course + student list
       const courseData = await getCourseWithStudentsWithId(course);
       const studentList = courseData.students || [];
-      console.log("📘 Students fetched:", studentList.length);
-      console.table(
-        studentList.map((s: any) => ({
-          id: s.id,
-          name: `${s.firstName} ${s.surname}`,
-          rollNumber: s.rollNumber,
-        }))
-      );
 
-      // 2️⃣ Fetch attendance for selected date
+      // 2️⃣ Fetch attendance records for selected date
       const attendanceRecords = await getAttendanceByDate(date);
-      console.log("🟡 Attendance records fetched:", attendanceRecords.length);
-      console.table(
-        attendanceRecords.map((a: any) => ({
-          id: a.id,
-          studentId: a.studentId,
-          status: a.status,
-          remarks: a.remarks,
-          markedBy: a.markedBy,
-        }))
-      );
 
-      // 3️⃣ Build a map of studentId → record
+      // 3️⃣ Build map of existing attendance data
       const existingAttendanceMap: Record<
         number,
         { status: string; remarks?: string; markedBy?: string }
@@ -86,12 +144,7 @@ const AttendanceList: React.FC = () => {
         }
       });
 
-      console.log(
-        "🗺️ existingAttendanceMap (studentId → record):",
-        existingAttendanceMap
-      );
-
-      // 🔹 Get user + formatted role (same as handleSubmit)
+      // 4️⃣ Format current user info
       const role = localStorage.getItem("role") || "ROLE_UNKNOWN";
       const user = localStorage.getItem("user") || "UnknownUser";
       const formattedRole =
@@ -101,9 +154,7 @@ const AttendanceList: React.FC = () => {
           ? "Teacher"
           : "User";
 
-      // 4️⃣ Merge attendance with student list
-      setStudents(studentList);
-
+      // 5️⃣ Merge DB data + new students
       const prefillStatus: Record<number, string> = {};
       const prefillRemarks: Record<number, string> = {};
       const prefillMarkedBy: Record<number, string> = {};
@@ -111,15 +162,12 @@ const AttendanceList: React.FC = () => {
       studentList.forEach((s: any) => {
         const existing = existingAttendanceMap[s.id];
         prefillStatus[s.id] = existing?.status ?? "";
-        prefillRemarks[s.id] = existing?.remarks ?? "";
+        prefillRemarks[s.id] = existing?.remarks ?? ""; // ✅ Prepopulate remarks
         prefillMarkedBy[s.id] =
           existing?.markedBy || `${formattedRole} ${user}`;
       });
 
-      console.log("✅ prefillData (studentId → status):", prefillStatus);
-      console.log("✅ prefillRemarks:", prefillRemarks);
-      console.log("✅ prefillMarkedBy:", prefillMarkedBy);
-
+      setStudents(studentList);
       setAttendanceData(prefillStatus);
       setRemarksData(prefillRemarks);
       setMarkedByData(prefillMarkedBy);
@@ -132,19 +180,19 @@ const AttendanceList: React.FC = () => {
     }
   };
 
-  const handleRemarksChange = (studentId: number, remark: string) => {
-    setRemarksData((prev) => ({ ...prev, [studentId]: remark }));
-  };
-
   /* -------------------------------------------------------------------------- */
-  /*                          Handle Status Change                              */
+  /*                          Handle Status / Remarks                           */
   /* -------------------------------------------------------------------------- */
   const handleStatusChange = (studentId: number, status: string) => {
     setAttendanceData((prev) => ({ ...prev, [studentId]: status }));
   };
 
+  const handleRemarksChange = (studentId: number, remark: string) => {
+    setRemarksData((prev) => ({ ...prev, [studentId]: remark }));
+  };
+
   /* -------------------------------------------------------------------------- */
-  /*                              Submit Attendance                             */
+  /*                             Submit Attendance                              */
   /* -------------------------------------------------------------------------- */
   const handleSubmit = async () => {
     if (!date) {
@@ -152,7 +200,6 @@ const AttendanceList: React.FC = () => {
       return;
     }
 
-    // 🚫 Validation: ensure all students have a marked status
     const unmarkedStudents = students.filter(
       (s) => !attendanceData[s.id] || attendanceData[s.id].trim() === ""
     );
@@ -163,7 +210,6 @@ const AttendanceList: React.FC = () => {
       return;
     }
 
-    // ✅ Continue only if all statuses are marked
     const role = localStorage.getItem("role") || "ROLE_UNKNOWN";
     const user = localStorage.getItem("user") || "UnknownUser";
     const formattedRole =
@@ -211,7 +257,7 @@ const AttendanceList: React.FC = () => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                                Render UI                                   */
+  /*                                 Render UI                                  */
   /* -------------------------------------------------------------------------- */
   return (
     <div className="p-6">
@@ -243,7 +289,7 @@ const AttendanceList: React.FC = () => {
             type="date"
             className="w-48"
             value={date}
-            max={new Date().toISOString().split("T")[0]} // ✅ disallow future dates
+            max={new Date().toISOString().split("T")[0]} // ✅ no future dates
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
@@ -291,17 +337,30 @@ const AttendanceList: React.FC = () => {
                       </SelectContent>
                     </Select>
                   </td>
-
                   {/* REMARKS */}
-                  <td className="py-2 px-4">
-                    <Input
-                      type="text"
-                      placeholder="Add remark"
-                      value={remarksData[stud.id] || ""}
-                      onChange={(e) =>
-                        handleRemarksChange(stud.id, e.target.value)
-                      }
-                    />
+                  <td className="py-2 px-4 align-top">
+                    <div className="grid grid-cols-[1fr_auto] items-start gap-x-3 max-w-[420px]">
+                      {/* 🩶 Remark text area (hidden on small screens) */}
+                      <div className="hidden sm:block text-sm text-gray-700 italic leading-snug break-all whitespace-pre-wrap">
+                        {remarksData[stud.id] ? (
+                          <p>{remarksData[stud.id]}</p>
+                        ) : (
+                          <p className="text-gray-400 italic">
+                            No remark added
+                          </p>
+                        )}
+                      </div>
+
+                      {/* 🟣 Edit/Add button — always visible */}
+                      <div className="flex justify-end items-start">
+                        <RemarkDialog
+                          studentId={stud.id}
+                          studentName={`${stud.firstName} ${stud.surname}`}
+                          remark={remarksData[stud.id] || ""}
+                          onRemarkChange={handleRemarksChange}
+                        />
+                      </div>
+                    </div>
                   </td>
 
                   {/* MARKED BY */}

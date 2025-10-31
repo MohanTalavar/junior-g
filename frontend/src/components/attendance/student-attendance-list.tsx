@@ -1,4 +1,3 @@
-// src/components/attendance/student-attendance-list.tsx
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -10,21 +9,30 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
   getAttendanceByStudentRollNo,
   updateAttendance,
 } from "@/api/AttendanceApis";
 
-/**
- * This local interface mirrors AttendanceResponseDto from backend.
- */
+/* -------------------------------------------------------------------------- */
+/*                              Interfaces                                    */
+/* -------------------------------------------------------------------------- */
 interface AttendanceRecord {
   id: number;
   studentId: number;
   rollNumber: string;
   studentName: string;
-  attendanceDate: string; // ISO date string e.g. "2025-10-28"
+  attendanceDate: string;
   status: "PRESENT" | "ABSENT" | "LEAVE";
   markedBy: string;
   remarks?: string | null;
@@ -32,14 +40,79 @@ interface AttendanceRecord {
 
 interface UpdateAttendancePayload {
   studentId: number;
-  // rollNumber is optional on backend DTO; not necessary for update but harmless if present.
-  // We're not sending id (backend uses path variable).
   attendanceDate: string;
   status: "PRESENT" | "ABSENT" | "LEAVE";
   remarks?: string;
   markedBy: string;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                            Remark Dialog Component                         */
+/* -------------------------------------------------------------------------- */
+interface RemarkDialogProps {
+  recordId: number;
+  studentName: string;
+  remark: string;
+  onRemarkChange: (id: number, value: string) => void;
+}
+
+const RemarkDialog: React.FC<RemarkDialogProps> = ({
+  recordId,
+  studentName,
+  remark,
+  onRemarkChange,
+}) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className="text-sm w-20 bg-white hover:bg-gray-100"
+        >
+          {remark ? "Edit" : "Add"}
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[425px] bg-white">
+        <DialogHeader>
+          <DialogTitle>Edit Remark</DialogTitle>
+          <DialogDescription>
+            Enter or update the remark for <b>{studentName}</b>.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="mt-4">
+          <Input
+            type="text"
+            value={remark}
+            placeholder="Type your remark..."
+            onChange={(e) => onRemarkChange(recordId, e.target.value)}
+            autoFocus
+          />
+        </div>
+
+        <DialogFooter>
+          <Button
+            onClick={() => {
+              toast.success(`Remark updated for ${studentName}`);
+              setOpen(false);
+            }}
+            className="bg-[#3D348B] text-white hover:bg-[#2E2874]"
+          >
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*                         Main Student Attendance List                       */
+/* -------------------------------------------------------------------------- */
 const StudentAttendanceList: React.FC = () => {
   const [rollNumber, setRollNumber] = useState<string>("");
   const [records, setRecords] = useState<AttendanceRecord[]>([]);
@@ -80,26 +153,23 @@ const StudentAttendanceList: React.FC = () => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                            Handle Update Attendance                         */
+  /*                              Update Attendance                             */
   /* -------------------------------------------------------------------------- */
   const handleUpdate = async (id: number) => {
     try {
       const updatedStatus = editedStatus[id];
       const updatedRemarks = editedRemarks[id];
+      const record = records.find((r) => r.id === id);
+      if (!record) return;
 
       if (
         !updatedStatus &&
-        (updatedRemarks === undefined ||
-          updatedRemarks === records.find((r) => r.id === id)?.remarks)
+        (updatedRemarks === undefined || updatedRemarks === record.remarks)
       ) {
         toast.error("No changes to update");
         return;
       }
 
-      const record = records.find((r) => r.id === id);
-      if (!record) return;
-
-      // Build payload matching backend AttendanceDto (no id in body)
       const payload: UpdateAttendancePayload = {
         studentId: record.studentId,
         attendanceDate: record.attendanceDate,
@@ -108,11 +178,10 @@ const StudentAttendanceList: React.FC = () => {
           | "ABSENT"
           | "LEAVE",
         remarks: updatedRemarks ?? record.remarks ?? "",
-        markedBy: "Admin MohanTalavar", // TODO: replace with real user from slice
+        markedBy: "Admin MohanTalavar", // TODO: Replace with logged-in user info
       };
 
-      await updateAttendance(id, payload as any); // cast to any if updateAttendance's TS type differs
-
+      await updateAttendance(id, payload as any);
       toast.success("Attendance updated successfully!");
       await fetchAttendance(page);
     } catch (err) {
@@ -122,7 +191,7 @@ const StudentAttendanceList: React.FC = () => {
   };
 
   /* -------------------------------------------------------------------------- */
-  /*                                   Render                                   */
+  /*                                 Render                                     */
   /* -------------------------------------------------------------------------- */
   return (
     <div className="p-6">
@@ -193,25 +262,32 @@ const StudentAttendanceList: React.FC = () => {
                     </Select>
                   </td>
 
-                  {/* Editable Remarks */}
-                  <td className="py-2 px-4">
-                    <Input
-                      type="text"
-                      placeholder="Add remarks"
-                      value={editedRemarks[rec.id] ?? rec.remarks ?? ""}
-                      onChange={(e) =>
-                        setEditedRemarks((prev) => ({
-                          ...prev,
-                          [rec.id]: e.target.value,
-                        }))
-                      }
-                    />
+                  {/* Remarks with dialog and responsive behavior */}
+                  <td className="py-2 px-4 align-top">
+                    <div className="grid grid-cols-[1fr_auto] items-start gap-x-3 max-w-[420px]">
+                      {/* Hidden on small devices */}
+                      <div className="hidden sm:block text-sm text-gray-700 italic leading-snug break-all whitespace-pre-wrap">
+                        {editedRemarks[rec.id] ??
+                          rec.remarks ??
+                          "No remark added"}
+                      </div>
+
+                      {/* Edit/Add button */}
+                      <div className="flex justify-end items-start">
+                        <RemarkDialog
+                          recordId={rec.id}
+                          studentName={rec.studentName}
+                          remark={editedRemarks[rec.id] ?? rec.remarks ?? ""}
+                          onRemarkChange={(id, val) =>
+                            setEditedRemarks((prev) => ({ ...prev, [id]: val }))
+                          }
+                        />
+                      </div>
+                    </div>
                   </td>
 
-                  {/* Marked By */}
                   <td className="py-2 px-4 text-gray-700">{rec.markedBy}</td>
 
-                  {/* Update Button */}
                   <td className="py-2 px-4">
                     <Button
                       onClick={() => handleUpdate(rec.id)}
@@ -229,7 +305,7 @@ const StudentAttendanceList: React.FC = () => {
         <p className="text-gray-500 text-center mt-6">No records to display</p>
       )}
 
-      {/* Pagination Controls */}
+      {/* Pagination */}
       {records.length > 0 && (
         <div className="flex justify-end items-center gap-4 mt-6">
           <Button

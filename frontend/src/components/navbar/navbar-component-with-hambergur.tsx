@@ -13,7 +13,7 @@ import { NavLink } from "react-router-dom";
 import { RootState } from "../../app/store";
 import crestImg from "../../assets/images/JuniorG_Crest.png";
 
-const Navbar: React.FC = () => {
+const NavbarWithHambergur: React.FC = () => {
   // pull user and role out of Redux
   const { isAuthenticated, user, role } = useSelector(
     (state: RootState) => state.auth
@@ -40,79 +40,18 @@ const Navbar: React.FC = () => {
           <div className="hidden md:block md:mt-9">
             <NavLink
               to="/admission-enquiry"
-              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif uppercase tracking-wider hover:text-[#004D99] hover:underline hover:underline-offset-6 transition duration-300"
+              className="text-[#002F6C] mt-4 font-semibold text-[4px] mr-2 md:text-xl font-serif tracking-wider hover:text-[#004D99] hover:underline hover:underline-offset-6 transition duration-300"
             >
               Admission Enquiry!
             </NavLink>
           </div>
         </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
-          {isAuthenticated && role === "ROLE_ADMIN" && (
-            <NavLink
-              to="/admin/users"
-              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-            >
-              User Maintenance
-            </NavLink>
-          )}
-
-          {isAuthenticated && role === "ROLE_ADMIN" && (
-            <NavLink
-              to="/teacher"
-              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-            >
-              Teachers
-            </NavLink>
-          )}
-
-          {isAuthenticated && (
-            <NavLink
-              to="/student"
-              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-            >
-              Students
-            </NavLink>
-          )}
-
-          {isAuthenticated && (
-            <NavLink
-              to="/attendance"
-              className="text-[#002F6C] md:mt-9 font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-            >
-              Attendance
-            </NavLink>
-          )}
-
-          {isAuthenticated ? (
-            // Wrap user+logout in a column
-            <div className="flex flex-col items-center">
-              <span className="text-[#8B0000] font-medium mb-1">
-                {user} ({role?.replace("ROLE_", "")})
-              </span>
-              <NavLink
-                to="/logout"
-                className="text-[#002F6C] font-semibold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6"
-              >
-                Logout
-              </NavLink>
-            </div>
-          ) : (
-            <NavLink
-              to="/login"
-              className="text-[#002F6C] font-bold font-serif text-xl hover:text-[#004D99] transition duration-300 hover:underline hover:underline-offset-6 mt-9"
-            >
-              Login
-            </NavLink>
-          )}
-        </div>
-
         {/* Mobile Nav (Sheet) */}
-        <div className="md:hidden">
+        <div className="">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger>
-              <Menu className="text-[#1C2C5B]" size={32} />
+              <Menu className="text-[#1C2C5B] hover:cursor-pointer" size={32} />
             </SheetTrigger>
             <SheetContent
               side="right"
@@ -155,13 +94,13 @@ const Navbar: React.FC = () => {
               <div className="flex flex-col gap-4 text-base font-serif">
                 <NavLink
                   to="/admission-enquiry"
-                  className="font-semibold text-[#F18701] hover:text-[#f35b04] transition duration-300"
+                  className="font-semibold text-[#002F6C] hover:text-[#004D99] transition duration-300"
                   onClick={() => setOpen(false)}
                 >
                   {({ isActive }) => (
                     <div className="flex">
                       {isActive ? (
-                        <div className="h-6 w-1.5 bg-[#F18701] mr-2"></div>
+                        <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
                       ) : (
                         <div className="pl-4"></div>
                       )}
@@ -215,13 +154,19 @@ const Navbar: React.FC = () => {
                     onClick={() => setOpen(false)}
                   >
                     {({ isActive }) => (
-                      <div className="flex">
+                      <div className="flex items-center">
                         {isActive ? (
                           <div className="h-6 w-1.5 bg-[#002F6C] mr-2"></div>
                         ) : (
                           <div className="pl-4"></div>
                         )}
-                        Attendance
+
+                        <div className="relative flex items-baseline gap-1">
+                          <span>Attendance</span>
+                          <sup className="text-[10px] text-[#F35B04] font-semibold bg-[#FFF4E6] px-1.5 py-0.5 rounded-sm shadow-sm">
+                            NEW
+                          </sup>
+                        </div>
                       </div>
                     )}
                   </NavLink>
@@ -290,4 +235,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+export default NavbarWithHambergur;
