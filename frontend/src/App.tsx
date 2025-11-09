@@ -33,6 +33,7 @@ function App() {
         <Toaster position={isMobile ? "top-center" : "bottom-right"} />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/teacher" element={<TeacherPage />}></Route>
           <Route path="/admin/teachers/:id/edit" element={<TeacherEdit />} />
