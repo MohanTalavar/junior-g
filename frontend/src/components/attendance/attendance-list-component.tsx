@@ -276,7 +276,6 @@ const AttendanceList: React.FC = () => {
               <SelectItem value="Nursery">Nursery</SelectItem>
               <SelectItem value="LKG">LKG</SelectItem>
               <SelectItem value="UKG">UKG</SelectItem>
-              <SelectItem value="Daycare">Daycare</SelectItem>
             </SelectContent>
           </Select>
         </div>
