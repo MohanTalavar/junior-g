@@ -1,4 +1,3 @@
-// src/components/login/LoginForm.tsx
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 export function LoginForm() {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +17,7 @@ export function LoginForm() {
 
   const [formData, setFormData] = useState({ userName: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ new state for loader
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,9 +25,9 @@ export function LoginForm() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const data = await loginUser(formData);
-      // Dispatch to Redux; reducer will persist user, role, token to localStorage
       dispatch(
         setUser({
           user: data.userName,
@@ -35,9 +36,27 @@ export function LoginForm() {
         })
       );
       setError("");
+
+      // ✅ Success toast
+      toast.success(`Welcome back, ${data.userName}!`, {
+        description: "You have successfully logged in.",
+        duration: 3000,
+        position: "top-center",
+        className: "bg-white",
+      });
+
       navigate("/");
     } catch (err) {
       setError("Invalid credentials. Please try again.");
+
+      // ❌ Error toast
+      toast.error("Login Failed", {
+        description: "Invalid username or password. Please try again.",
+        duration: 4000,
+        position: "top-center",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,11 +99,20 @@ export function LoginForm() {
             />
           </div>
 
+          {/* ✅ Login Button with Loader */}
           <Button
             type="submit"
-            className="w-full bg-[#990000] hover:bg-red-800 text-white cursor-pointer"
+            disabled={loading}
+            className="w-full bg-[#990000] hover:bg-red-800 text-white cursor-pointer flex items-center justify-center gap-2"
           >
-            Login
+            {loading ? (
+              <>
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                Logging in...
+              </>
+            ) : (
+              "Login"
+            )}
           </Button>
 
           <Link to="/forgot-password" className="text-blue-800 hover:underline">
