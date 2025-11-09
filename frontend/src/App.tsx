@@ -28,9 +28,9 @@ function App() {
 
   return (
     <>
+      <Toaster position={isMobile ? "top-center" : "top-right"} />
       <Router>
         <NavbarWithHambergur />
-        <Toaster position={isMobile ? "top-center" : "bottom-right"} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />

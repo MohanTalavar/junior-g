@@ -1,9 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { LoaderCircle, Phone } from "lucide-react";
 import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
 
 const AboutUsComponent: React.FC = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  const handleAdmissionClick = () => {
+    navigate("/admission-enquiry");
+  };
 
   return (
     <footer className="bg-[#8B0000] text-white py-10">
@@ -18,9 +31,38 @@ const AboutUsComponent: React.FC = () => {
             <li>Projects, Trips, Robotics Kits</li>
             <li>Surprise Activities and Mall Visits</li>
           </ul>
-          <Button className="mt-6 bg-white text-[#8B0000] hover:bg-gray-100 shadow-md rounded-lg">
+          {/* <Button className="mt-6 bg-white text-[#8B0000] hover:bg-gray-100 shadow-md rounded-lg">
             Learn More
-          </Button>
+          </Button> */}
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="mt-6 bg-white text-[#8B0000] hover:bg-gray-100 shadow-md rounded-lg hover:cursor-pointer">
+                Learn More
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-sm bg-white text-gray-800 rounded-xl shadow-lg">
+              <DialogHeader>
+                <DialogTitle className="text-xl font-semibold text-[#8B0000]">
+                  Get in Touch with Junior G
+                </DialogTitle>
+              </DialogHeader>
+              <div className="flex flex-col gap-4 mt-4">
+                <Button
+                  onClick={() => (window.location.href = "tel:7719005081")}
+                  className="bg-[#8B0000] hover:bg-red-800 text-white rounded-lg  hover:cursor-pointer"
+                >
+                  📞 Call Us
+                </Button>
+                <Button
+                  onClick={handleAdmissionClick}
+                  className="bg-[#F7B801] hover:bg-[#F18701] text-white rounded-lg  hover:cursor-pointer"
+                >
+                  📝 Admission Enquiry
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Contact Us */}
