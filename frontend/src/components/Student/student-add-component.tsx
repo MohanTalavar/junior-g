@@ -21,7 +21,7 @@ import { toast } from "sonner";
 
 // 1. Zod schema for the form
 const studentSchema = z.object({
-  courseName: z.enum(["Daycare", "Play Group", "Nursery", "LKG", "UKG"], {
+  courseName: z.enum(["Daycare", "Playgroup", "Nursery", "LKG", "UKG"], {
     required_error: "Course is required",
   }),
   firstName: z.string().min(1, "Required"),
@@ -46,7 +46,7 @@ const studentSchema = z.object({
 type FormData = z.infer<typeof studentSchema>;
 
 // 2. Course options
-const COURSES = ["Daycare", "Play Group", "Nursery", "LKG", "UKG"] as const;
+const COURSES = ["Daycare", "Playgroup", "Nursery", "LKG", "UKG"] as const;
 const GENDERS = ["Male", "Female", "Other"] as const;
 const BLOOD_GROUPS = [
   "A+",

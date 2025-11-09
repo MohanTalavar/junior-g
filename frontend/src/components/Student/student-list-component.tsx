@@ -31,12 +31,12 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-const COURSES = ["Daycare", "Playgroup", "Nursery", "LKG", "UKG"] as const;
+const COURSES = ["Playgroup", "Nursery", "LKG", "UKG"] as const;
 
 const StudentList: React.FC = () => {
   const { role, isAuthenticated } = useAuth();
   const [selectedCourse, setSelectedCourse] =
-    useState<(typeof COURSES)[number]>("Daycare");
+    useState<(typeof COURSES)[number]>("Playgroup");
   const [data, setData] = useState<CourseWithStudents | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -79,6 +79,18 @@ const StudentList: React.FC = () => {
       console.error(err);
       toast.error("Failed to delete student.");
     }
+  };
+
+  // helper function for display formatting
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // fallback if invalid
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
   };
 
   return (
@@ -157,12 +169,12 @@ const StudentList: React.FC = () => {
                     </TableCell>
                     <TableCell>{s.email}</TableCell>
                     <TableCell>{s.phoneNumber}</TableCell>
-                    <TableCell>{s.dateOfBirth}</TableCell>
+                    <TableCell>{formatDate(s.dateOfBirth)}</TableCell>
                     <TableCell>{s.gender}</TableCell>
                     <TableCell>{s.fatherName}</TableCell>
                     <TableCell>{s.motherName}</TableCell>
                     <TableCell>{s.emergencyContact}</TableCell>
-                    <TableCell>{s.admissionDate}</TableCell>
+                    <TableCell>{formatDate(s.admissionDate)}</TableCell>
                     <TableCell>{s.bloodGroup}</TableCell>
                     <TableCell className="text-right space-x-2">
                       {/* Edit button */}
