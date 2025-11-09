@@ -13,15 +13,15 @@ public class ReportScheduler {
 
     private final AttendanceReportService attendanceReportService;
 
-    // Every Sunday at 6 PM
-    @Scheduled(cron = "0 0 18 ? * SUN")
+    // Every Sunday at 6 PM IST
+    @Scheduled(cron = "0 0 18 ? * SUN", zone = "Asia/Kolkata")
     public void sendWeeklyReports() {
         log.info("Triggered weekly attendance report scheduler");
         attendanceReportService.sendWeeklyReports();
     }
 
-    // Last day of each month at 6 PM
-    @Scheduled(cron = "0 0 18 L * ?")
+    // Last day of each month at 6 PM IST
+    @Scheduled(cron = "0 0 18 L * ?", zone = "Asia/Kolkata")
     public void sendMonthlyReports() {
         log.info("Triggered monthly attendance report scheduler");
         attendanceReportService.sendMonthlyReports();
