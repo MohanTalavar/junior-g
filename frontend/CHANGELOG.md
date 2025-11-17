@@ -1,5 +1,22 @@
 # Changelog — Junior-G International Pre School Website
 
+## v1.4.0 — November 18, 2025
+
+- Introduced full **Attendance Management Module**
+  - Course-wise attendance submission
+  - Student records page with search & pagination
+  - Edit remark modal for quick updates
+- Added **Weekly & Monthly automated attendance reports**
+  - Implemented Spring Scheduler for automated report generation & delivery
+- Added **Java Records** for cleaner DTO structures
+- Improved API structure for attendance workflows
+- UI enhancements:
+  - "Learn More" section now clickable
+  - New **Get in Touch** modal with Call Us & Admission Enquiry
+- Improved backend consistency and pagination logic
+- Minor UI adjustments & AWS deployment stability improvements
+- Updated internal documentation for new flows
+
 ## v1.3.3 — October 26, 2025
 
 - Added JUnit & Mockito-based unit tests for core backend services
