@@ -1,11 +1,13 @@
 package com.juniorg.service;
 
+import com.juniorg.client.NotificationClient;
 import com.juniorg.pojos.Enquiry;
 import com.juniorg.pojos.User;
 import com.juniorg.repo.EnquiryRepo;
 import com.juniorg.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,16 +17,18 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class EnquiryServiceImpl implements IEnquiryService {
 
     private static final String ROLE_ADMIN = "ROLE_ADMIN";
     private final EnquiryRepo enquiryRepo;
     private final UserRepo userRepo;
     private final EmailService emailService;
-    private static final Logger log = LoggerFactory.getLogger(EnquiryServiceImpl.class);
+    private final NotificationClient notificationClient;
 
     @Override
     public void saveEnquiryDetails(Enquiry enquiry) {
+
         log.info("Registering new enquiry for admission: {}", enquiry);
         enquiryRepo.save(enquiry);
 
@@ -39,7 +43,16 @@ public class EnquiryServiceImpl implements IEnquiryService {
         // Check if we have admins
         if (!admins.isEmpty()) {
             log.info("Sending email to {} admin(s)", admins.size());
-            admins.forEach(admin -> emailService.sendEmail(admin.getEmail(), adminSubject, adminBody));
+            admins.forEach(admin -> {
+
+                try{
+                    notificationClient.sendEmail(admin.getEmail(), adminSubject, adminBody);
+
+                }catch (Exception ex){
+                    log.warn("Fallback email for admin {}", admin.getEmail());
+                    emailService.sendEmail(admin.getEmail(), adminSubject, adminBody);
+                }
+            });
         } else {
             log.warn("Skipping acknowledgment: Admins NOT found in system");
         }
@@ -55,8 +68,22 @@ public class EnquiryServiceImpl implements IEnquiryService {
         // So securing every layer is imp
 
         if (enquiry.getEmailId() != null && !enquiry.getEmailId().isBlank()) {
-            log.info("Sending acknowledgment email to the parent.");
-            emailService.sendEmail(enquiry.getEmailId(), parentSubject, parentBody);
+
+            log.info("Sending acknowledgment email to the parent via Notification Microservice");
+
+            try{
+                notificationClient.sendEmail(
+                        enquiry.getEmailId(),
+                        parentSubject,
+                        parentBody
+                );
+            }catch (Exception ex){
+
+                log.warn("Fallback email to parent {}", enquiry.getEmailId());
+                emailService.sendEmail(enquiry.getEmailId(),
+                        parentSubject,
+                        parentBody);
+            }
         } else {
             log.warn("Skipping acknowledgment: Parent email is null/blank");
         }

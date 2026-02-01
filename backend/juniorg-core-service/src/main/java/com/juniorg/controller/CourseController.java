@@ -26,7 +26,12 @@ public class CourseController {
 
     @GetMapping("/get-courses")
     public ResponseEntity<List<CourseRequestResponseDto>> getCourses() {
-        List<CourseRequestResponseDto> courses = courseService.fetchCourses().stream().map(CourseRequestResponseDto::new).toList();
+
+        List<CourseRequestResponseDto> courses = courseService.
+                fetchCourses().
+                stream().
+                map(CourseRequestResponseDto::new)
+                .toList();
         return ResponseEntity.ok(courses);
     }
 

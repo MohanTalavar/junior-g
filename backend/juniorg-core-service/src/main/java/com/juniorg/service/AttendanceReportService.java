@@ -1,5 +1,6 @@
 package com.juniorg.service;
 
+import com.juniorg.client.NotificationClient;
 import com.juniorg.enums.AttendanceStatus;
 import com.juniorg.pojos.Attendance;
 import com.juniorg.pojos.Student;
@@ -29,7 +30,8 @@ public class AttendanceReportService {
     private final StudentRepo studentRepository;
     private final AttendanceRepository attendanceRepository;
     private final UserRepo userRepo;
-    private final EmailService emailService;
+    private final EmailService emailService; // fall back
+    private final NotificationClient notificationClient;
 
     /* -------------------------------------------------------------
        ENTRY POINTS
@@ -114,7 +116,19 @@ public class AttendanceReportService {
         }
 
         String body = prepareParentBody(student, summary, subjectPrefix, start, end);
-        emailService.sendEmail(student.getEmail(), subjectPrefix, body);
+        // Commenting this as we have introduced new Notification micro service
+        // emailService.sendEmail(student.getEmail(), subjectPrefix, body);
+
+        try {
+            notificationClient.sendEmail(
+                    student.getEmail(),
+                    subjectPrefix,
+                    body
+            );
+        } catch (Exception ex) {
+            log.warn("Falling back to local EmailService for parent {}", student.getEmail());
+            emailService.sendEmail(student.getEmail(), subjectPrefix, body);
+        }
         log.info("Sent {} to parent of {}", subjectPrefix, student.getFirstName() + " " + student.getSurname());
     }
 
@@ -167,7 +181,19 @@ public class AttendanceReportService {
                 """, subjectPrefix, start, end, summaryText);
 
         admins.forEach(admin -> {
-            emailService.sendEmail(admin.getEmail(), adminSubject, adminBody);
+
+            // emailService.sendEmail(admin.getEmail(), adminSubject, adminBody);
+
+            try {
+                notificationClient.sendEmail(
+                        admin.getEmail(),
+                        adminSubject,
+                        adminBody
+                );
+            } catch (Exception ex) {
+                log.warn("Falling back to local EmailService for admin {}", admin.getEmail());
+                emailService.sendEmail(admin.getEmail(), subjectPrefix, adminBody);
+            }
             log.info("Sent {} summary to admin {}", subjectPrefix, admin.getEmail());
         });
     }

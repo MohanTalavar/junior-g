@@ -11,7 +11,7 @@
     </parent>
     <groupId>com.juniorg</groupId>
     <artifactId>JuniorG_PreSchool</artifactId>
-    <version>1.0.0</version>
+    <version>1.4.1</version>
     <name>JuniorG Pre School Application</name>
     <description>
         This is a web application for Junior G Pre School, implementing features like JWT-based authentication and

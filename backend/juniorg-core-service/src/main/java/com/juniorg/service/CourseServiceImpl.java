@@ -2,6 +2,7 @@ package com.juniorg.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,10 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class CourseServiceImpl implements ICourseService {
 
 	private final CourseRepo courseRepo;
-	private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
 
 	@Override
 	public String launchNewCourse(Course transientCourse) {

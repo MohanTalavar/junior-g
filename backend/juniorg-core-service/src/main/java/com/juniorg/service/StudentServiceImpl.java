@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class StudentServiceImpl implements IStudentService {
+
     private final StudentRepo studRepo;
     private final CourseRepo courseRepo;
     private static final Logger log = LoggerFactory.getLogger(StudentServiceImpl.class);
