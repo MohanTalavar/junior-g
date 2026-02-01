@@ -1,5 +1,31 @@
 # Changelog — Junior-G International Pre School Website
 
+## v1.4.1 — February 1, 2026
+
+### 🧱 Backend Architecture Enhancements
+- Refactored backend into a **microservice-based architecture**
+  - Extracted core business logic into **juniorg-core-service**
+  - Introduced **juniorg-notification-service** as a dedicated notification microservice
+- Improved separation of concerns between business logic and notification handling
+- Enabled independent build, deployment, and scaling of backend services
+
+### 🔔 Notification Service Improvements
+- Centralized email notification logic into a standalone service
+- Improved reliability and maintainability of admission enquiry acknowledgments
+- Prepared foundation for future async/event-driven notifications
+
+### 🚀 Deployment & Infrastructure
+- Deployed backend services as **independent Spring Boot JARs** on AWS EC2
+- Improved backend deployment consistency and service isolation
+- Minor configuration cleanups for environment separation
+
+### 🧹 Maintenance
+- Updated project structure and internal documentation
+- Updated README to reflect microservice-based backend design
+- General refactoring and cleanup after architectural changes
+
+---
+
 ## v1.4.0 — November 18, 2025
 
 - Introduced full **Attendance Management Module**
