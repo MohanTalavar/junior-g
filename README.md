@@ -2,13 +2,17 @@
 
 A full-stack preschool management web application designed to streamline daily operations for **administrators, teachers, and parents**.
 
+---
+
 ## 🛠️ Tech Stack
 
-* **Frontend**: React (Vite), TypeScript, Tailwind CSS, Redux Toolkit, Schadcn
-* **Backend**: Java 17, Spring Boot, Spring Security (JWT), JPA/Hibernate
+* **Frontend**: React (Vite), TypeScript, Tailwind CSS, Redux Toolkit, ShadCN
+* **Backend**: Java 17, Spring Boot (Microservices), Spring Security (JWT), JPA/Hibernate
 * **Database**: MySQL (AWS RDS)
 * **Authentication**: JWT-based role-specific login (Admin, Teacher, Parent)
-* **DevOps / Cloud**: AWS S3 (frontend hosting), EC2 (backend deployment), CloudFront, Route 53
+* **DevOps / Cloud**: AWS S3, EC2, CloudFront, Route 53
+
+---
 
 ## 🔐 Features
 
@@ -18,28 +22,37 @@ A full-stack preschool management web application designed to streamline daily o
 * 📊 Admin panel with student/teacher management and course assignment
 * 📁 File and image support for various assets (hero banners, etc.)
 
+---
+
+## 🧩 Backend Microservices
+
+The backend is designed using a **modular microservice-based architecture** for better scalability and maintainability.
+
+### 🔹 juniorg-core-service
+* Core business logic and workflows
+* Authentication & authorization (JWT)
+* Admission enquiries
+* Admin, Teacher, Parent modules
+* Database access via JPA/Hibernate
+
+### 🔹 juniorg-notification-service
+* Dedicated notification microservice
+* Handles email acknowledgments and admin alerts
+* Decoupled from core business logic
+* Runs independently on a separate port
+
+This separation ensures **fault isolation**, **clean responsibilities**, and easier future scaling.
+
+---
+
 ## 📦 Folder Structure
 
 ```bash
 junior-g/
-├── backend/              # Spring Boot API
-│   ├── src/main/java/
-│   └── resources/
-├── frontend/             # React frontend (Vite)
+├── backend/
+│   ├── juniorg-core-service/          # Core backend microservice
+│   └── juniorg-notification-service/  # Notification microservice
+├── frontend/                          # React frontend (Vite)
 │   ├── src/
 │   └── public/
 └── README.md
-```
-
-## 🚀 Deployment
-
-* **Frontend** hosted on AWS S3 + CloudFront with a custom domain via Route 53
-* **Backend** hosted on AWS EC2 (Ubuntu) with MySQL via AWS RDS
-
-## 🧠 Skills Demonstrated
-
-* Clean and layered backend architecture (Controller → Service → Repo)
-* Frontend state management using Redux Toolkit
-* Secure credential management and configuration loading
-* Cloud deployment and networking (S3, EC2, Route 53, CloudFront)
-* Logging with Logback + file-based rotation
