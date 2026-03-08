@@ -11,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -62,19 +63,27 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         // 1) Public endpoints
                         .requestMatchers(
+
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
+
+                                // Application public endpoints
                                 "/health",
                                 "/users/login",
                                 "/users/forgot-password",
                                 "/users/reset-password",
-                                "/enquiry"
-                        ).permitAll()
+                                "/enquiry",
+
+                                // Actuator public endpoints
+                                "/actuator/health",
+                                "/actuator/info"
+
+                                ).permitAll()
 
                         // 2) Attendance endpoints
                         // - Teachers and Admins can mark, update, and delete
