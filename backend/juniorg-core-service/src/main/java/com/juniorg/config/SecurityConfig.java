@@ -73,7 +73,6 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
 
                                 // Application public endpoints
-                                "/health",
                                 "/users/login",
                                 "/users/forgot-password",
                                 "/users/reset-password",
