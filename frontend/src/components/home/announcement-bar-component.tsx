@@ -1,7 +1,7 @@
 // src/components/home/announcement-bar.tsx
 
 const messages = [
-  "🎓 Admissions are open for the academic year 2025–2026. Apply early to reserve your child’s seat!",
+  "🎓 Admissions are open for the academic year 2026–2027. Apply early to reserve your child’s seat!",
   "📞 Enquire Now – Limited seats available across all programs. Call us or visit the Admission Enquiry Page!",
 ];
 
