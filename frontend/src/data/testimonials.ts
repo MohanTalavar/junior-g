@@ -1,0 +1,58 @@
+import { Testimonial } from "../types/testimonial";
+
+export const testimonials: Testimonial[] = [
+  {
+    id: 1,
+    parentName: "Priya Sharma",
+    relation: "Parent of 3-year-old, Playgroup",
+    rating: 5,
+    message: "Junior G has been a wonderful experience for our daughter! The teachers are warm and caring, and we've seen such positive changes in her social skills and confidence. She absolutely loves going to school every day.",
+    verified: true,
+    dateSubmitted: "2024-04-15",
+  },
+  {
+    id: 2,
+    parentName: "Rajesh Kumar",
+    relation: "Parent of 4-year-old, Nursery",
+    rating: 5,
+    message: "The curriculum is well-designed with a perfect balance of learning and play. Our son has learned so much and his communication skills have improved dramatically. Highly recommend!",
+    verified: true,
+    dateSubmitted: "2024-04-10",
+  },
+  {
+    id: 3,
+    parentName: "Anjali Patel",
+    relation: "Parent of 3-year-old, Daycare",
+    rating: 4,
+    message: "Great facility with clean, safe environment. The teachers keep us updated daily through photos and messages. My child enjoys the creative activities and outdoor play time.",
+    verified: true,
+    dateSubmitted: "2024-04-05",
+  },
+  {
+    id: 4,
+    parentName: "Vikram Singh",
+    relation: "Parent of 5-year-old, LKG",
+    rating: 5,
+    message: "Excellent infrastructure and teacher quality. My child has made great friends and is excited about learning new things every day. The pre-academics preparation has been fantastic.",
+    verified: true,
+    dateSubmitted: "2024-03-28",
+  },
+  {
+    id: 5,
+    parentName: "Meera Desai",
+    relation: "Parent of 4-year-old, Nursery",
+    rating: 5,
+    message: "The holistic development approach really sets Junior G apart. Our son's emotional intelligence and creativity have flourished. We're so grateful to the entire team!",
+    verified: true,
+    dateSubmitted: "2024-03-20",
+  },
+  {
+    id: 6,
+    parentName: "Arjun Nair",
+    relation: "Parent of 3-year-old, Playgroup",
+    rating: 4,
+    message: "Very happy with our choice. The environment is nurturing and the daily updates help us feel connected to our child's day. Great value for money.",
+    verified: true,
+    dateSubmitted: "2024-03-15",
+  },
+];

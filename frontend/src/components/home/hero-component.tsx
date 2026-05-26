@@ -26,7 +26,8 @@ const images = [
 const HeroComponent: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const totalSlides = images.length;
 
   const resetTimeout = () => {
@@ -34,12 +35,14 @@ const HeroComponent: React.FC = () => {
   };
 
   useEffect(() => {
+    if (isHovered) return;
+
     resetTimeout();
     timeoutRef.current = setTimeout(() => {
       setIndex((prevIndex) => (prevIndex + 1) % (totalSlides + 1));
     }, 4500);
     return () => resetTimeout();
-  }, [index]);
+  }, [index, isHovered]);
 
   const handleTransitionEnd = () => {
     if (index === totalSlides) {
@@ -58,7 +61,11 @@ const HeroComponent: React.FC = () => {
   }, [isTransitioning]);
 
   return (
-    <section className="w-full h-[530px] overflow-hidden relative">
+    <section
+      className="w-full h-[530px] overflow-hidden relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
         className={`flex ${
           isTransitioning

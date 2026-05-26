@@ -1,6 +1,7 @@
 import InfoComponent from "@/components/home/info-component";
 import HeroComponent from "@/components/home/hero-component";
 import CourseComponent from "@/components/home/course-component";
+import TestimonialComponent from "@/components/home/testimonial-component";
 import AboutUsComponent from "@/components/home/about-us-component";
 import AnnouncementBar from "@/components/home/announcement-bar-component";
 import {
@@ -9,6 +10,7 @@ import {
   InstagramFloat,
 } from "@/components/ui/social-floaters";
 import { APP_VERSION } from "@/version";
+import { testimonials } from "@/data/testimonials";
 
 const Home: React.FC = () => {
   return (
@@ -25,6 +27,9 @@ const Home: React.FC = () => {
 
       {/* Courses Section */}
       <CourseComponent />
+
+      {/* Testimonials Section */}
+      <TestimonialComponent testimonials={testimonials} />
 
       {/* About Us + Contact Section */}
       <AboutUsComponent />
